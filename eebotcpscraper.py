@@ -1,4 +1,4 @@
-# Purpose: eeboscrapper.py scrapes all the text from one phase at a time.
+# Purpose: eebotcpscrapper.py scrapes all the text from one phase at a time.
 
 # Import packages
 

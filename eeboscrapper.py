@@ -1,3 +1,7 @@
+# Purpose: eeboscrapper.py scrapes all the text from one phase at a time.
+
+# Import packages
+
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
 import re
@@ -5,6 +9,8 @@ import pandas as pd
 import urllib
 from urllib.request import urlopen
 import httplib2
+
+# get_links - get all associated links on EEBO TCP
 
 def get_links(url):
     total_links = []
@@ -18,7 +24,9 @@ def get_links(url):
         if 'http' in x:
             edited_links.append(x)
     return edited_links
-    
+
+# get_books - get books on each page
+
 def get_books(url):
     total_links = []
     edited_links = []
@@ -34,6 +42,7 @@ def get_books(url):
     return edited_links
 
 #replace this link with the starting page for phase II. here it is phase I.
+
 total_links = get_links("https://quod.lib.umich.edu/cgi/t/text/text-idx?page=browse&cc=eebo&c=eebo")
 
 author_links = []

@@ -88,11 +88,13 @@ print("Num of combined: ", len(combined))
 # get all book links
 
 books = []
+j=0
 for link in combined:
     b = get_books(link)
     for i in range(len(b)):
+        j+=1
         books.append(b[i])
-        print(i, b[i])
+        print(j, b[i])
 
 print("books complete", "length is ", len(books))
 

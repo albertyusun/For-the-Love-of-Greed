@@ -26,7 +26,7 @@ def get_links(url):
     return edited_links
 
 
-# get_books - This function clicks "View entire text" button on the book page
+# get_books - This function grabs all book links on a page.
 
 def get_books(url):
     total_links = []

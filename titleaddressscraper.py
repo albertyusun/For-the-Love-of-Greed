@@ -13,6 +13,7 @@ import csv
 
 # get_links - get all associated links on EEBO TCP
 
+
 def get_links(url):
     total_links = []
     edited_links = []
@@ -46,53 +47,58 @@ def get_books(url):
 
 # phase I and phase II links saved as variables:
 
-phaseI = "https://quod.lib.umich.edu/cgi/t/text/text-idx?page=browse&cc=eebo&c=eebo"
+phaseI = "https://quod.lib.umich.edu/e/eebo?key=title;page=browse"
 phaseII = "https://quod.lib.umich.edu/cgi/t/text/text-idx?page=browse&cc=eebo2&c=eebo2"
 
 # use phaseI OR phaseII for that phase's texts
 
 total_links = get_links(phaseI)
 
-# author_links - add every "larger" author link to author_links
+# title_links - add every "larger" title link to title_links
 
-author_links = []
+title_links = []
 for x in total_links:
-    if 'key=author' in x:
-        author_links.append(x)
+    if 'key=title' in x:
+        title_links.append(x)
 
-print("Main author links", len(author_links))
-print("Author complete")
+print("Main title links", len(title_links))
+print("Titles complete")
 
-# sub_authors - add every sub author link to sub_authors.
+# sub_titles - add every sub title link to sub_titles.
 # NOTE: We should make sure the code runs more efficiently by not checking *every* link on the page. We can also skip
 # this entirely and manually input the links, which would save a lot of time, so we don't have to go through a nested
 # for loop.
 
-sub_authors = []
-for x in author_links:
+titles = []
+for x in title_links:
     links = get_links(x)
     for i in links:
-        if 'key=author;page=browse;value' in i and i not in sub_authors:
-            sub_authors.append(i)
+        if 'key=title;page=browse;value' in i and i not in titles:
+            if (i+'+') not in titles:
+                titles.append(i)
 
-print("How many sub authors were collected: ", len(sub_authors))
-print("Sub authors complete")
+print("How many sub titles were collected: ", len(titles))
+print("Sub titles complete")
 
-# combine all author links
 
-s_authors = list(set(sub_authors))
 
-combined = author_links + s_authors
-print("Num of combined: ", len(combined))
+# combine all title links
+
+# s_titles = list(set(sub_titles))
+
+# combined = title_links + s_titles
+# print("Num of combined: ", len(combined))
+
+
 
 # get all book links
 
 books = []
-j=0
-for link in combined:
+j = 0
+for link in titles:
     b = get_books(link)
     for i in range(len(b)):
-        j+=1
+        j += 1
         books.append(b[i])
         print(j, b[i])
 

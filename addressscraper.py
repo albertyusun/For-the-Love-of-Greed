@@ -74,7 +74,6 @@ for x in author_links:
     for i in links:
         if 'key=author;page=browse;value' in i and i not in sub_authors:
             sub_authors.append(i)
-            print(i)
 
 print("How man sub authors were collected: ", len(sub_authors))
 print("Sub authors complete")

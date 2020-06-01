@@ -15,13 +15,13 @@ import httplib2
 def get_links(url):
     total_links = []
     edited_links = []
-    http = httplib2.Http()
-    status, response = http.request(url)
-    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')):
-        if link.has_attr('href'):
+    http = httplib2.Http() #creates Http client that can send requests and get responses
+    status, response = http.request(url) #"request" the url
+    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')): #only collect the <a> tags
+        if link.has_attr('href'): #href is a clickable link
             total_links.append(link['href'])
     for x in total_links:
-        if 'http' in x:
+        if 'http' in x: #to differentiate between links at the bottom of the page and the browse links
             edited_links.append(x)
     return edited_links
 
@@ -33,12 +33,12 @@ def get_books(url):
     edited_links = []
     http = httplib2.Http()
     status, response = http.request(url)
-    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')):
+    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')): #only <a> tags
         if link.has_attr('href'):
             total_links.append(link['href'])
     for x in total_links:
         if 'http' in x:
-            if 'view' in x:
+            if 'view' in x: #view is in the url for the next page we need to get to
                 edited_links.append(x)
     return edited_links
 
@@ -60,7 +60,8 @@ for x in total_links:
         author_links.append(x)
         print(x)
 
-print("author complete")
+print("Main author links", len(author_links))
+print("Author complete")
 
 # sub_authors - add every sub author link to sub_authors.
 # NOTE: We should make sure the code runs more efficiently by not checking *every* link on the page. We can also skip
@@ -75,13 +76,15 @@ for x in author_links:
             sub_authors.append(i)
             print(i)
 
-print("s authors complete")
+print("How man sub authors were collected: ", len(sub_authors))
+print("Sub authors complete")
 
 # combine all author links
 
 s_authors = list(set(sub_authors))
 
 combined = author_links + s_authors
+print("Num of combined: ", len(combined))
 
 # get all book links
 
@@ -96,10 +99,11 @@ print("books complete")
 edited_books = []
 for x in books:
     temp = x[:-8]
-    temp = temp + 'rgn=main;view=fulltext'
+    temp = temp + 'rgn=main;view=fulltext' #clicks on the link that holds the full text
     edited_books.append(temp)
 
 remove_duplicated = list(set(edited_books))
+print(len(remove_duplicated))#Seems to only collect 19408
 
 print("edited books complete")
 

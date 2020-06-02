@@ -9,7 +9,6 @@ import pandas as pd
 import urllib
 from urllib.request import urlopen
 import httplib2
-import csv
 
 # get_links - get all associated links on EEBO TCP
 
@@ -59,6 +58,7 @@ author_links = []
 for x in total_links:
     if 'key=author' in x:
         author_links.append(x)
+        print(x)
 
 print("Main author links", len(author_links))
 print("Author complete")
@@ -74,8 +74,9 @@ for x in author_links:
     for i in links:
         if 'key=author;page=browse;value' in i and i not in sub_authors:
             sub_authors.append(i)
+            print(i)
 
-print("How many sub authors were collected: ", len(sub_authors))
+print("How man sub authors were collected: ", len(sub_authors))
 print("Sub authors complete")
 
 # combine all author links
@@ -90,9 +91,8 @@ print("Num of combined: ", len(combined))
 books = []
 for link in combined:
     b = get_books(link)
-    for i in range(len(b)):
-        books.append(b[i])
-        print(i, b[i])
+    for i in b:
+        books.append(i)
 
 print("books complete", "length is ", len(books))
 

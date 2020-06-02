@@ -1,6 +1,6 @@
 # For-the-Love-of-Greed
 
-This is the GitHub repository for 2020 Duke University Data+ Project [*For the Love of Greed*] (https://bigdata.duke.edu/projects/love-greed-tracing-early-history-consumer-culture).
+This is the GitHub repository for 2020 Duke University Data+ Project [For the Love of Greed](https://bigdata.duke.edu/projects/love-greed-tracing-early-history-consumer-culture).
 
 ## Project Summary
 

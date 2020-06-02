@@ -9,6 +9,7 @@ import pandas as pd
 import urllib
 from urllib.request import urlopen
 import httplib2
+import csv
 '''
 # get_links - get all associated links on EEBO TCP
 
@@ -99,6 +100,7 @@ print("books complete")
 '''
 
 urlLink = 'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc'
+
 
 other_link = ['https://quod.lib.umich.edu/e/eebo/A45913.0001.001?view=toc']
 

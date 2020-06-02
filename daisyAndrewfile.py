@@ -99,7 +99,7 @@ print("books complete")
 '''
 
 urlLink = 'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc'
-other_link = ['https://quod.lib.umich.edu/e/eebo/B03160.0001.001?view=toc',
+"""other_link = ['https://quod.lib.umich.edu/e/eebo/B03160.0001.001?view=toc',
               'https://quod.lib.umich.edu/e/eebo/A19523.0001.001?view=toc',
               'https://quod.lib.umich.edu/e/eebo/A34855.0001.001?view=toc',
               'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc',
@@ -117,7 +117,9 @@ other_link = ['https://quod.lib.umich.edu/e/eebo/B03160.0001.001?view=toc',
               'https://quod.lib.umich.edu/e/eebo/A47601.0001.001?view=toc',
               'https://quod.lib.umich.edu/e/eebo/A47599.0001.001?view=toc',
               'https://quod.lib.umich.edu/e/eebo/A47591.0001.001?view=toc'
-]
+]"""
+
+other_link = ['https://quod.lib.umich.edu/e/eebo/A45913.0001.001?view=toc']
 
 authorNames = []
 for url in other_link:
@@ -125,7 +127,10 @@ for url in other_link:
     page = requests.get(url)    
     soup = BeautifulSoup(page.content, 'html.parser') #parse_only=SoupStrainer('tr'))
     deeperSouper = soup.find('tr', valign='top').getText()
-    authorNames.append(str(deeperSouper))
+    if (deeperSouper)[0:6] == "\nTitle":
+        authorNames.append("")
+    else:
+        authorNames.append(str(deeperSouper))
     print(deeperSouper)
     print(authorNames)
 

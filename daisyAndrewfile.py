@@ -9,7 +9,7 @@ import pandas as pd
 import urllib
 from urllib.request import urlopen
 import httplib2
-
+'''
 # get_links - get all associated links on EEBO TCP
 
 def get_links(url):
@@ -96,6 +96,25 @@ for link in combined:
 
 print("books complete")
 
+'''
+
+urlLink = ['https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc']
+
+#for url in urlLink:
+    #page = requests.get(url)
+
+#for book in urlLink:
+page = requests.get(urlLink)
+soup = BeautifulSoup(page.content, 'html.parser')
+deeperSoup = soup.find('tr', {'valign' : 'top'})
+print(deeperSoup.text)
+
+
+
+
+'''
+
+
 edited_books = []
 for x in books:
     temp = x[:-8]
@@ -106,6 +125,10 @@ remove_duplicated = list(set(edited_books))
 print(len(remove_duplicated))#Seems to only collect 19408
 
 print("edited books complete")
+
+
+
+    
 
 # add book lines to csv file called 'phase1data.csv':
 
@@ -127,3 +150,4 @@ for book in remove_duplicated:
 
 df = pd.DataFrame(d)
 df.to_csv('phase1data.csv')
+'''

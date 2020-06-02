@@ -98,16 +98,44 @@ print("books complete")
 
 '''
 
-urlLink = ['https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc']
+urlLink = 'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc'
+other_link = ['https://quod.lib.umich.edu/e/eebo/B03160.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A19523.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A34855.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/B03160.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47095.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47086.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47614.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47613.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47611.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47607.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47612.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47606.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47605.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47602.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47601.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47599.0001.001?view=toc',
+              'https://quod.lib.umich.edu/e/eebo/A47591.0001.001?view=toc'
+]
 
-#for url in urlLink:
-    #page = requests.get(url)
+authorNames = []
+for url in other_link:
+    i = 0
+    page = requests.get(url)    
+    soup = BeautifulSoup(page.content, 'html.parser') #parse_only=SoupStrainer('tr'))
+    deeperSouper = soup.find('tr', valign='top').getText()
+    authorNames.append(str(deeperSouper))
+    print(deeperSouper)
+    print(authorNames)
 
-#for book in urlLink:
-page = requests.get(urlLink)
-soup = BeautifulSoup(page.content, 'html.parser')
-deeperSoup = soup.find('tr', {'valign' : 'top'})
-print(deeperSoup.text)
+'''    
+    if deepestSoup not in authorNames:
+        authorNames.append(str(deepestSoup)) 
+        print(url, i)
+    i+=1
+print(authorNames)
+'''
 
 
 

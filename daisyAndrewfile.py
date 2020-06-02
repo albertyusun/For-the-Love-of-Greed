@@ -114,6 +114,11 @@ for url in other_link:
     print(deeperSouper)
     print(authorNames)
 
+title_names = []
+titlepage = requests.get(urlLink)
+soup = BeautifulSoup(titlepage.content, 'html.parser')
+otherSoup  = soup.find_all('i').getText()
+print(otherSoup)
 
 
 '''

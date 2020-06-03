@@ -158,38 +158,32 @@ print(dates)
 
 
 edited_books = []
-for x in books:
+for x in urlLink:
     temp = x[:-8]
     temp = temp + 'rgn=main;view=fulltext' #clicks on the link that holds the full text
     edited_books.append(temp)
 
-remove_duplicated = list(set(edited_books))
-print(len(remove_duplicated))#Seems to only collect 19408
-
-print("edited books complete")
-
-
-
+#remove_duplicated = list(set(edited_books))
+#print(len(remove_duplicated))#Seems to only collect 19408
     
-
 # add book lines to csv file called 'phase1data.csv':
 
 d = {}
 i = 0
-for book in remove_duplicated:
+for book in edited_books:
     i = i + 1
     page = requests.get(book)
     soup = BeautifulSoup(page.content, 'html.parser')
     results = soup.find(id='doccontent')
     if results is not None:
         r = results.text
-        text = r.replace('\n', '')
+        text = r.replace('\n', ' ')
         title = soup.find(id='itemTextmdata')
         t = title.text
-        redit = t.replace('\n', '')
+        redit = t.replace('\n', ' ')
         d[redit] = text
         print(i)
-
-df = pd.DataFrame(d)
-df.to_csv('phase1data.csv')
-'''
+        print(text.encode('ascii', 'ignore'))
+#print(d)
+#df = pd.DataFrame(d)
+#df.to_csv('phase1data.csv')

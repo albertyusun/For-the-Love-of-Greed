@@ -154,8 +154,6 @@ print(titles)
 print(authors)
 print(dates)    
 
-'''
-
 
 edited_books = []
 for x in urlLink:

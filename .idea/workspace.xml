@@ -20,7 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7929e141-da8e-4892-aedf-0b812f85378c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/daisyAndrewfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/daisyAndrewfile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metadatascraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/metadatascraper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +40,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1cdTokvqKg4wgy8928FqFlYdrdj" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -209,22 +212,22 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="669" y="119" key="#eeboscraper/0.0.1920.1048@0.0.1920.1048" timestamp="1590863288822" />
-    <state width="936" height="287" key="GridCell.Tab.0.bottom" timestamp="1591127214165">
+    <state width="936" height="660" key="GridCell.Tab.0.bottom" timestamp="1591209587774">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="287" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1591127214165" />
-    <state width="936" height="287" key="GridCell.Tab.0.center" timestamp="1591127214164">
+    <state width="936" height="660" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1591209587774" />
+    <state width="936" height="660" key="GridCell.Tab.0.center" timestamp="1591209587774">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="287" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1591127214164" />
-    <state width="936" height="287" key="GridCell.Tab.0.left" timestamp="1591127214164">
+    <state width="936" height="660" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1591209587774" />
+    <state width="936" height="660" key="GridCell.Tab.0.left" timestamp="1591209587774">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="287" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1591127214164" />
-    <state width="936" height="287" key="GridCell.Tab.0.right" timestamp="1591127214164">
+    <state width="936" height="660" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1591209587774" />
+    <state width="936" height="660" key="GridCell.Tab.0.right" timestamp="1591209587774">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="287" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1591127214164" />
+    <state width="936" height="660" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1591209587774" />
     <state width="936" height="194" key="GridCell.Tab.1.bottom" timestamp="1591041014405">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>

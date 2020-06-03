@@ -28,6 +28,7 @@ print(df)
 #print(df['Websites'].to_string(index=False))
 
 dates = []
+pubinfo = []
 titles = []
 authors = []
 for url in df['Websites']:
@@ -36,20 +37,23 @@ for url in df['Websites']:
     soup = BeautifulSoup(datepage.content, 'html.parser')
     titleSoup = soup.find('i').getText()
     authorSoup = soup.find('i').findNext('br').next_element
-    dateSoup = soup.find('i').findNext('br').findNext('br').next_element
-    if len(dateSoup) == 1:
-        dateSoup = authorSoup
+    pubSoup = soup.find('i').findNext('br').findNext('br').next_element
+    if len(pubSoup) == 1:
+        pubSoup = authorSoup
         authorSoup = 'No Author'
     titles.append(titleSoup)
-    dates.append(dateSoup)
+    pubinfo.append(pubSoup)
     authors.append(authorSoup)
+    dates.append(pubSoup[-5:-1])
 
 df['author'] = authors
 df['title'] = titles
-df['date'] = dates
+df['pubinfo'] = pubinfo
+df['dates'] = dates
 
 print(df)
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
     print(df)
 
+df.to_csv("metadata.csv")

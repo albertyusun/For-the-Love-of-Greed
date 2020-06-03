@@ -99,13 +99,18 @@ print("books complete")
 
 '''
 
-urlLink = 'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc'
 
-
-other_link = ['https://quod.lib.umich.edu/e/eebo/A45913.0001.001?view=toc']
-
+urlLink = ['https://quod.lib.umich.edu/e/eebo/A45913.0001.001?view=toc', 
+           'https://quod.lib.umich.edu/e/eebo/B06712.0001.001?view=toc',
+           'https://quod.lib.umich.edu/e/eebo/A53287.0001.001?view=toc',
+           'https://quod.lib.umich.edu/e/eebo/A37751.0001.001?view=toc',
+           'https://quod.lib.umich.edu/e/eebo/A03755.0001.001?view=toc',
+           'https://quod.lib.umich.edu/e/eebo/A45911.0001.001?view=toc',
+           'https://quod.lib.umich.edu/e/eebo/A45913.0001.001?view=toc',
+           ]
+'''
 authorNames = []
-for url in other_link:
+for url in urlLink:
     page = requests.get(url)    
     soup = BeautifulSoup(page.content, 'html.parser') #parse_only=SoupStrainer('tr'))
     deeperSouper = soup.find('tr', valign='top').getText().encode('utf-8')
@@ -113,15 +118,41 @@ for url in other_link:
         authorNames.append("")
     else:
         authorNames.append(str(deeperSouper))
-    print(deeperSouper)
-    print(authorNames)
-
+#print(deeperSouper)
+print('authornames', authorNames)
+'''
+'''
 title_names = []
-titlepage = requests.get(urlLink)
-soup = BeautifulSoup(titlepage.content, 'html.parser')
-otherSoup  = soup.find_all('i').getText()
-print(otherSoup)
-
+for title in urlLink:
+    titlepage = requests.get(title)
+    soup = BeautifulSoup(titlepage.content, 'html.parser')
+    otherSoup  = soup.find('i').getText()
+print('Title: ', otherSoup)
+'''
+dates = []
+titles = []
+authors = []
+for pubDate in urlLink:
+    datepage = requests.get(pubDate)    
+    soup = BeautifulSoup(datepage.content, 'html.parser')
+    titleSoup  = soup.find('i').getText()
+    authorSoup = soup.find('i').findNext('br').next_element
+    dateSoup = soup.find('i').findNext('br').findNext('br').next_element
+    if len(dateSoup) == 1:
+        dateSoup = authorSoup
+        authorSoup = 'No Author'
+    titles.append(titleSoup)
+    dates.append(dateSoup)
+    authors.append(authorSoup)
+    
+'''        
+print('Title: ', otherSoup)
+print('Print Date: ', otherOtherSoup)
+print('Author: ', otherOtherSoup2)
+'''
+print(titles)
+print(authors)
+print(dates)    
 
 '''
 

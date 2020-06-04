@@ -5,27 +5,16 @@
 
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
-import re
 import pandas as pd
-import urllib
-from urllib.request import urlopen
-import httplib2
-import csv
-'''
-authorNames = []
-for url in other_link:
-    i = 0
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser') #parse_only=SoupStrainer('tr'))
-    deeperSouper = soup.find('tr', valign='top').getText()
-    authorNames.append(str(deeperSouper))
-    print(deeperSouper)
-    print(authorNames)
-'''
-df = pd.read_csv('addresses-short.csv')
-print(df)
 
-#print(df['Websites'].to_string(index=False))
+# 1. Uncomment out the section you're scraping:
+
+# df = pd.read_csv('CSVs/metadata_TCP_1_1.csv')
+# df = pd.read_csv('CSVs/metadata_TCP_1_2.csv')
+# df = pd.read_csv('CSVs/metadata_TCP_1_3.csv')
+# df = pd.read_csv('CSVs/metadata_TCP_1_4.csv')
+
+print(df)
 
 dates = []
 pubinfo = []
@@ -74,4 +63,9 @@ print(df)
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
     print(df)
 
-df.to_csv("metadata.csv")
+# 2. Uncomment out the section you're scraping:
+
+# df.to_csv("CSVs/metadata_TCP_1_1.csv")
+# df.to_csv("CSVs/metadata_TCP_1_2.csv")
+# df.to_csv("CSVs/metadata_TCP_1_3.csv")
+# df.to_csv("CSVs/metadata_TCP_1_4.csv")

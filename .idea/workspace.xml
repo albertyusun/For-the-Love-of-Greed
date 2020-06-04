@@ -20,20 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7929e141-da8e-4892-aedf-0b812f85378c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daisyAndrewfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/daisyAndrewfile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/metadatascraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/metadatascraper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/titleaddressscraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/titleaddressscraper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/chardet-3.0.4.dist-info/RECORD" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/numpy-1.18.4.dist-info/RECORD" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-20.1.1.dist-info/RECORD" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-47.1.1.dist-info/RECORD" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Scripts/chardetect.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Scripts/easy_install.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Scripts/f2py.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Scripts/pip.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Scripts/pip3.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,28 +49,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../PythonCode" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Python.metadatascrapertest">
-    <configuration name="addressscraper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="For-the-Love-of-Greed" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/addressscraper.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.titleaddressscraper">
     <configuration name="daisyAndrewfile" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="For-the-Love-of-Greed" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,19 +71,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="eebotcpscraper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="For-the-Love-of-Greed" />
+    <configuration name="htmltesting" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PythonCode" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../PythonCode" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/eebotcpscraper.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../PythonCode/htmltesting" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -168,20 +134,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="titleaddressscraper" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PythonCode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../PythonCode" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../PythonCode/titleaddressscraper.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Python.addressscraper" />
-      <item itemvalue="Python.eebotcpscraper" />
       <item itemvalue="Python.daisyAndrewfile" />
       <item itemvalue="Python.metadatascraper" />
       <item itemvalue="Python.metadatascrapertest" />
+      <item itemvalue="Python.htmltesting" />
+      <item itemvalue="Python.titleaddressscraper" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.titleaddressscraper" />
+        <item itemvalue="Python.htmltesting" />
         <item itemvalue="Python.metadatascrapertest" />
         <item itemvalue="Python.metadatascraper" />
         <item itemvalue="Python.daisyAndrewfile" />
-        <item itemvalue="Python.addressscraper" />
-        <item itemvalue="Python.eebotcpscraper" />
       </list>
     </recent_temporary>
   </component>
@@ -227,25 +214,25 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1591211197851" />
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom" timestamp="1591213558082">
+    <state width="1259" height="230" key="GridCell.Tab.0.bottom" timestamp="1591287607515">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1591213558082" />
+    <state width="1259" height="230" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1591287607515" />
     <state width="936" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
-    <state width="1259" height="163" key="GridCell.Tab.0.center" timestamp="1591213558082">
+    <state width="1259" height="230" key="GridCell.Tab.0.center" timestamp="1591287607515">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1591213558082" />
+    <state width="1259" height="230" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1591287607515" />
     <state width="936" height="279" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
-    <state width="1259" height="163" key="GridCell.Tab.0.left" timestamp="1591213558082">
+    <state width="1259" height="230" key="GridCell.Tab.0.left" timestamp="1591287607515">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1591213558082" />
+    <state width="1259" height="230" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1591287607515" />
     <state width="936" height="279" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
-    <state width="1259" height="163" key="GridCell.Tab.0.right" timestamp="1591213558082">
+    <state width="1259" height="230" key="GridCell.Tab.0.right" timestamp="1591287607515">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="1259" height="163" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1591213558082" />
+    <state width="1259" height="230" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1591287607515" />
     <state width="936" height="279" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
     <state width="936" height="194" key="GridCell.Tab.1.bottom" timestamp="1591041014405">
       <screen x="0" y="0" width="1920" height="1048" />

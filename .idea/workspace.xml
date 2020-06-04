@@ -20,9 +20,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7929e141-da8e-4892-aedf-0b812f85378c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metadata.csv" beforeDir="false" afterPath="$PROJECT_DIR$/metadata.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/metadatascraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/metadatascraper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/chardet-3.0.4.dist-info/RECORD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/numpy-1.18.4.dist-info/RECORD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-20.1.1.dist-info/RECORD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-47.1.1.dist-info/RECORD" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/chardetect.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/easy_install.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/f2py.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/pip.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/Scripts/pip3.exe" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +57,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Virtual Environment" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager" selected="Python.metadatascraper">
@@ -159,10 +168,10 @@
     </configuration>
     <list>
       <item itemvalue="Python.addressscraper" />
-      <item itemvalue="Python.eebotcpscraper" />
-      <item itemvalue="Python.tcpscraper" />
       <item itemvalue="Python.daisyAndrewfile" />
+      <item itemvalue="Python.eebotcpscraper" />
       <item itemvalue="Python.metadatascraper" />
+      <item itemvalue="Python.tcpscraper" />
     </list>
     <recent_temporary>
       <list>
@@ -212,22 +221,26 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="669" y="119" key="#eeboscraper/0.0.1920.1048@0.0.1920.1048" timestamp="1590863288822" />
-    <state width="936" height="279" key="GridCell.Tab.0.bottom" timestamp="1591210832091">
+    <state x="1219" y="285" key="FileChooserDialogImpl" timestamp="1591212312492">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="279" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
-    <state width="936" height="279" key="GridCell.Tab.0.center" timestamp="1591210832091">
+    <state x="1219" y="285" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1591212312492" />
+    <state width="936" height="318" key="GridCell.Tab.0.bottom" timestamp="1591245927984">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="279" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
-    <state width="936" height="279" key="GridCell.Tab.0.left" timestamp="1591210832091">
+    <state width="936" height="318" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1591245927984" />
+    <state width="936" height="318" key="GridCell.Tab.0.center" timestamp="1591245927984">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="279" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
-    <state width="936" height="279" key="GridCell.Tab.0.right" timestamp="1591210832091">
+    <state width="936" height="318" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1591245927984" />
+    <state width="936" height="318" key="GridCell.Tab.0.left" timestamp="1591245927984">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="279" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1591210832091" />
+    <state width="936" height="318" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1591245927984" />
+    <state width="936" height="318" key="GridCell.Tab.0.right" timestamp="1591245927984">
+      <screen x="0" y="0" width="1920" height="1048" />
+    </state>
+    <state width="936" height="318" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1591245927984" />
     <state width="936" height="194" key="GridCell.Tab.1.bottom" timestamp="1591041014405">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>

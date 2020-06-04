@@ -9,10 +9,11 @@ import pandas as pd
 
 # 1. Uncomment out the section you're scraping:
 
-# df = pd.read_csv('CSVs/metadata_TCP_1_1.csv')
-# df = pd.read_csv('CSVs/metadata_TCP_1_2.csv')
-# df = pd.read_csv('CSVs/metadata_TCP_1_3.csv')
-# df = pd.read_csv('CSVs/metadata_TCP_1_4.csv')
+df = pd.read_csv('CSVs/addresses-short.csv')
+# df = pd.read_csv('CSVs/addresses_TCP_1_1.csv')
+# df = pd.read_csv('CSVs/addresses_TCP_1_2.csv')
+# df = pd.read_csv('CSVs/addresses_TCP_1_3.csv')
+# df = pd.read_csv('CSVs/addresses_TCP_1_4.csv')
 
 print(df)
 
@@ -34,6 +35,9 @@ for url in df['Websites']:
     pubinfo.append(pubSoup)
     authors.append(authorSoup)
     dates.append(pubSoup[-5:-1])
+    print("metadata scraping completed for " + url)
+
+print("metadata besides book text completed, now onto book text")
 
 book_links = []
 for url in df['Websites']:
@@ -51,6 +55,9 @@ for book in book_links:
         r = results.text
         text = r.replace('\n', ' ')
         pages.append(text)
+        print("book text scraping completed for " + url)
+
+print("book text scraping completed.")
 
 df['author'] = authors
 df['title'] = titles
@@ -65,6 +72,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):  
 
 # 2. Uncomment out the section you're scraping:
 
+df.to_csv("CSVs/metadata-short.csv")
 # df.to_csv("CSVs/metadata_TCP_1_1.csv")
 # df.to_csv("CSVs/metadata_TCP_1_2.csv")
 # df.to_csv("CSVs/metadata_TCP_1_3.csv")

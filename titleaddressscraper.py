@@ -3,45 +3,28 @@
 # Import packages
 
 from bs4 import BeautifulSoup, SoupStrainer
-import requests
-import re
-import pandas as pd
-import urllib
-from urllib.request import urlopen
 import httplib2
-import csv
 
 # get_links - get all associated links on EEBO TCP
 
-
 def get_links(url):
     total_links = []
-    edited_links = []
-    http = httplib2.Http() #creates Http client that can send requests and get responses
-    status, response = http.request(url) #"request" the url
-    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')): #only collect the <a> tags
-        if link.has_attr('href'): #href is a clickable link
+    http = httplib2.Http() # creates Http client that can send requests and get responses
+    status, response = http.request(url) # "request" the url
+    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')): # only collect the <a> tags
+        if link.has_attr('href') and ('http' in link.get('href')): # href is a clickable link
             total_links.append(link['href'])
-    for x in total_links:
-        if 'http' in x: #to differentiate between links at the bottom of the page and the browse links
-            edited_links.append(x)
-    return edited_links
+    return total_links
 
 
 # get_books - This function grabs all book links on a page.
 
 def get_books(url):
-    total_links = []
+    total_links = get_links(url) #grab every link
     edited_links = []
-    http = httplib2.Http()
-    status, response = http.request(url)
-    for link in BeautifulSoup(response, 'html.parser', parse_only=SoupStrainer('a')): #only <a> tags
-        if link.has_attr('href'):
-            total_links.append(link['href'])
     for x in total_links:
-        if 'http' in x:
-            if 'view' in x: #view is in the url for the next page we need to get to
-                edited_links.append(x)
+        if 'view' in x: # grab links with 'view' in them
+            edited_links.append(x)
     return edited_links
 
 
@@ -52,14 +35,14 @@ phaseII = "https://quod.lib.umich.edu/cgi/t/text/text-idx?page=browse&cc=eebo2&c
 
 # use phaseI OR phaseII for that phase's texts
 
-total_links = get_links(phaseI)
+total_links = get_links(phaseI) # every link on first page
 
 # title_links - add every "larger" title link to title_links
 
 title_links = []
 for x in total_links:
     if 'key=title' in x:
-        title_links.append(x)
+        title_links.append(x) # grabs the larger links but also all of the sub-A's
 
 print("Main title links", len(title_links))
 print("Titles complete")
@@ -74,21 +57,16 @@ for x in title_links:
     links = get_links(x)
     for i in links:
         if 'key=title;page=browse;value' in i and i not in titles:
-            if (i+'+') not in titles:
+            if i[-3] == "=" or i[-8] == "=":
                 titles.append(i)
+
+# only grabs sub page titles and does not grab the same url twice.
+
+# adding titles = list(set(titles)) had no effect on the book count.
+# So there's no duplication of identical links going on.
 
 print("How many sub titles were collected: ", len(titles))
 print("Sub titles complete")
-
-
-
-# combine all title links
-
-# s_titles = list(set(sub_titles))
-
-# combined = title_links + s_titles
-# print("Num of combined: ", len(combined))
-
 
 
 # get all book links

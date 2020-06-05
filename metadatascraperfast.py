@@ -1,32 +1,33 @@
-# Purpose: metadatascraper scrapes the metadata from the addresses.csv file and
-# adds corresponding columns for the specific metadata from those files
-
 # Import packages
 import concurrent
-from datetime import time
-
+import time
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
 import pandas as pd
-from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures import Future
 
 
-def extract_title(url):
+def extract_row(url):
     datepage = requests.get(url)
     soup = BeautifulSoup(datepage.content, 'html.parser')
     titleSoup = soup.find('i').getText()
-    # authorSoup = soup.find('i').findNext('br').next_element
-    # pubSoup = soup.find('i').findNext('br').findNext('br').next_element
-    # if len(pubSoup) == 1:
-    #     pubSoup = authorSoup
-    #     authorSoup = 'No Author'
-    # titles.append(titleSoup)
-    # pubinfo.append(pubSoup)
-    # authors.append(authorSoup)
-    # dates.append(pubSoup[-5:-1])
-    return titleSoup
+    authorSoup = soup.find('i').findNext('br').next_element
+    pubSoup = soup.find('i').findNext('br').findNext('br').next_element
+    if len(pubSoup) == 1:
+        pubSoup = authorSoup
+        authorSoup = 'No Author'
+    row = [url, titleSoup, authorSoup, pubSoup, pubSoup[-5:-1]]
+    return row
+
+
+def extract_book(book_link):
+    page = requests.get(book_link)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    results = soup.find(id='doccontent')
+    if results is not None:
+        r = results.text
+        text = r.replace('\n', ' ')
+    return text
 
 
 if __name__ == '__main__':
@@ -38,49 +39,49 @@ if __name__ == '__main__':
     # df = pd.read_csv('CSVs/addresses_TCP_1_3.csv')
     # df = pd.read_csv('CSVs/addresses_TCP_1_4.csv')
 
-    pool = ThreadPoolExecutor(3)
+    listInList = [["website", "title", "author", "publishinfo", "dates"]]
 
-    print(df)
+    # just metadata
+    start = time.time()
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        future_titles = {executor.submit(extract_row, url): url for url in df['Websites']}
+        for future in concurrent.futures.as_completed(future_titles):
+            listInList.append(future.result())
 
-    dates = []
-    pubinfo = []
-    titles = []
-    authors = []
-    pages = []
-    j = 0
+    mid = time.time()
+    print("time for metadata: ", mid - start)  # time it takes to run the metadata scraping
 
-    with ProcessPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(extract_title, url) for url in df['Websites']]
-        results = []
-        for result in concurrent.futures.as_completed(futures):
-            results.append(result)
-    print(results)
+    new_df = pd.DataFrame(listInList[1:],columns=listInList[0])
+
+    print("metadata besides book text completed, now onto book text")
+
+    # get book links
+    book_links = []
+    for url in df['Websites']:
+        temp = url[:-8]
+        temp = temp + 'rgn=main;view=fulltext'  # clicks on the link that holds the full text
+        book_links.append(temp)
+
+    book_text = []
+    # now book text
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        future_titles = {executor.submit(extract_book, url): url for url in book_links}
+        for future in concurrent.futures.as_completed(future_titles):
+            book_text.append(future.result())
+    print(len(book_text))
+    print(book_text)
+
+    new_df["booktext"] = book_text
+
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+        print(new_df)
+
+    finish = time.time()
+    print("time for total: ", finish - start)  # time it takes to run the metadata scraping
+
 
 '''
-print("metadata besides book text completed, now onto book text")
 
-book_links = []
-for url in df['Websites']:
-    temp = url[:-8]
-    temp = temp + 'rgn=main;view=fulltext'  # clicks on the link that holds the full text
-    book_links.append(temp)
-
-# add book lines to csv file called 'phase1data.csv':
-
-z = 0
-for book in book_links:
-    page = requests.get(book)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    results = soup.find(id='doccontent')
-    if results is not None:
-        z += 1
-        r = results.text
-        text = r.replace('\n', ' ')
-        pages.append(text)
-        print(z, " book text scraping completed for " + url)
-
-
-print("book text scraping completed.")
 
 df['author'] = authors
 df['title'] = titles

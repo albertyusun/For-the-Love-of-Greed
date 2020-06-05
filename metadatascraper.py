@@ -2,6 +2,7 @@
 # adds corresponding columns for the specific metadata from those files
 
 # Import packages
+import time
 
 from bs4 import BeautifulSoup, SoupStrainer
 import requests
@@ -9,11 +10,13 @@ import pandas as pd
 
 # 1. Uncomment out the section you're scraping:
 
-# df = pd.read_csv('CSVs/addresses-short.csv')
+df = pd.read_csv('CSVs/addresses-short.csv')
 # df = pd.read_csv('CSVs/addresses_TCP_1_1.csv')
-df = pd.read_csv('CSVs/addresses_TCP_1_2.csv')
+# df = pd.read_csv('CSVs/addresses_TCP_1_2.csv')
 # df = pd.read_csv('CSVs/addresses_TCP_1_3.csv')
 # df = pd.read_csv('CSVs/addresses_TCP_1_4.csv')
+
+start = time.time()
 
 print(df)
 
@@ -74,10 +77,13 @@ print(df)
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
     print(df)
 
+finish = time.time()
+print("time for total: ", finish - start)  # time it takes to run the metadata scraping
+
 # 2. Uncomment out the section you're scraping:
 
 # df.to_csv("CSVs/metadata-short.csv")
 # df.to_csv("CSVs/metadata_TCP_1_1.csv")
-df.to_csv("CSVs/metadata_TCP_1_2.csv")
+# df.to_csv("CSVs/metadata_TCP_1_2.csv")
 # df.to_csv("CSVs/metadata_TCP_1_3.csv")
 # df.to_csv("CSVs/metadata_TCP_1_4.csv")

@@ -26,6 +26,7 @@ def extract_book(book_link):
     page = requests.get(book_link)
     soup = BeautifulSoup(page.content, 'html.parser')
     results = soup.find(id='doccontent')
+    text = ''
     if results is not None:
         r = results.text
         text = r.replace('\n', ' ')

@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r import csv}
 short <- read.csv("CSVs/metadata-short.csv")
 ```
 

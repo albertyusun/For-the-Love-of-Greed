@@ -55,26 +55,39 @@ ggplot(book_words, aes(n/total, fill = book)) +
   xlim(NA, 0.0009) +
   facet_wrap(~book, ncol = 2, scales = "free_y")
 ```
+
 ```{r}
 #use the first 9 texts for now because the last one is super long
 TCP_words <- short %>%
   slice(1:9) %>%
   unnest_tokens(word, booktext) %>%
-  count(title,word,sort=TRUE)
+  count(author,word,sort=TRUE)
 
 #creates list of total amount of words in a func
 total_words <- TCP_words %>%
-  group_by(title) %>%
+  group_by(author) %>%
   summarize(total = sum(n))
 
 TCP_words <- left_join(TCP_words, total_words)
 
 TCP_words
-
-
 ```
+
+
 ```{r}
-TCP_words
+custom_stop <- tibble(word = c("a","and","the","of","to"))
+#data(custom_stop)
+
+tidy_TCP <- TCP_words %>%
+  anti_join(custom_stop)
+
+tidy_TCP
+```
+
+```{r}
+tidy_TCP %>%
+  count(word, sort = TRUE) 
+
 ```
 
 ```{r}

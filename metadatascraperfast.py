@@ -38,9 +38,9 @@ def extract_book(book_link):
 if __name__ == '__main__':
     # 1. Uncomment out the section you're scraping:
 
-    # df = pd.read_csv('CSVs/addresses-short.csv')
+    df = pd.read_csv('CSVs/addresses-short.csv')
     # df = pd.read_csv('CSVs/addresses_TCP_1_1.csv')
-    df = pd.read_csv('CSVs/addresses_TCP_1_2_first500.csv')
+    # df = pd.read_csv('CSVs/addresses_TCP_1_2_first500.csv')
     # df = pd.read_csv('CSVs/addresses_TCP_1_3.csv')
     # df = pd.read_csv('CSVs/addresses_TCP_1_4.csv')
 
@@ -91,9 +91,9 @@ if __name__ == '__main__':
 
     # 2. Uncomment out the section you're scraping:
 
-    # new_df.to_csv("CSVs/metadata-short.csv")
+    new_df.to_csv("CSVs/metadata-short.csv")
     # new_df.to_csv("CSVs/metadata_TCP_1_1.csv")
     # new_df.to_csv("CSVs/metadata_TCP_1_2.csv")
-    new_df.to_csv("CSVs/metadata_TCP_1_2_first500.csv")
+    # new_df.to_csv("CSVs/metadata_TCP_1_2_first500.csv")
     # new_df.to_csv("CSVs/metadata_TCP_1_3.csv")
     # new_df.to_csv("CSVs/metadata_TCP_1_4.csv")

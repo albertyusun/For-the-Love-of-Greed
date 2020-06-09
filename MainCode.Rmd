@@ -15,16 +15,18 @@ library(tidytext)
 library(janeaustenr)
 library(stringr)
 library(ggplot2)
+library(data.table)
+
 ```
 
 ```{r import csv}
-short <- read.csv("CSVs/metadata-short.csv")
+#short <- read.csv("C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv")
+short <- fread('C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv')
 ```
 
 ```{r create dataset that counts words}
 #use the first 9 texts for now because the last one is super long
 TCP_words <- short %>%
-  slice(1:9) %>%
   unnest_tokens(word, booktext) %>%
   count(author,word,sort=TRUE)
 
@@ -39,11 +41,13 @@ TCP_words
 ```
 
 ```{r removes words}
-custom_stop <- tibble(word = c("a","and","the","of","to"))
-#data(custom_stop)
+custom_stop <- tibble(word = c("ã","thou","thy","hense","\210â", "doth", "1", "2",
+                               "â","3","page","unnumbered"))
+data(stop_words)
 
 tidy_TCP <- TCP_words %>%
-  anti_join(custom_stop)
+  anti_join(stop_words) %>%
+  anti_join((custom_stop))
 
 tidy_TCP
 ```

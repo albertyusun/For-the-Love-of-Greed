@@ -15,10 +15,13 @@ library(tidytext)
 library(janeaustenr)
 library(stringr)
 library(ggplot2)
+library(tm)
+library(topicmodels)
 ```
 
 ```{r import csv}
-short <- read.csv("CSVs/metadata-short.csv")
+short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
+#encoding removes the weird A symbols
 ```
 
 ```{r create dataset that counts words}
@@ -39,7 +42,9 @@ TCP_words
 ```
 
 ```{r removes words}
-custom_stop <- tibble(word = c("a","and","the","of","to"))
+custom_stop <- tibble(word = c("a","and","the","of","to","that", "in", "is", 
+                               "it", "be", "but", "for", "you", "not", "in", 
+                               "[unnumbered]", ""))
 #data(custom_stop)
 
 tidy_TCP <- TCP_words %>%
@@ -59,3 +64,23 @@ ggplot(TCP_words, aes(n/total, fill = author)) +
   xlim(NA, 0.0009) +
   facet_wrap(~author, ncol = 2, scales = "free_y")
 ```
+Topic Modelling Research:
+tidytext with topicmodeling: https://www.tidytextmining.com/topicmodeling.html
+Documentation of topic models: https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
+
+```{r}
+## Use VectorSource before using Corpus
+myCorpus <- Corpus(VectorSource(short$booktext))
+tdm <- TermDocumentMatrix(myCorpus)
+inspect(tdm)
+```
+
+
+```{r}
+data("AssociatedPress")
+
+AssociatedPress
+
+```
+
+

@@ -1,6 +1,6 @@
 ---
 title: "MainCode"
-author: "Andrew"
+author: "Andrew, Albert, Daisy, Donald"
 date: "6/9/2020"
 output: html_document
 ---
@@ -10,8 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r imports packages}
-library(tidyverse)
-library(plyr)
 library(dplyr)
 library(tidytext)
 library(janeaustenr)
@@ -19,7 +17,8 @@ library(stringr)
 library(ggplot2)
 library(data.table)
 library(reshape2)
-library(tidyverse)
+library(stm)
+library(quanteda)
 ```
 
 ```{r import csv}
@@ -42,9 +41,10 @@ TCP_words <- short %>%
   unnest_tokens(word, booktext) %>%
   count(book, word, sort = TRUE)
 
+TCP_words
+
 #total_words: book, # total words in the book
 total_words <- TCP_words %>%
-#  group_by(author) %>%
   group_by(book) %>%
   summarize(total = sum(n))
 
@@ -86,54 +86,29 @@ Topic Modeling Research:
 - Topic modeling with tidytext: https://www.youtube.com/watch?v=evTuL-RcRpc
 
 
-```{r import stm and quanteda}
-library(stm)
-library(quanteda)
-```
 ```{r create document-feature matrix/documenttermmatrix}
 TCP_dfm <- tidy_TCP %>%
   count(book, word, sort = TRUE, wt = n) %>%
   cast_dfm(book, word, n)
 
-topic_model <- stm(TCP_dfm, K = 5, init.type = "Spectral")
+topic_model <- stm(TCP_dfm, K = 3, init.type = "Spectral")
 ```
+
 ```{r create summary of the topic model}
 summary(topic_model)
 ```
+```{r visualize}
+td_beta <- tidy(topic_model)
 
-
-
-
-```{ convert short to a termdocumentmatrix}
-## Use VectorSource before using Corpus
-short_Corpus <- Corpus(VectorSource(short$booktext))
-short_tdm <- TermDocumentMatrix(myCorpus)
-inspect(short_tdm)
-```
-```{ create LDA topic model object of short_tdm}
-short_lda <- LDA(short_tdm, k = 2, control = list(seed = 1234))
-short_lda
-```
-```{ create tidy object with topics in short_lda}
-short_topics <- tidy(short_lda, matrix = "beta")
-short_topics
-```
-
-```{}
-top_terms <- short_topics %>%
+top_ten_model <- td_beta %>%
   group_by(topic) %>%
-  top_n(10, beta) %>%
-  ungroup() %>%
-  arrange(topic, -beta)
-
-top_terms %>%
-  mutate(term = reorder_within(term, beta, topic)) %>%
-  ggplot(aes(term, beta, fill = factor(topic))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = "free") +
-  coord_flip() +
-  scale_x_reordered()
+  top_n(10) %>%
+  ungroup %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = topic)) + 
+  geom_col(show.legend = FALSE) + 
+  facet_wrap(~topic, scales = "free") + 
+  coord_flip()
 ```
-
 
 

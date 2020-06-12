@@ -121,7 +121,7 @@ top_ten_model <- td_beta %>%
        x = "Word",
        y = "Word-to-Topic Percentage") +
   scale_y_continuous(labels = scales::percent) + 
-  theme(axis.text.x = element_text(size = 8))
+  theme(axis.text.x = element_text(size = 15))
 
 top_ten_model
 ```

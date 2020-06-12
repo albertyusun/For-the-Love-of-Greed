@@ -100,6 +100,12 @@ summary(topic_model)
 ```{r visualize}
 td_beta <- tidy(topic_model)
 
+td_beta <- td_beta %>%
+  mutate(topic = factor(topic))
+
+topic.labs <- c("Nobility", "Commerce", "Church")
+names(topic.labs) <- c("1", "2", "3")
+
 top_ten_model <- td_beta %>%
   group_by(topic) %>%
   top_n(10) %>%
@@ -107,8 +113,17 @@ top_ten_model <- td_beta %>%
   mutate(term = reorder(term, beta)) %>%
   ggplot(aes(term, beta, fill = topic)) + 
   geom_col(show.legend = FALSE) + 
-  facet_wrap(~topic, scales = "free") + 
-  coord_flip()
+  facet_wrap(~topic, scales = "free", , 
+             labeller = labeller(topic = topic.labs)) + 
+  coord_flip() + 
+  theme_gray(base_size = 23) + 
+  labs(title = "Top 10 Words in our 3 LDA-Generated Topics",
+       x = "Word",
+       y = "Word-to-Topic Percentage") +
+  scale_y_continuous(labels = scales::percent) + 
+  theme(axis.text.x = element_text(size = 8))
+
+top_ten_model
 ```
 
 

@@ -77,13 +77,17 @@ ggplot(TCP_words, aes(n/total, fill = book)) +
 
 Topic Modeling Research:
 
-- tidytext with topicmodeling: https://www.tidytextmining.com/topicmodeling.html
+- tidytext with topicmodeling: 
+https://www.tidytextmining.com/topicmodeling.html
 
-- Documentation of topic models: https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
+- Documentation of topic models: 
+https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
 
-- Create DTM: https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25
+- Create DTM: 
+https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25
 
-- Topic modeling with tidytext: https://www.youtube.com/watch?v=evTuL-RcRpc
+- Topic modeling with tidytext: 
+https://www.youtube.com/watch?v=evTuL-RcRpc
 
 
 ```{r create document-feature matrix/documenttermmatrix}

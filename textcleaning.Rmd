@@ -1,0 +1,36 @@
+---
+title: "textcleaning"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r initialize}
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+library(stringr)
+
+file <- "1660-1669.csv"
+books <- read.csv(file)
+texts <- books$booktext
+texts
+```
+
+```{r the text cleaning}
+cleantext <- str_replace_all(texts, "\\[unnumbered\\]", "") %>%
+  str_replace_all("Page Â", "") %>%
+  str_replace_all("\\[Illustration\\]", "") %>%
+  str_replace_all("\\[illustration\\]", "") %>%
+  str_replace_all("\\u009d", "") %>%
+  str_replace_all("[ã€^â¦%£ˆ§Â/‰¢*#@²ãº\\\\]", "") %>%
+  str_replace_all("[1234567890]", "") %>%
+  str_replace_all("&", "and") %>%
+  str_replace_all("[:punct:]", "") %>%
+  str_to_lower()
+
+books$booktext <- cleantext
+write.csv(books, file)
+```

@@ -1,0 +1,41 @@
+---
+title: "testDonald"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+```
+
+```{r}
+books <- read.csv("metasplit1.csv") # the first 500 books.
+
+
+book_words <- books %>%
+  unnest_tokens(word, booktext) %>%
+  count(title,word,sort=TRUE)
+```
+
+
+```{r}
+new_book_words <- book_words
+
+new_book_words <- new_book_words %>%
+  group_by(title) %>%
+  mutate(book_size = sum(n)) %>%
+  ungroup() %>%
+  mutate(frequency = n / book_size) %>%
+  group_by(word) %>%
+  mutate(avg_freq = mean(frequency)) %>%
+  select(word, avg_freq) %>%
+  distinct()
+
+new_book_words
+
+ggplot(data=new_book_words, aes(x=word, y=avg_freq, fill=word)) +
+    geom_bar(stat="identity")
+```
+
+Hi Donald!

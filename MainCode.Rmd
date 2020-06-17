@@ -1,6 +1,6 @@
 ---
 title: "MainCode"
-author: "Andrew"
+author: "Andrew, Albert, Daisy, Donald"
 date: "6/9/2020"
 output: html_document
 ---
@@ -10,16 +10,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r imports packages}
-library(plyr)
 library(dplyr)
 library(tidytext)
 library(janeaustenr)
 library(stringr)
 library(ggplot2)
-library(tm)
-library(topicmodels)
 library(data.table)
 library(reshape2)
+library(stm)
+library(quanteda)
 ```
 
 ```{r import csv}
@@ -31,29 +30,34 @@ short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
 
 # TidyText Section:
 
-```{r create dataset that counts words}
-#use the first 9 texts for now because the last one is super long
+```{r create dataset that shows # occurences of words per book}
+#shorten titles to 20 char into a new variable called 'book'
+short <- short %>%
+  mutate(book = substr(title, 1, 20)) 
+short
+
+#TCP_words: book, word, # of occurrences
 TCP_words <- short %>%
   unnest_tokens(word, booktext) %>%
-  count(author,word,sort=TRUE)
+  count(book, word, sort = TRUE)
 
-#creates list of total amount of words in a func
+TCP_words
+
+#total_words: book, # total words in the book
 total_words <- TCP_words %>%
-  group_by(author) %>%
+  group_by(book) %>%
   summarize(total = sum(n))
 
+#TCP_words: book, word, # of occurrences, total words 
 TCP_words <- left_join(TCP_words, total_words)
 
 TCP_words
 ```
 
-```{r removes words}
-custom_stop <- tibble(word = c("a","and","the","of","to","that", "in", "is", 
-                               "it", "be", "but", "for", "you", "not", "in", 
-                               "[unnumbered]","ã","thou","thy","hense","\210â", "doth", "1", "2",
-                               "â","3","page","unnumbered"))
+```{r removes stop words}
+custom_stop <- tibble(word = c("[unnumbered]","ã","thou","thy","hense","\210â", 
+                               "doth", "1", "2", "â","3","page","unnumbered"))
 data(stop_words)
-#data(custom_stop)
 
 tidy_TCP <- TCP_words %>%
   anti_join(stop_words) %>%
@@ -62,57 +66,68 @@ tidy_TCP <- TCP_words %>%
 tidy_TCP
 ```
 
-```{r count}
-tidy_TCP %>%
-  count(word, sort = TRUE) 
-```
-
 ```{r plot}
-ggplot(TCP_words, aes(n/total, fill = author)) +
-  geom_histogram(show.legend = FALSE) +
-  xlim(NA, 0.0009) +
-  facet_wrap(~author, ncol = 2, scales = "free_y")
+ggplot(TCP_words, aes(n/total, fill = book)) +
+  geom_histogram(show.legend = FALSE, bins = 10) +
+  facet_wrap(~book, ncol = 2, scales = "free_y") + 
+  labs(x = "# words/Total", y = "Count")
 ```
 
 # Topic Modelling Section: 
 
-Topic Modelling Research:
+Topic Modeling Research:
 
-- tidytext with topicmodeling: https://www.tidytextmining.com/topicmodeling.html
+- tidytext with topicmodeling: 
+https://www.tidytextmining.com/topicmodeling.html
 
-- Documentation of topic models: https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
+- Documentation of topic models: 
+https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
 
-- Create DTM: https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25
-```{r convert short to a termdocumentmatrix}
-## Use VectorSource before using Corpus
-myCorpus <- Corpus(VectorSource(short$booktext))
-short_tdm <- TermDocumentMatrix(myCorpus)
-inspect(short_tdm)
+- Create DTM: 
+https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25
+
+- Topic modeling with tidytext: 
+https://www.youtube.com/watch?v=evTuL-RcRpc
+
+
+```{r create document-feature matrix/documenttermmatrix}
+TCP_dfm <- tidy_TCP %>%
+  count(book, word, sort = TRUE, wt = n) %>%
+  cast_dfm(book, word, n)
+
+topic_model <- stm(TCP_dfm, K = 3, init.type = "Spectral")
 ```
-```{r create LDA topic model object of short_tdm}
-short_lda <- LDA(short_tdm, k = 2, control = list(seed = 1234))
-short_lda
-```
-```{r create tidy object with topics in short_lda}
-short_topics <- tidy(short_lda, matrix = "beta")
-short_topics
-```
 
-```{r}
-top_terms <- short_topics %>%
+```{r create summary of the topic model}
+summary(topic_model)
+```
+```{r visualize}
+td_beta <- tidy(topic_model)
+
+td_beta <- td_beta %>%
+  mutate(topic = factor(topic))
+
+topic.labs <- c("Nobility", "Commerce", "Church")
+names(topic.labs) <- c("1", "2", "3")
+
+top_ten_model <- td_beta %>%
   group_by(topic) %>%
-  top_n(10, beta) %>%
-  ungroup() %>%
-  arrange(topic, -beta)
+  top_n(10) %>%
+  ungroup %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = topic)) + 
+  geom_col(show.legend = FALSE) + 
+  facet_wrap(~topic, scales = "free", , 
+             labeller = labeller(topic = topic.labs)) + 
+  coord_flip() + 
+  theme_gray(base_size = 23) + 
+  labs(title = "Top 10 Words in our 3 LDA-Generated Topics",
+       x = "Word",
+       y = "Word-to-Topic Percentage") +
+  scale_y_continuous(labels = scales::percent) + 
+  theme(axis.text.x = element_text(size = 15))
 
-top_terms %>%
-  mutate(term = reorder_within(term, beta, topic)) %>%
-  ggplot(aes(term, beta, fill = factor(topic))) +
-  geom_col(show.legend = FALSE) +
-  facet_wrap(~ topic, scales = "free") +
-  coord_flip() +
-  scale_x_reordered()
+top_ten_model
 ```
-
 
 

@@ -1,0 +1,98 @@
+---
+title: "WordEmbeddingfile"
+author: "DaisyZhan"
+date: "6/16/2020"
+output: html_document
+---
+
+```{r}
+#load packages
+library(plyr)
+library(dplyr)
+library(tidytext)
+library(janeaustenr)
+library(stringr)
+library(ggplot2)
+library(tm)
+library(topicmodels)
+library(data.table)
+library(reshape2)
+library(widyr)
+library(vctrs)
+
+```
+
+```{r}
+#load data Encoding: move weird A symbols
+short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
+
+TCP_words <- short %>%
+  unnest_tokens(word, booktext) %>%
+  count(author,word,sort=TRUE)
+
+#creates list of total amount of words in a func
+total_words <- TCP_words %>%
+  group_by(author) %>%
+  summarize(total = sum(n))
+
+TCP_words <- left_join(TCP_words, total_words)
+
+TCP_words
+
+```
+```{r remove stop words}
+custom_stop <- tibble(word = c("a","and","the","of","to","that", "in", "is", 
+                               "it", "be", "but", "for", "you", "not", "in", 
+                               "[unnumbered]","ã","thou","thy","hense","\210â", "doth", "1", "2",
+                               "â","3","page","unnumbered"))
+data(stop_words)
+#data(custom_stop)
+
+tidy_TCP <- TCP_words %>%
+  anti_join(stop_words) %>%
+  anti_join((custom_stop))
+
+tidy_TCP
+```
+```
+
+```{r count}
+tidy_TCP %>%
+  count(word, sort = TRUE) 
+```
+
+```{r convert short to a termdocumentmatrix}
+## Use VectorSource before using Corpus
+myCorpus <- Corpus(VectorSource(short$booktext))
+short_tdm <- TermDocumentMatrix(myCorpus)
+inspect(short_tdm)
+```
+
+```{r skipgram probabilities}
+#Select booktext
+words <- tidy_TCP %>% 
+  select(c('word'))
+
+
+#create context window with length 8
+
+tidy_skipgrams <- words %>%
+    unnest_tokens(ngram, text, token = "ngrams", n = 8) %>%
+    mutate(ngramID = row_number()) %>% 
+    tidyr::unite(skipgramID, ngramID) %>%
+    unnest_tokens(word, ngram)
+    
+```
+
+```{r calculate unigram probabilities}
+unigram_probs <- words %>%
+    unnest_tokens(word, text) %>%
+    count(word, sort = TRUE) %>%
+    mutate(p = n / sum(n))
+```
+
+```{r calculate probabilities}
+skipgram_probs <- tidy_skipgrams %>%
+    pairwise_count(word, skipgramID, diag = TRUE, sort = TRUE) %>%
+    mutate(p = n / sum(n))}
+```

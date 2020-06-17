@@ -85,7 +85,7 @@ Topic Modelling Research:
 - Create DTM: https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25
 ```{r convert short to a termdocumentmatrix}
 ## Use VectorSource before using Corpus
-short_Corpus <- Corpus(VectorSource(short$booktext))
+myCorpus <- Corpus(VectorSource(short$booktext))
 short_tdm <- TermDocumentMatrix(myCorpus)
 inspect(short_tdm)
 ```

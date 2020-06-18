@@ -40,6 +40,7 @@ TCP_words <- left_join(TCP_words, total_words)
 TCP_words
 
 ```
+
 ```{r remove stop words}
 custom_stop <- tibble(word = c("a","and","the","of","to","that", "in", "is", 
                                "it", "be", "but", "for", "you", "not", "in", 
@@ -54,11 +55,12 @@ tidy_TCP <- TCP_words %>%
 
 tidy_TCP
 ```
-```
 
 ```{r count}
 tidy_TCP %>%
   count(word, sort = TRUE) 
+
+tidy_TCP
 ```
 
 ```{r convert short to a termdocumentmatrix}
@@ -70,8 +72,7 @@ inspect(short_tdm)
 
 ```{r skipgram probabilities}
 #Select booktext
-words <- tidy_TCP %>% 
-  select(c('word'))
+words <- tidy_TCP$word
 
 
 #create context window with length 8

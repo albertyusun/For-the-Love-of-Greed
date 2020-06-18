@@ -19,6 +19,8 @@ library(data.table)
 library(reshape2)
 library(stm)
 library(quanteda)
+library(silgelib)
+library(extrafont)
 ```
 
 ```{r import csv}
@@ -101,6 +103,12 @@ topic_model <- stm(TCP_dfm, K = 3, init.type = "Spectral")
 ```{r create summary of the topic model}
 summary(topic_model)
 ```
+
+```{r plot topic model}
+plot(topic_model)
+```
+
+
 ```{r visualize}
 td_beta <- tidy(topic_model)
 
@@ -115,17 +123,21 @@ top_ten_model <- td_beta %>%
   top_n(10) %>%
   ungroup %>%
   mutate(term = reorder(term, beta)) %>%
-  ggplot(aes(term, beta, fill = topic)) + 
+  ggplot(aes(x = term, y = beta, fill = topic)) + 
   geom_col(show.legend = FALSE) + 
   facet_wrap(~topic, scales = "free", , 
              labeller = labeller(topic = topic.labs)) + 
   coord_flip() + 
   theme_gray(base_size = 23) + 
-  labs(title = "Top 10 Words in our 3 LDA-Generated Topics",
+  labs(title = "Structural topic modeling created three coherent topics",
+       subtitle = "Generated for 8 texts around the 18th century",
        x = "Word",
        y = "Word-to-Topic Percentage") +
   scale_y_continuous(labels = scales::percent) + 
-  theme(axis.text.x = element_text(size = 15))
+  theme(axis.text.x = element_text(size = 15),
+        plot.subtitle = element_text(size = 15, hjust = 0.5),
+        plot.title = element_text(hjust = 0.5)
+  )
 
 top_ten_model
 ```

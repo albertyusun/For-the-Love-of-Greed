@@ -21,12 +21,49 @@ library(stm)
 library(quanteda)
 ```
 
+```{r time your code template}
+g <- rnorm(100000)
+h <- rep(NA, 100000)
+
+# start the clock
+ptm <- proc.time()
+
+# look thru the vector, adding one
+for(i in 1:100000){
+  h[i] <- g[i] + 1
+}
+
+# insert the code here
+
+# stop the clock
+proc.time() - ptm
+```
+
+
 ```{r import csv}
+g <- rnorm(100000)
+h <- rep(NA, 100000)
+
+# start the clock
+ptm <- proc.time()
+
+# look thru the vector, adding one
+for(i in 1:100000){
+  h[i] <- g[i] + 1
+}
+
+
 short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
+#short <- fread("CSVs/metadata-shorter.csv")
 #encoding removes the weird A symbols
 #short <- read.csv("C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv")
 #short <- fread('C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv')
+
+# stop the clock
+proc.time() - ptm
 ```
+It takes 2.442 seconds for read.csv().
+It takes 0.039 seconds for fread().
 
 # TidyText Section:
 

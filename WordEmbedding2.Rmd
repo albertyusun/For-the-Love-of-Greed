@@ -37,12 +37,13 @@ total_words <- TCP_words %>%
 
 TCP_words <- left_join(TCP_words, total_words)
 
+names(TCP_words) <- c("author", "text", "n", "total")
 TCP_words
 
 ```
 
 ```{r remove stop words}
-custom_stop <- tibble(word = c("a","and","the","of","to","that", "in", "is", 
+custom_stop <- tibble(text = c("a","and","the","of","to","that", "in", "is", 
                                "it", "be", "but", "for", "you", "not", "in", 
                                "[unnumbered]","ã","thou","thy","hense","\210â", "doth", "1", "2",
                                "â","3","page","unnumbered"))
@@ -50,15 +51,14 @@ data(stop_words)
 #data(custom_stop)
 
 tidy_TCP <- TCP_words %>%
-  anti_join(stop_words) %>%
-  anti_join((custom_stop))
+  anti_join(custom_stop)
 
 tidy_TCP
 ```
 
 ```{r count}
 tidy_TCP %>%
-  count(word, sort = TRUE) 
+  count(text, sort = TRUE) 
 
 tidy_TCP
 ```
@@ -72,7 +72,8 @@ inspect(short_tdm)
 
 ```{r skipgram probabilities}
 #Select booktext
-words <- tidy_TCP$word
+words <- tidy_TCP %>%
+  select(c("text"))
 
 
 #create context window with length 8
@@ -82,7 +83,8 @@ tidy_skipgrams <- words %>%
     mutate(ngramID = row_number()) %>% 
     tidyr::unite(skipgramID, ngramID) %>%
     unnest_tokens(word, ngram)
-    
+
+tidy_skipgrams
 ```
 
 ```{r calculate unigram probabilities}
@@ -90,10 +92,36 @@ unigram_probs <- words %>%
     unnest_tokens(word, text) %>%
     count(word, sort = TRUE) %>%
     mutate(p = n / sum(n))
+
+unigram_probs
 ```
 
 ```{r calculate probabilities}
 skipgram_probs <- tidy_skipgrams %>%
     pairwise_count(word, skipgramID, diag = TRUE, sort = TRUE) %>%
-    mutate(p = n / sum(n))}
+    mutate(p = n / sum(n))
+
+skipgram_probs %>%
+  filter( item1 == "this")
 ```
+
+```{r}
+#normalize probabilities
+normalized_prob <- skipgram_probs %>%
+    rename(word1 = item1, word2 = item2) %>%
+    left_join(unigram_probs %>%
+                  select(word1 = word, p1 = p),
+              by = "word1") %>%
+    left_join(unigram_probs %>%
+                  select(word2 = word, p2 = p),
+              by = "word2") %>%
+    mutate(p_together = p / p1 / p2)
+
+normalized_prob
+```
+```{r}
+normalized_prob %>% 
+    filter(word1 == "businesse") %>%
+    arrange(-p_together)
+```
+

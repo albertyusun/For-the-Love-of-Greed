@@ -33,4 +33,9 @@ new_book_words <- new_book_words %>%
   distinct()
 
 new_book_words
+
+ggplot(data=new_book_words, aes(x=word, y=avg_freq, fill=word)) +
+    geom_bar(stat="identity")
 ```
+
+Hi Donald!

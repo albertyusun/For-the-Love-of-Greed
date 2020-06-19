@@ -126,6 +126,8 @@ https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57
 - Topic modeling with tidytext: 
 https://www.youtube.com/watch?v=evTuL-RcRpc
 
+- Chris Bail's research:
+https://www.youtube.com/watch?v=IUAHUEy1V0Q&feature=youtu.be
 
 ```{r create document-feature matrix/documenttermmatrix}
 TCP_dfm <- tidy_TCP %>%
@@ -138,6 +140,21 @@ topic_model <- stm(TCP_dfm, K = 3, init.type = "Spectral")
 ```{r create summary of the topic model}
 summary(topic_model)
 ```
+
+```{r create plot}
+topic_model_plot <- plot(topic_model)
+
+```
+```{r}
+findingk <- searchK(TCP_dfm, K = c(3, 10))
+```
+
+```{r}
+plot(findingk)
+```
+
+
+
 ```{r visualize}
 td_beta <- tidy(topic_model)
 

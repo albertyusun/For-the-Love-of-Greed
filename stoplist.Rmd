@@ -12,7 +12,7 @@ library(data.table)
 
 ```{r}
 #books <- read.csv("metasplit1.csv") # the first 500 books.
-books <- fread("CSVs/1550-1559.csv") # the first 500 books.
+books <- fread("CSVs/1550-1559.csv") # 1550-1559.
 
 
 book_words <- books %>%
@@ -23,6 +23,8 @@ book_words <- books %>%
 
 ```{r create stop list based on words in the documents}
 new_book_words <- book_words
+
+# find most frequent words throughout the texts
 
 new_book_words <- new_book_words %>%
   group_by(title) %>%
@@ -37,17 +39,20 @@ new_book_words <- new_book_words %>%
 
 new_book_words
 
+# create stop words list using most frequent words:
+
 stop_list_1550 <- new_book_words %>%
-  slice(1:140) %>%
-  filter(!word %in% c("christ","men","worlde","anni","regum","christe","nocht","king","sea","warre","grekes","cauled","rome","certeyne","reigned","britayne","emperour","angli","angli","knovven","hadde"))
+  slice(1:140) %>% # choose # of stop words to put in list
+  filter(!word %in% c("christ","men","worlde","anni","regum","christe","nocht",
+                      "king","sea","warre","grekes","cauled","rome","certeyne",
+                      "reigned","britayne","emperour","angli","angli","knovven",
+                      "hadde")) # put important words to filter them out of list
 
 stop_list_1550
 ```
 
 
-
-#ggplot(data=new_book_words, aes(x=word, y=avg_freq, fill=word)) +
-#    geom_bar(stat="identity")
-
-
-Hi Donald!
+```{r}
+ggplot(data=new_book_words, aes(x=word, y=avg_freq, fill=word)) +
+    geom_bar(stat="identity")
+```

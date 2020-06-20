@@ -5,7 +5,7 @@ date: "6/16/2020"
 output: html_document
 ---
 
-```{r}
+```{r load packages, message=FALSE}
 #load packages
 library(plyr)
 library(dplyr)
@@ -21,15 +21,12 @@ library(widyr)
 library(vctrs)
 library(irlba)
 ```
-```{r}
-short <- fread("CSVs/1590-1599.csv")
-```
 
 ```{r}
 #load data Encoding: move weird A symbols
 
-#short <- fread("CSVs/1590-1599.csv")
-short <- fread("CSVs/metadata-shorter.csv", encoding="UTF-8")
+short <- fread("CSVs/1550-1559.csv")
+#short <- fread("CSVs/metadata-shorter.csv", encoding="UTF-8")
 
 TCP_words <- short %>%
   unnest_tokens(word, booktext) %>%
@@ -73,7 +70,7 @@ tidy_TCP
 ## Use VectorSource before using Corpus
 myCorpus <- Corpus(VectorSource(short$booktext))
 short_tdm <- TermDocumentMatrix(myCorpus)
-inspect(short_tdm)
+#inspect(short_tdm)
 ```
 
 ```{r skipgram probabilities}
@@ -137,11 +134,11 @@ pmi_matrix <- normalized_prob %>%
     cast_sparse(word1, word2, pmi)
 ```
 
-```{r}
+```{r Run SVD, eval=FALSE}
 #remove missing data
 pmi_matrix@x[is.na(pmi_matrix@x)] <- 0
 #run SVD
-pmi_svd <- irlba(pmi_matrix, 64, maxit = 500)
+pmi_svd <- irlba(pmi_matrix, 2, maxit = 500)
 #next we output the word vectors:
 word_vectors <- pmi_svd$u
 rownames(word_vectors) <- rownames(pmi_matrix)
@@ -162,13 +159,14 @@ search_synonyms <- function(word_vectors, selected_vector) {
 ```
 
 ```{r top synonyms}
+#look for top synonym for business
 top_synonym <- search_synonyms(word_vectors,word_vectors["business",])
 ```
 ```{r}
 top_synonym
 ```
 
-```{r}
+```{r create 2d word embeddings model}
 pmi_svd <- irlba(pmi_matrix, 2, maxit = 500)
 
 #next we output the word vectors:

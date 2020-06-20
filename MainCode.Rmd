@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r imports packages}
+```{r imports packages, message=FALSE, warning=FALSE}
 library(dplyr)
 library(tidytext)
 library(janeaustenr)
@@ -19,6 +19,7 @@ library(data.table)
 library(reshape2)
 library(stm)
 library(quanteda)
+library(patchwork)
 ```
 
 ```{r time your code template}
@@ -53,8 +54,8 @@ for(i in 1:100000){
 }
 
 
-short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
-#short <- fread("CSVs/metadata-shorter.csv")
+#short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
+short <- fread("CSVs/1550-1559.csv")
 #encoding removes the weird A symbols
 #short <- read.csv("C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv")
 #short <- fread('C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv')
@@ -69,9 +70,9 @@ It takes 0.039 seconds for fread().
 
 ```{r create dataset that shows # occurences of words per book}
 #shorten titles to 20 char into a new variable called 'book'
-short <- short %>%
-  mutate(book = substr(title, 1, 20)) 
-short
+#short <- short %>%
+#  mutate(book = substr(title, 1, 20)) 
+#short
 
 #TCP_words: book, word, # of occurrences
 TCP_words <- short %>%
@@ -134,7 +135,7 @@ TCP_dfm <- tidy_TCP %>%
   count(book, word, sort = TRUE, wt = n) %>%
   cast_dfm(book, word, n)
 
-topic_model <- stm(TCP_dfm, K = 3, init.type = "Spectral")
+topic_model <- stm(TCP_dfm, K = 5, init.type = "Spectral")
 ```
 
 ```{r create summary of the topic model}
@@ -142,18 +143,23 @@ summary(topic_model)
 ```
 
 ```{r create plot}
-topic_model_plot <- plot(topic_model)
-
-```
-```{r}
-findingk <- searchK(TCP_dfm, K = c(3, 10))
+stm_summary <- plot(topic_model, type = c("summary"), n = 3)
+stm_labels <- plot(topic_model, type = c("labels"))
+stm_hist <- plot(topic_model, type = c("hist"))
 ```
 
 ```{r}
-plot(findingk)
+stm_summary <- plot(topic_model, type = c("summary"), n = 3)
+
 ```
 
+```{r}
+#findingk <- searchK(TCP_dfm, K = c(3, 10))
+```
 
+```{r}
+#plot(findingk)
+```
 
 ```{r visualize}
 td_beta <- tidy(topic_model)

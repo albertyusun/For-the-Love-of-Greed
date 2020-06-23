@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-library("keras")
+library(keras)
 library(reticulate)
 library(purrr)
 library(text2vec) 

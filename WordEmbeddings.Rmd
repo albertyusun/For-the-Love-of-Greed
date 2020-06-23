@@ -25,7 +25,7 @@ library(irlba)
 ```{r}
 #load data Encoding: move weird A symbols
 
-short <- fread("CSVs/1550-1559.csv")
+short <- fread("CSVs/1600-1609.csv")
 #short <- fread("CSVs/metadata-shorter.csv", encoding="UTF-8")
 
 TCP_words <- short %>%
@@ -183,7 +183,7 @@ model <- ggplot(forplot, aes(x=V1, y=V2, label=word))+
   theme_minimal()+
   xlab("First Dimension Created by SVD")+
   ylab("Second Dimension Created by SVD") + 
-  labs(title = "2D Word Embeddings Model by Singular Value Decomposition")
+  labs(title = "2D Word Embeddings Model by Singular Value Decomposition") 
 
 model
 ```

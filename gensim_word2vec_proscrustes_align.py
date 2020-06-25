@@ -87,12 +87,12 @@ def intersection_align_gensim(m1, m2, words=None):
     return (m1, m2)
 
 def main():
-    m1before = get_tmpfile("../CSVs/1580w2v.model")
-    m2before = get_tmpfile("../CSVs/1590w2v.model")
+    m1before = Word2Vec.load("output/1470sMessyModel")
+    m2before = Word2Vec.load("output/1470sMessyModel")
     (m1, m2) = intersection_align_gensim(m1before,m2before)
 
-    m1.wv.save_word2vec_format("../CSVs/Aligned_1580w2v.txt")
-    m2.wv.save_word2vec_format("../CSVs/Aligned_1590w2v.txt")
+    m1.wv.save_word2vec_format("output/Aligned_1580w2v.txt")
+    m2.wv.save_word2vec_format("output/Aligned_1590w2v.txt")
 
 if __name__ == "__main__":
     main()

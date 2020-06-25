@@ -51,8 +51,8 @@ def intersection_align_gensim(m1, m2, words=None):
     """
 
     # Get the vocab for each model
-    vocab_m1 = set(m1.vocab.keys())
-    vocab_m2 = set(m2.vocab.keys())
+    vocab_m1 = set(m1.wv.vocab.keys())
+    vocab_m2 = set(m2.wv.vocab.keys())
 
     # Find the common vocabulary
     common_vocab = vocab_m1 & vocab_m2

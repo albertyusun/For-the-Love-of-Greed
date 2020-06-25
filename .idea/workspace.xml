@@ -20,9 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="285d8732-4fa2-46cd-b1b3-3e2eee0602cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/gensim_word2vec_proscrustes_align.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testword2vec.py" beforeDir="false" afterPath="$PROJECT_DIR$/testword2vec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gensim_word2vec_proscrustes_align.py" beforeDir="false" afterPath="$PROJECT_DIR$/gensim_word2vec_proscrustes_align.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

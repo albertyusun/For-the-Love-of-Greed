@@ -51,8 +51,8 @@ def intersection_align_gensim(m1, m2, words=None):
     """
 
     # Get the vocab for each model
-    vocab_m1 = set(m1.vocab.keys())
-    vocab_m2 = set(m2.vocab.keys())
+    vocab_m1 = set(m1.wv.vocab.keys())
+    vocab_m2 = set(m2.wv.vocab.keys())
 
     # Find the common vocabulary
     common_vocab = vocab_m1 & vocab_m2
@@ -87,12 +87,12 @@ def intersection_align_gensim(m1, m2, words=None):
     return (m1, m2)
 
 def main():
-    m1before = get_tmpfile("../CSVs/1580w2v.model")
-    m2before = get_tmpfile("../CSVs/1590w2v.model")
+    m1before = Word2Vec.load("output/1470sMessyModel")
+    m2before = Word2Vec.load("output/1470sMessyModel")
     (m1, m2) = intersection_align_gensim(m1before,m2before)
 
-    m1.wv.save_word2vec_format("../CSVs/Aligned_1580w2v.txt")
-    m2.wv.save_word2vec_format("../CSVs/Aligned_1590w2v.txt")
+    m1.wv.save_word2vec_format("output/Aligned_1580w2v.txt")
+    m2.wv.save_word2vec_format("output/Aligned_1590w2v.txt")
 
 if __name__ == "__main__":
     main()

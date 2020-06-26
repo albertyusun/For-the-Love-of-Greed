@@ -17,7 +17,7 @@ print("split the document into words!")
 before = time.time()
 
 # create vector
-model = gensim.models.word2vec.Word2Vec(sentences=train["booktext"], workers=4, min_count=1, size=300)
+model = gensim.models.word2vec.Word2Vec(sentences=train["booktext"], workers=4, min_count=1, size=50)
 
 # calculate time elapsed
 elapsed = time.time() - before
@@ -30,4 +30,4 @@ print("words count:", j)
 print("time elapsed for word2vec: ", elapsed)
 
 # model.wv.save_word2vec_format("../CSVs/1590w2v.txt")
-model.save("../CSVs/1580w2v.model")
+model.save("../CSVs/1580w2v-50.model")

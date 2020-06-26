@@ -20,11 +20,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="285d8732-4fa2-46cd-b1b3-3e2eee0602cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/visualization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/word2vec-tutorial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gensim_word2vec_proscrustes_align.py" beforeDir="false" afterPath="$PROJECT_DIR$/gensim_word2vec_proscrustes_align.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testword2vec.py" beforeDir="false" afterPath="$PROJECT_DIR$/testword2vec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visualization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wordsinlexicon.py" beforeDir="false" afterPath="$PROJECT_DIR$/wordsinlexicon.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,15 +50,16 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../word-embedding-creation" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Albert\Documents\For-the-Love-of-Greed" />
       <recent name="C:\Users\Albert\PycharmProjects\For-the-Love-of-Greed\CSVs" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.visualization">
+  <component name="RunManager" selected="Python.wordsinlexicon">
     <configuration name="gensim_word2vec_proscrustes_align" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="For-the-Love-of-Greed" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -72,27 +73,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/gensim_word2vec_proscrustes_align.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="metadatascraperfast" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="For-the-Love-of-Greed" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/metadatascraperfast.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -164,13 +144,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="wordsinlexicon" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="For-the-Love-of-Greed" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wordsinlexicon.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.wordsinlexicon" />
         <item itemvalue="Python.visualization" />
-        <item itemvalue="Python.gensim_word2vec_proscrustes_align" />
         <item itemvalue="Python.testword2vec" />
+        <item itemvalue="Python.gensim_word2vec_proscrustes_align" />
         <item itemvalue="Python.radimrehurek" />
-        <item itemvalue="Python.metadatascraperfast" />
       </list>
     </recent_temporary>
   </component>
@@ -200,33 +201,37 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="828" y="185" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593113551290">
+      <screen x="0" y="0" width="1920" height="1048" />
+    </state>
+    <state x="828" y="185" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1048@0.0.1920.1048" timestamp="1593113551290" />
     <state x="1181" y="337" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1593022057897">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="1181" y="337" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1048@0.0.1920.1048" timestamp="1593022057897" />
-    <state x="1220" y="293" key="FileChooserDialogImpl" timestamp="1593106254372">
+    <state x="1220" y="293" key="FileChooserDialogImpl" timestamp="1593113581950">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state x="1220" y="293" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1593106254372" />
-    <state width="936" height="212" key="GridCell.Tab.0.bottom" timestamp="1593111126435">
+    <state x="1220" y="293" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1593113581950" />
+    <state width="1899" height="165" key="GridCell.Tab.0.bottom" timestamp="1593194384245">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="212" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1593111126435" />
-    <state width="936" height="212" key="GridCell.Tab.0.center" timestamp="1593111126435">
+    <state width="1899" height="165" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1593194384245" />
+    <state width="1899" height="165" key="GridCell.Tab.0.center" timestamp="1593194384245">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="212" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1593111126435" />
-    <state width="936" height="212" key="GridCell.Tab.0.left" timestamp="1593111126435">
+    <state width="1899" height="165" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1593194384245" />
+    <state width="1899" height="165" key="GridCell.Tab.0.left" timestamp="1593194384245">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="212" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1593111126435" />
-    <state width="936" height="212" key="GridCell.Tab.0.right" timestamp="1593111126435">
+    <state width="1899" height="165" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1593194384245" />
+    <state width="1899" height="165" key="GridCell.Tab.0.right" timestamp="1593194384245">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="936" height="212" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1593111126435" />
-    <state x="926" y="173" key="SettingsEditor" timestamp="1593106746140">
+    <state width="1899" height="165" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1593194384245" />
+    <state x="926" y="173" key="SettingsEditor" timestamp="1593113820566">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state x="926" y="173" key="SettingsEditor/0.0.1920.1048@0.0.1920.1048" timestamp="1593106746140" />
+    <state x="926" y="173" key="SettingsEditor/0.0.1920.1048@0.0.1920.1048" timestamp="1593113820566" />
   </component>
 </project>

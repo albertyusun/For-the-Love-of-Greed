@@ -2,15 +2,10 @@ import time
 
 from sklearn.decomposition import IncrementalPCA  # inital reduction
 from sklearn.datasets import load_digits
-#from sklearn.manifold import TSNE  # final reduction
-from cuml.manifold import TSNE
-
+from sklearn.manifold import TSNE  # final reduction
 import numpy as np  # array handling
 from gensim.models import Word2Vec
-from plotly.offline import init_notebook_mode, iplot, plot
-import plotly.graph_objs as go
 import pandas as pd
-
 
 def reduce_dimensions(model):
     num_dimensions = 2  # final num dimensions (2D, 3D, etc)
@@ -43,6 +38,9 @@ def reduce_dimensions(model):
 
 
 def plot_with_plotly(x_vals, y_vals, labels, plot_in_notebook=True):
+    from plotly.offline import init_notebook_mode, iplot, plot
+    import plotly.graph_objs as go
+
     trace = go.Scatter(x=x_vals, y=y_vals, mode='text', text=labels)
     data = [trace]
 
@@ -56,6 +54,7 @@ def plot_with_plotly(x_vals, y_vals, labels, plot_in_notebook=True):
 def plot_with_matplotlib(x_vals, y_vals, labels):
     import matplotlib.pyplot as plt
     import random
+
 
     random.seed(0)
 
@@ -72,17 +71,36 @@ def plot_with_matplotlib(x_vals, y_vals, labels):
 
 
 def main():
-    before = time.time()
+
+    '''
+    #accuracy code:
     model = Word2Vec.load("../CSVs/1580w2v.model")
+    model.accuracy('./datasets/questions-words.txt')
+    '''
+
+    #reduce dimension code:
+    before = time.time()
+
+    model = Word2Vec.load("../CSVs/1580w2v.model")
+
     mid = time.time() - before
     print("uploaded model, ", mid)
+
     x_vals, y_vals, labels = reduce_dimensions(model)
+
+    final = time.time() - mid
+    print("total time",final)
+
+    #create pandas data set
     data = {'Labels': labels,
             'x': x_vals,
             'y': y_vals
             }
+
     df = pd.DataFrame(data, columns=['Labels', 'x', 'y'])
     print(df)
+
+
 
 
 '''

@@ -7,14 +7,26 @@ date_buckets = ["1490-1499", "1500-1509",
                 "1630-1639", "1640-1649", "1650-1659", "1660-1669",
                 "1670-1679", "1680-1689", "1690-1700"]
 
-lexicon = ['consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
+lexicon = {'consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
            'greed', 'desire', 'appetite', 'lust', 'libido', 'covetousness', 'avarice',
            'possess', 'possession', 'possessing', 'busy', 'businesse', 'need', 'necessity',
            'necessary', 'needing', 'meed', 'bowgeor', 'bougeor', 'budge', 'wastour',
            'waster', 'wasture', 'wastoure', 'speculation', 'debt', 'debitum', 'expense',
            'gain', 'miser', 'fortune', 'fortuna', 'use', 'usury', 'interest',
-           'interesse', 'consumptioner']
+           'interesse', 'consumptioner'}
 
+for date in date_buckets:
+    df = pd.read_csv("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/"+date+".csv", encoding="ISO-8859-1")
+    decade_words = set()
+    books = df['booktext'].tolist()
+    for book in books:
+        book_list = set(book.split(' '))
+        lexicon_appears = lexicon & book_list
+        decade_words = decade_words.union(lexicon_appears)
+    decade_words = list(decade_words)
+    print(date + ":" + ', '.join(e for e in decade_words))
+
+'''
 for date in date_buckets:
     df = pd.read_csv("CSVs/"+date+".csv")
     books = df['booktext'].tolist()
@@ -23,12 +35,14 @@ for date in date_buckets:
     # first, turn every book into a list
     # then, add every word in that list to words
     for book in books:
-        temp = book.split(' ')
-        for item in temp:
-            if item not in words:
-                words.append(item)
+        book_list = book.split(' ')
+        for book_word in book_list:
+            if book_word not in words:
+                words.append(book_word)
 
     print(date+":")
     for word in words:
         if word in lexicon:
             print(word)
+
+'''

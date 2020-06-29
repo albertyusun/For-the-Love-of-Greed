@@ -36,12 +36,11 @@ cleantext <- str_replace_all(texts, "\\[unnumbered\\]", "") %>%
   str_replace_all("\\[Illustration\\]", "") %>%
   str_replace_all("\\[illustration\\]", "") %>%
   str_replace_all("u009d", "") %>%
-  str_replace_all(str_c("[", remove_characters, "\\\\]", sep="", collapse=NULL), "") %>%
-  str_replace_all("[:digit:]", "") %>%
+  str_replace_all("[^:alpha:\\.&:space:]", "") %>%
   str_replace_all("&", "and") %>%
   str_replace_all(" andc ", "&c") %>%
   str_replace_all(" andc.", "&c.") %>%
-  str_replace_all("[:punct:]", "") %>%
+  str_replace_all("\\.", "") %>%
   str_to_lower()
 
 books$booktext <- cleantext

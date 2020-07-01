@@ -27,7 +27,7 @@ for date in date_buckets:
     print("time elapsed for word2vec: ", elapsed, " ", j, "/", len(date_buckets))
     j+=1
 
-    model.vocab.save("../output/"+date[:4]+"-vocab.pkl")
+    model.vocabulary.save("../output/"+date[:4]+"-vocab.pkl")
     elapsed = time.time() - elapsed
     print("time elapsed: ", elapsed)
     model.wv.save("../output/"+date[:4]+"-w.npy")

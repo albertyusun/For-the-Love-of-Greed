@@ -1,6 +1,7 @@
 import gensim
 import time
 import pandas as pd
+import csv
 
 date_buckets = ["1470-1494", "1495-1519","1520-1544","1545-1569",
                 "1570-1594","1595-1619","1620-1644","1645-1669",
@@ -51,9 +52,16 @@ def most_similar(model, lexicon_words, date_bucket):
     '''
     words_dict = {}
     for lexicon_word in lexicon_words:
-        lex_word_without_star = lexicon_word[:-1]
+        try:
+            lex_word_without_star = lexicon_word[:-1]
+        except TypeError:
+            break
         print("Most Similar words for " + lex_word_without_star + " in " + date_bucket)
-        words_with_cosine = model.wv.most_similar(lex_word_without_star, topn=10)
+        words_with_cosine = []
+        try:
+            words_with_cosine = model.wv.most_similar(lex_word_without_star, topn=10)
+        except KeyError:
+            print("cannot find " + lex_word_without_star)
         words_dict[lex_word_without_star + "_" + date_bucket] = [n[0] for n in words_with_cosine]
         [print(n) for n in words_dict[lex_word_without_star + "_" + date_bucket]] # print for aesthetic
     return words_dict
@@ -73,9 +81,14 @@ def find_lexicon_top_words(csv):
         final_dict.update(most_similar(model, df[date_bucket + "words"], date_bucket)) # add the output from most_similar to the returned dictionary
     return final_dict
 
+def dict_to_csv(file_location, dict):
+    file = open(file_location, "w")
+    writer = csv.writer(file)
+    for key, value in dict.items():
+        writer.writerow([key, value])
+    file.close()
+
 if __name__ == "__main__":
     final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")
     print(final_dict)
-
-
-
+    dict_to_csv("CSVs/most_similar_lexicon_1400-1700.csv", final_dict)

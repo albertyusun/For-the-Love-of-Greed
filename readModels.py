@@ -59,7 +59,7 @@ def most_similar(model, lexicon_words, date_bucket):
         print("Most Similar words for " + lex_word_without_star + " in " + date_bucket)
         words_with_cosine = []
         try:
-            words_with_cosine = model.wv.most_similar(lex_word_without_star, topn=10)
+            words_with_cosine = model.wv.most_similar(lex_word_without_star, topn=20)
         except KeyError:
             print("cannot find " + lex_word_without_star)
         words_dict[lex_word_without_star + "_" + date_bucket] = [n[0] for n in words_with_cosine]
@@ -88,7 +88,24 @@ def dict_to_csv(file_location, dict):
         writer.writerow([key, value])
     file.close()
 
+def cosine_over_time(word1, word2):
+    """
+    prints cosine similarity over time
+    """
+    for date_bucket in date_buckets:
+        try:
+            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", model.wv.similarity(word1, word2))
+        except KeyError:
+            print("can't find 1-2 of the words in ", date_bucket)
+
 if __name__ == "__main__":
+    # code to find cosine similarity:
+    cosine_over_time('consumption', 'trade')
+    cosine_over_time('consume', 'disease')
+    '''
+    # code to make top similar words csv:
     final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")
     print(final_dict)
-    dict_to_csv("CSVs/most_similar_lexicon_1400-1700.csv", final_dict)
+    dict_to_csv("CSVs/most_similar_lexicon_1400-1700_top20.csv", final_dict)
+    '''

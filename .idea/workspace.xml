@@ -20,8 +20,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="285d8732-4fa2-46cd-b1b3-3e2eee0602cf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/readModels.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CSVs/lexiconCount1470-1700.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readModels.py" beforeDir="false" afterPath="$PROJECT_DIR$/readModels.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/word2vec.py" beforeDir="false" afterPath="$PROJECT_DIR$/word2vec.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,16 +50,17 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../histwords" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Albert\Documents\For-the-Love-of-Greed\Old files" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Albert\Documents\For-the-Love-of-Greed\CSVs" />
       <recent name="C:\Users\Albert\Documents\For-the-Love-of-Greed" />
       <recent name="C:\Users\Albert\PycharmProjects\For-the-Love-of-Greed\CSVs" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Albert\Documents\For-the-Love-of-Greed\Old files" />
     </key>
   </component>
   <component name="RunManager" selected="Python.readModels">
@@ -210,26 +213,26 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="1181" y="337" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1048@0.0.1920.1048" timestamp="1593022057897" />
-    <state x="1220" y="293" key="FileChooserDialogImpl" timestamp="1593623175068">
+    <state x="1220" y="293" key="FileChooserDialogImpl" timestamp="1593679532524">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state x="1220" y="293" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1593623175068" />
-    <state width="939" height="224" key="GridCell.Tab.0.bottom" timestamp="1593629477808">
+    <state x="1220" y="293" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1593679532524" />
+    <state width="1899" height="316" key="GridCell.Tab.0.bottom" timestamp="1593710388030">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="939" height="224" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1593629477808" />
-    <state width="939" height="224" key="GridCell.Tab.0.center" timestamp="1593629477808">
+    <state width="1899" height="316" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1593710388030" />
+    <state width="1899" height="316" key="GridCell.Tab.0.center" timestamp="1593710388030">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="939" height="224" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1593629477808" />
-    <state width="939" height="224" key="GridCell.Tab.0.left" timestamp="1593629477808">
+    <state width="1899" height="316" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1593710388030" />
+    <state width="1899" height="316" key="GridCell.Tab.0.left" timestamp="1593710388030">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="939" height="224" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1593629477808" />
-    <state width="939" height="224" key="GridCell.Tab.0.right" timestamp="1593629477808">
+    <state width="1899" height="316" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1593710388030" />
+    <state width="1899" height="316" key="GridCell.Tab.0.right" timestamp="1593710388030">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
-    <state width="939" height="224" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1593629477808" />
+    <state width="1899" height="316" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1593710388030" />
     <state width="936" height="350" key="GridCell.Tab.1.bottom" timestamp="1593544220873">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>

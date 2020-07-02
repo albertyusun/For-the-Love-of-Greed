@@ -14,25 +14,29 @@ date_buckets = ["1470-1494","1495-1519","1520-1544","1545-1569",
 j=1
 
 for date in date_buckets:
+    before = time.time()
     df = pd.read_csv("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/"+date+".csv", encoding="ISO-8859-1")
     print(j, "/", len(date_buckets), ": read the document!")
     df['booktext'] = df['booktext'].str.split()
-    print("split the document into words!")
-    # time before
-    before = time.time()
-    # create vector
-    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=50)
-    # calculate time elapsed
-    elapsed = time.time() - before
-    print("time elapsed for word2vec: ", elapsed, " ", j, "/", len(date_buckets))
-    j+=1
 
+    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=50)
+
+    model.save('C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/' + date)
+
+    after = time.time() - before
+    print("Time elapsed for ", j, "=", after)
+
+    j+=1 # iterate counter
+
+    '''
     model.vocabulary.save("../output/"+date[:4]+"-vocab.pkl")
     elapsed = time.time() - elapsed
     print("time elapsed: ", elapsed)
     model.wv.save("../output/"+date[:4]+"-w.npy")
     elapsed = time.time() - elapsed
     print("time elapsed: ", elapsed)
+    '''
+
 
 '''
 j=0

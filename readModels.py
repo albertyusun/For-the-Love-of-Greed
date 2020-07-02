@@ -2,14 +2,17 @@ import gensim
 import time
 import pandas as pd
 
+date_buckets = ["1470-1494", "1495-1519","1520-1544","1545-1569",
+                "1570-1594","1595-1619","1620-1644","1645-1669",
+                "1670-1700"]
 
 def create_model(input):
     df = pd.read_csv(input, encoding="ISO-8859-1")
-    print("read csv")
+    print("1. Read csv.")
     df['booktext'] = df['booktext'].str.split()
-    print("split csv")
+    print("2. Split csv.")
     model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=50)
-    print("created model")
+    print("3. Created model.")
     return model
 
 def save_model(model):
@@ -30,19 +33,49 @@ def read_model(address):
     new_model = gensim.models.Word2Vec.load(
         "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models/1470-vocab.pkl")
 
-def most_similar(model, words):
-    start = time.time()  # take time
-    for word in words:
-        result = model.wv.most_similar(word)
-        print(result)
-    end = time.time()  # take time
-    print(end - start)
-
-if __name__ == "__main__":
-    model = create_model("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/1470-1494.csv")
+def print_random_n(model,topn):
+    '''
+    Print 10 random words from the word embedding model
+    '''
+    print("Ten random words:")
     for i, word in enumerate(model.wv.vocab):
-        if i == 10:
+        if i == topn:
             break
         print(word)
-    words = ['god']
-    most_similar(model, words)
+
+def most_similar(model, lexicon_words, date_bucket):
+    '''
+    Receive model and list of lexicon words in a quarter century
+
+    Print and return top 20 most-similar words for a list of given words
+    '''
+    words_dict = {}
+    for lexicon_word in lexicon_words:
+        lex_word_without_star = lexicon_word[:-1]
+        print("Most Similar words for " + lex_word_without_star + " in " + date_bucket)
+        words_with_cosine = model.wv.most_similar(lex_word_without_star, topn=10)
+        words_dict[lex_word_without_star + "_" + date_bucket] = [n[0] for n in words_with_cosine]
+        [print(n) for n in words_dict[lex_word_without_star + "_" + date_bucket]] # print for aesthetic
+    return words_dict
+
+def find_lexicon_top_words(csv):
+    """
+    Goal: Take in Andrew's CSV of top words and find the most similar words for each of them in each quarter-century
+    time period
+
+    Returns a dictionary, final_dict, which is a dictionary with keys in the format: "lexiconword_datebucket" and values
+    of similar words in its years' models.
+    """
+    final_dict = {}
+    df = pd.read_csv(csv)
+    for date_bucket in date_buckets:
+        model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+        final_dict.update(most_similar(model, df[date_bucket + "words"], date_bucket)) # add the output from most_similar to the returned dictionary
+    return final_dict
+
+if __name__ == "__main__":
+    final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")
+    print(final_dict)
+
+
+

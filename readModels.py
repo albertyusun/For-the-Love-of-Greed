@@ -92,26 +92,38 @@ def cosine_over_time(word1, word2):
     """
     prints cosine similarity over time
     """
+    similarity_list = []
+    similarity = "NA"
     for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
-            print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", model.wv.similarity(word1, word2))
+            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            similarity = model.wv.similarity(word1, word2)
+            similarity_list.append(similarity)
+            print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", similarity)
         except KeyError:
             print("can't find 1-2 of the words in ", date_bucket)
+            similarity_list.append("NA")
+    return similarity_list
 
 
 def distance_over_time(word1, word2):
+    distance_list = []
+    distance = "NA"
     for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
-            print(date_bucket, "Distance between", word1, "and", word2, "=", model.wv.distance(word1, word2))
+            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            distance = model.wv.distance(word1, word2)
+            distance_list.append(distance)
+            print(date_bucket, "Distance between", word1, "and", word2, "=", distance)
         except KeyError:
             print("can't find 1-2 of the words in", date_bucket)
+            distance_list.append("NA")
+    return distance_list
 
 if __name__ == "__main__":
     # code to find cosine similarity:
-    cosine_over_time('consume', 'luxury')
-    cosine_over_time('consume', 'disease')
+    print(distance_over_time('consume', 'luxury'))
+    print(distance_over_time('consume', 'disease'))
     '''
     # code to make top similar words csv:
     final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")

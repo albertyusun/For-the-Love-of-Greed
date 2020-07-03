@@ -108,6 +108,19 @@ def distance_over_time(word1, word2):
         except KeyError:
             print("can't find 1-2 of the words in", date_bucket)
 
+
+def model_to_vec():
+    for date in date_buckets:
+        model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
+        vectors = model.wv
+        vectors.save("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date + ".kv")
+
+
+def get_vector(date_bucket, word):
+    vectors = gensim.models.KeyedVectors.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket + ".kv")
+    return vectors[word]
+
+
 if __name__ == "__main__":
     # code to find cosine similarity:
     cosine_over_time('consumption', 'trade')

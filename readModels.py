@@ -101,7 +101,7 @@ def cosine_over_time(word1, word2):
 
 if __name__ == "__main__":
     # code to find cosine similarity:
-    cosine_over_time('consumption', 'trade')
+    cosine_over_time('consume', 'luxury')
     cosine_over_time('consume', 'disease')
     '''
     # code to make top similar words csv:

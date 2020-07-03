@@ -94,10 +94,19 @@ def cosine_over_time(word1, word2):
     """
     for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
             print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", model.wv.similarity(word1, word2))
         except KeyError:
             print("can't find 1-2 of the words in ", date_bucket)
+
+
+def distance_over_time(word1, word2):
+    for date_bucket in date_buckets:
+        try:
+            model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            print(date_bucket, "Distance between", word1, "and", word2, "=", model.wv.distance(word1, word2))
+        except KeyError:
+            print("can't find 1-2 of the words in", date_bucket)
 
 if __name__ == "__main__":
     # code to find cosine similarity:

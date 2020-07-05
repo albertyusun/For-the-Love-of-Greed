@@ -3,9 +3,15 @@ import time
 import pandas as pd
 import csv
 
-date_buckets = ["1470-1494", "1495-1519","1520-1544","1545-1569",
+quarter_date_buckets = ["1470-1494", "1495-1519","1520-1544","1545-1569",
                 "1570-1594","1595-1619","1620-1644","1645-1669",
                 "1670-1700"]
+
+decade_date_buckets = ["1470-1479", "1480-1489", "1490-1499",
+                       "1500-1509", "1510-1519", "1520-1529", "1530-1539", "1540-1549", "1550-1559",
+                       "1560-1569", "1570-1579", "1580-1589", "1590-1599", "1600-1609", "1610-1619",
+                       "1620-1629", "1630-1639", "1640-1649", "1650-1659", "1660-1669", "1670-1679",
+                       "1680-1689", "1690-1700"]
 
 def create_model(input):
     df = pd.read_csv(input, encoding="ISO-8859-1")
@@ -94,9 +100,9 @@ def cosine_over_time(word1, word2):
     """
     similarity_list = []
     similarity = "NA"
-    for date_bucket in date_buckets:
+    for date_bucket in decade_date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_decade/" + date_bucket)
             similarity = model.wv.similarity(word1, word2)
             similarity_list.append(similarity)
             print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", similarity)
@@ -111,7 +117,7 @@ def distance_over_time(word1, word2):
     distance = "NA"
     for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket)
+            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_decade/" + date_bucket)
             distance = model.wv.distance(word1, word2)
             distance_list.append(distance)
             print(date_bucket, "Distance between", word1, "and", word2, "=", distance)
@@ -132,11 +138,12 @@ def get_vector(date_bucket, word):
     vectors = gensim.models.KeyedVectors.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket + ".kv")
     return vectors[word]
 
-
 if __name__ == "__main__":
     # code to find cosine similarity:
-    print(distance_over_time('consume', 'luxury'))
-    print(distance_over_time('consume', 'disease'))
+    '''
+    print(cosine_over_time('consume', 'luxury'))
+    print(cosine_over_time('consume', 'disease'))
+    '''
     '''
     # code to make top similar words csv:
     final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")

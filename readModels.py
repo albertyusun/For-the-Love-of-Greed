@@ -170,7 +170,7 @@ def average(lst):
     return sum(lst) / len(lst)
 
 
-def embedding_bias(control_word, date, lexicon):
+def distance_vector(control_word, date, lexicon):
     """
     calculate average embedding bias between a specific signal word and a lexicon words
     """
@@ -179,8 +179,8 @@ def embedding_bias(control_word, date, lexicon):
     distance = []
     for lexicon_word in lexicon:
         distance.append(model.wv.distance(control_word, lexicon_word))
-    [print(x) for x in distance]
-    return average(distance)
+    # [print(x) for x in distance]
+    return distance
 
 
 def extract_lexicon_words(year):
@@ -191,9 +191,9 @@ def extract_lexicon_words(year):
     columns = list(df)
     for column in columns:
         [ret.append(x) for x in df[column].values.tolist()]
-    cleanedList = [x for x in ret if str(x) != 'nan']
-    print("lexicon total", cleanedList)
-    return cleanedList
+    cleaned_list = [x for x in ret if str(x) != 'nan']
+    print("lexicon total", cleaned_list)
+    return cleaned_list
 
 
 def ks_test(list1, list2):
@@ -204,8 +204,11 @@ def ks_test(list1, list2):
 
 
 if __name__ == "__main__":
-    lexicon = extract_lexicon_words("1470-1494")
-    print("average distance from man and lexicon words is", embedding_bias("man", "1470-1494", lexicon))
+    year = "1470-1494"
+    lexicon = extract_lexicon_words(year)
+    print(ks_test(distance_vector("man", year, lexicon), distance_vector("woman", year, lexicon)))
+    print("average distance from man and lexicon words is", average(distance_vector("man", year, lexicon)))
+    print("average distance from man and lexicon words is", average(distance_vector("woman", year, lexicon)))
 
     # code to find analogies:
     # analogy_over_time("sun","moon","king")

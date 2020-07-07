@@ -15,13 +15,17 @@ lexicon = {'consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curi
            'gain', 'miser', 'fortune', 'fortuna', 'use', 'usury', 'interest',
            'interesse', 'consumptioner'}
 
+lexicon_1 = {
+    'family'
+}
+
 for date in date_buckets:
-    df = pd.read_csv("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/"+date+".csv", encoding="ISO-8859-1")
+    df = pd.read_csv("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/CSV_decade/"+date+".csv", encoding="ISO-8859-1")
     decade_words = set()
     books = df['booktext'].tolist()
     for book in books:
         book_list = set(book.split(' '))
-        lexicon_appears = lexicon & book_list
+        lexicon_appears = lexicon_1 & book_list
         decade_words = decade_words.union(lexicon_appears)
     decade_words = list(decade_words)
     print(date + ":" + ', '.join(e for e in decade_words))

@@ -160,10 +160,8 @@ def get_vector(date_bucket, word):
 def analogy_over_time(a1, a2, b1):
     for date in quarter_date_buckets:
         try:
-            model = gensim.models.Word2Vec.load(
-                "C:/Users/albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_300/" + date)
-            print(date, "", a1, "is to", a2, "as", b1, "is to",
-                  model.wv.most_similar_cosmul(positive=[a1, a2], negative=[b1])[0])
+            model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
+            print(date, "", a1, "is to", a2, "as", b1, "is to", model.wv.most_similar_cosmul(positive=[a2, b1], negative=[a1])[0])
         except KeyError:
             print("can't find 1-3 vectors in", date)
 

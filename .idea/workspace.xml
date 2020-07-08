@@ -20,8 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="285d8732-4fa2-46cd-b1b3-3e2eee0602cf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.Rhistory" beforeDir="false" afterPath="$PROJECT_DIR$/.Rhistory" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/For-the-Love-of-Greed.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readModels.py" beforeDir="false" afterPath="$PROJECT_DIR$/readModels.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +64,28 @@
       <recent name="C:\Users\Albert\Documents\For-the-Love-of-Greed\Old files" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.word2vec">
+  <component name="RunManager" selected="Python.readModels (1)">
+    <configuration name="readModels (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PythonCode" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../PythonCode" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../PythonCode/readModels.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="readModels" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="For-the-Love-of-Greed" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -74,27 +99,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/readModels.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="testword2vec" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="For-the-Love-of-Greed" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testword2vec.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -168,11 +172,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.readModels (1)" />
         <item itemvalue="Python.word2vec" />
         <item itemvalue="Python.readModels" />
         <item itemvalue="Python.wordsinlexicon" />
         <item itemvalue="Python.visualization" />
-        <item itemvalue="Python.testword2vec" />
       </list>
     </recent_temporary>
   </component>
@@ -210,25 +214,33 @@
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="1181" y="337" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1048@0.0.1920.1048" timestamp="1593022057897" />
+    <state x="351" y="0" key="#word2vec" timestamp="1594148130628">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="351" y="0" key="#word2vec/0.0.1280.680@0.0.1280.680" timestamp="1594148130628" />
     <state x="1220" y="293" key="FileChooserDialogImpl" timestamp="1593679532524">
       <screen x="0" y="0" width="1920" height="1048" />
     </state>
     <state x="1220" y="293" key="FileChooserDialogImpl/0.0.1920.1048@0.0.1920.1048" timestamp="1593679532524" />
-    <state width="1899" height="198" key="GridCell.Tab.0.bottom" timestamp="1593932353022">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state width="1259" height="169" key="GridCell.Tab.0.bottom" timestamp="1594221869135">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="169" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1594221869135" />
     <state width="1899" height="198" key="GridCell.Tab.0.bottom/0.0.1920.1048@0.0.1920.1048" timestamp="1593932353022" />
-    <state width="1899" height="198" key="GridCell.Tab.0.center" timestamp="1593932353018">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state width="1259" height="169" key="GridCell.Tab.0.center" timestamp="1594221869130">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="169" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1594221869130" />
     <state width="1899" height="198" key="GridCell.Tab.0.center/0.0.1920.1048@0.0.1920.1048" timestamp="1593932353018" />
-    <state width="1899" height="198" key="GridCell.Tab.0.left" timestamp="1593932353018">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state width="1259" height="169" key="GridCell.Tab.0.left" timestamp="1594221869130">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="169" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1594221869130" />
     <state width="1899" height="198" key="GridCell.Tab.0.left/0.0.1920.1048@0.0.1920.1048" timestamp="1593932353018" />
-    <state width="1899" height="198" key="GridCell.Tab.0.right" timestamp="1593932353018">
-      <screen x="0" y="0" width="1920" height="1048" />
+    <state width="1259" height="169" key="GridCell.Tab.0.right" timestamp="1594221869130">
+      <screen x="0" y="0" width="1280" height="680" />
     </state>
+    <state width="1259" height="169" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1594221869130" />
     <state width="1899" height="198" key="GridCell.Tab.0.right/0.0.1920.1048@0.0.1920.1048" timestamp="1593932353018" />
     <state width="936" height="350" key="GridCell.Tab.1.bottom" timestamp="1593544220873">
       <screen x="0" y="0" width="1920" height="1048" />

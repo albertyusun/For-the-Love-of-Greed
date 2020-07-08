@@ -150,9 +150,18 @@ def model_to_vec():
         vectors.save("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date + ".kv")
 
 
-def get_vector(date_bucket, word):
+def load_model_vectors(date_bucket):
+    """
+    Load model vectors for one vector date_bucket
+    """
     vectors = gensim.models.KeyedVectors.load(
         "C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket + ".kv")
+    return vectors
+
+def get_vector(word, vectors):
+    """
+    Takes a system of vectors from load_model_vectors to find vectors
+    """
     return vectors[word]
 
 

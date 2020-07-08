@@ -150,11 +150,42 @@ def model_to_vec():
         vectors.save("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date + ".kv")
 
 
-<<<<<<< HEAD
-def get_vector(date_bucket, word):
-    vectors = gensim.models.KeyedVectors.load(
-        "C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket + ".kv")
-=======
+
+
+# for a given csv, calculates the cosine of every word relative to the gender dimension.
+# outputs this as a list (ideally should output as a numpy vector?)
+def gender_dimension(date):
+    masculine = ["man", "manne", "mannes", "men", "mennes", "he", "his", "him", "son",
+                 "sons", "father", "fathers", "boy", "boys", "himself", "male", "males", "brother",
+                 "brothers", "uncle", "uncles", "nephew", "nephews", "lord", "lords", "king", "kings",
+                 "duke", "dukes", "prince", "princes"]
+
+    feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
+                "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
+                "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
+                "queens", "duchess", "duchesses", "princess", "princesses"]
+
+    vecs = load_model_vectors(date)
+
+    # need to create axis vector
+    differences = []
+    for i in range(len(feminine)):
+        try:
+            male_temp = get_vector(masculine[i], vecs)
+            female_temp = get_vector(feminine[i], vecs)
+            differences.append(female_temp - male_temp)
+        except KeyError:
+            print("Could not find", masculine[i], "or", feminine[i], "in", date)
+
+    # now average all the difference vectors together
+    axis_vector = np.asarray() # how to initialize a numpy vector?
+    for vec in differences:
+        axis_vector += vec
+    axis_vector = axis_vector / len(masculine)
+
+
+
+
 def load_model_vectors(date_bucket):
     """
     Load model vectors for one vector date_bucket
@@ -168,7 +199,6 @@ def get_vector(word, vectors):
     """
     Takes a system of vectors from load_model_vectors to find vectors
     """
->>>>>>> 5bdc5f4c60920121601d48a322625bb86472b15e
     return vectors[word]
 
 

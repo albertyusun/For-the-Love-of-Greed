@@ -167,6 +167,8 @@ def gender_dimension(date):
                 "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
                 "queens", "duchess", "duchesses", "princess", "princesses"]
 
+    model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    vocab = model.vocabulary
     vecs = load_model_vectors(date)
 
     # need to create axis vector
@@ -175,17 +177,22 @@ def gender_dimension(date):
         try:
             male_temp = get_vector(masculine[i], vecs)
             female_temp = get_vector(feminine[i], vecs)
-            differences.append(female_temp - male_temp)
+            differences.append(np.subtract(female_temp, male_temp))
         except KeyError:
             print("Could not find", masculine[i], "or", feminine[i], "in", date)
 
     # now average all the difference vectors together
-    axis_vector = np.asarray(differences) # how to initialize a numpy vector?
-    for vec in differences:
-        axis_vector += vec
-    axis_vector = axis_vector / len(masculine)
+    axis_vector = np.asarray(differences[0]) # how to initialize a numpy vector?
+    for vec in differences[1:]:
+        axis_vector = np.add(axis_vector, vec)
+    axis_vector = axis_vector / len(differences)
 
-
+    # now, we need to produce the cosine similarities
+    cosine_similarities = {}
+    for word in vocab:
+        cosine_similarities[word] = vocab.similarity(word, axis_vector)
+    print(cosine_similarities)
+    return cosine_similarities
 
 
 def load_model_vectors(date_bucket):

@@ -180,7 +180,7 @@ def gender_dimension(date):
             print("Could not find", masculine[i], "or", feminine[i], "in", date)
 
     # now average all the difference vectors together
-    axis_vector = np.asarray() # how to initialize a numpy vector?
+    axis_vector = np.asarray(differences) # how to initialize a numpy vector?
     for vec in differences:
         axis_vector += vec
     axis_vector = axis_vector / len(masculine)

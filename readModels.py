@@ -1,10 +1,9 @@
 import gensim
 import time
-
 import numpy
 import pandas as pd
 import csv
-from scipy import stats
+import scipy
 import numpy as np
 
 quarter_date_buckets = ["1470-1494", "1495-1519", "1520-1544", "1545-1569",
@@ -167,8 +166,7 @@ def gender_dimension(date):
                 "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
                 "queens", "duchess", "duchesses", "princess", "princesses"]
 
-    model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
-    vocab = model.vocabulary
+    model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
     vecs = load_model_vectors(date)
 
     # need to create axis vector
@@ -189,8 +187,8 @@ def gender_dimension(date):
 
     # now, we need to produce the cosine similarities
     cosine_similarities = {}
-    for word in vocab:
-        cosine_similarities[word] = vocab.similarity(word, axis_vector)
+    for i, word in enumerate(model.wv.vocab):
+        cosine_similarities[word] = scipy.spatial.distance.cosine(vecs[word], axis_vector)
     print(cosine_similarities)
     return cosine_similarities
 
@@ -200,7 +198,7 @@ def load_model_vectors(date_bucket):
     Load model vectors for one vector date_bucket
     """
     vectors = gensim.models.KeyedVectors.load(
-        "C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date_bucket + ".kv")
+        "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date_bucket + ".kv")
     return vectors
 
 
@@ -255,27 +253,35 @@ def ks_test(list1, list2):
     """
     Compares 2 distributions given 2 lists
     """
-    return stats.kstest(list1, list2)
+    return scipy.stats.kstest(list1, list2)
 
 
 if __name__ == "__main__":
     year = "1470-1494"
-    lexicon = extract_lexicon_words(year)
-    print(ks_test(distance_vector("man", year, lexicon), distance_vector("woman", year, lexicon)))
-    print("average distance from man and lexicon words is", average(distance_vector("man", year, lexicon)))
-    print("average distance from man and lexicon words is", average(distance_vector("woman", year, lexicon)))
+    cosine_dict = gender_dimension(year)
+    i = 0
+    # print the first 20:
+    for k, v in cosine_dict.items():
+        print(k, v)
+        i += 1
+        if i == 20:
+            break
 
-    # code to find analogies:
+    # conduct ks test between lexicon words:
+    # lexicon = extract_lexicon_words(year)
+    # print(ks_test(distance_vector("man", year, lexicon), distance_vector("woman", year, lexicon)))
+    # print("average distance from man and lexicon words is", average(distance_vector("man", year, lexicon)))
+    # print("average distance from man and lexicon words is", average(distance_vector("woman", year, lexicon)))
+
+    # find analogies:
     # analogy_over_time("sun","moon","king")
     # analogy_over_time("man","woman","king")
 
-    # code to find cosine similarity:
+    # find cosine similarity:
     # print(cosine_over_time('family', 'luxury'))
     # print(cosine_over_time('family', 'consume'))
 
-    '''
-    # code to make top similar words csv:
-    final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")
-    print(final_dict)
-    dict_to_csv("CSVs/most_similar_lexicon_1400-1700_top20.csv", final_dict)
-    '''
+    # make top similar words csv:
+    # final_dict = find_lexicon_top_words("CSVs/lexiconCount1470-1700.csv")
+    # print(final_dict)
+    # dict_to_csv("CSVs/most_similar_lexicon_1400-1700_top20.csv", final_dict)

@@ -193,6 +193,26 @@ def gender_dimension(date):
     return cosine_similarities
 
 
+# input a dictionary of words as keys and cosine similarities as values.
+# get back a dictionary containing only the words with statistically significant similarities
+# this assumes a confidence level of .05
+def z_test(word_dict):
+    keys = list(word_dict.keys())
+    values = np.array(list(word_dict.values()))
+    scores = stats.zscore(values)
+    scores = scores.tolist()
+
+    for i in range(len(scores)):
+        if -1.96 <= scores[i] <= 1.96:
+            scores[i] = 0
+
+    sig_dict = {}
+    for j in range(len(keys)):
+        if scores[j] != 0:
+            sig_dict[keys[j]] = scores[j]
+    return sig_dict
+
+
 def load_model_vectors(date_bucket):
     """
     Load model vectors for one vector date_bucket

@@ -213,6 +213,43 @@ def z_test(word_dict):
     return sig_dict
 
 
+# creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
+# also finds z-scores for each word
+def gender_over_time():
+    # create complete vocabulary before everything else
+    print("starting words")
+    words = []
+    for date in date_buckets:
+        vocab = get_vocab(date)
+        for i, word in enumerate(vocab):
+            if word not in words:
+                words.append(word)
+    print("uploading words")
+    df = pd.DataFrame()
+    df["Words"] = words
+    print("words finished")
+
+    for date in date_buckets:
+        cosine_dict = gender_dimension(date)
+        z_dict = z_test(cosine_dict)
+
+        cosines = []
+        z_scores = []
+
+        for word in words:
+            try:
+                cosines.append(cosine_dict[word])
+                z_scores.append(z_dict[word])
+            except KeyError:
+                cosines.append(None)
+                z_scores.append(None)
+
+        df[date+" Similarities"] = cosines
+        df[date+" Z-Scores"] = z_scores
+
+    df.to_csv("GenderDimensionData.csv")
+
+
 def load_model_vectors(date_bucket):
     """
     Load model vectors for one vector date_bucket

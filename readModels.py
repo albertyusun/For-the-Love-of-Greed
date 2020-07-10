@@ -150,13 +150,13 @@ def distance_over_time(word1, word2):
 def model_to_vec():
     for date in date_buckets:
         model = gensim.models.Word2Vec.load(
-            "C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
+            "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
         vectors = model.wv
-        vectors.save("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date + ".kv")
+        vectors.save("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date + ".kv")
 
 
 def get_vocab(date):
-    model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
     vocab = model.wv.vocab
     return vocab
 
@@ -204,7 +204,7 @@ def gender_dimension(date):
 def z_test(word_dict):
     keys = list(word_dict.keys())
     values = np.array(list(word_dict.values()))
-    scores = stats.zscore(values)
+    scores = scipy.stats.zscore(values)
     scores = scores.tolist()
 
     for i in range(len(scores)):
@@ -222,17 +222,28 @@ def z_test(word_dict):
 # also finds z-scores for each word
 def gender_over_time():
     # create complete vocabulary before everything else
-    print("starting words")
-    words = []
-    for date in date_buckets:
-        vocab = get_vocab(date)
-        for i, word in enumerate(vocab):
-            if word not in words:
-                words.append(word)
-    print("uploading words")
+    # print("starting words")
+    # words = []
+    # for date in date_buckets:
+    #     vocab = get_vocab(date)
+    #     for i, word in enumerate(vocab):
+    #         if word not in words:
+    #             words.append(word)
+    # print("uploading words")
+    # df = pd.DataFrame()
+    # df["Words"] = words
+    # print("words finished")
+
+    words = ['consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
+           'greed', 'desire', 'appetite', 'lust', 'libido', 'covetousness', 'avarice',
+           'possess', 'possession', 'possessing', 'busy', 'businesse', 'need', 'necessity',
+           'necessary', 'needing', 'meed', 'bowgeor', 'bougeor', 'budge', 'wastour',
+           'waster', 'wasture', 'wastoure', 'speculation', 'debt', 'debitum', 'expense',
+           'gain', 'miser', 'fortune', 'fortuna', 'use', 'usury', 'interest',
+           'interesse', 'consumptioner']
+
     df = pd.DataFrame()
     df["Words"] = words
-    print("words finished")
 
     for date in date_buckets:
         cosine_dict = gender_dimension(date)
@@ -249,8 +260,8 @@ def gender_over_time():
                 cosines.append(None)
                 z_scores.append(None)
 
-        df[date+" Similarities"] = cosines
-        df[date+" Z-Scores"] = z_scores
+        df[date+" Similarities"] = pd.Series(cosines)
+        df[date+" Z-Scores"] = pd.Series(z_scores)
 
     df.to_csv("GenderDimensionData.csv")
 
@@ -275,7 +286,7 @@ def get_vector(word, vectors):
 def analogy_over_time(a1, a2, b1):
     for date in quarter_date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
+            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
             print(date, "", a1, "is to", a2, "as", b1, "is to", model.wv.most_similar_cosmul(positive=[a2, b1], negative=[a1])[0])
         except KeyError:
             print("can't find 1-3 vectors in", date)
@@ -319,15 +330,19 @@ def ks_test(list1, list2):
 
 
 if __name__ == "__main__":
-    year = "1470-1494"
-    cosine_dict = gender_dimension(year)
-    i = 0
-    # print the first 20:
-    for k, v in cosine_dict.items():
-        print(k, v)
-        i += 1
-        if i == 20:
-            break
+
+    gender_over_time()
+
+    # print gender dimension
+    # year = "1470-1494"
+    # cosine_dict = gender_dimension(year)
+    # i = 0
+    # # print the first 20:
+    # for k, v in cosine_dict.items():
+    #     print(k, v)
+    #     i += 1
+    #     if i == 20:
+    #         break
 
     # conduct ks test between lexicon words:
     # lexicon = extract_lexicon_words(year)

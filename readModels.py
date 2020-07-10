@@ -151,6 +151,10 @@ def model_to_vec():
         vectors.save("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date + ".kv")
 
 
+def get_vocab(date):
+    model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    vocab = model.wv.vocab
+    return vocab
 
 
 # for a given csv, calculates the cosine of every word relative to the gender dimension.
@@ -165,8 +169,6 @@ def gender_dimension(date):
                 "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
                 "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
                 "queens", "duchess", "duchesses", "princess", "princesses"]
-
-    model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
     vecs = load_model_vectors(date)
 
     # need to create axis vector
@@ -187,9 +189,8 @@ def gender_dimension(date):
 
     # now, we need to produce the cosine similarities
     cosine_similarities = {}
-    for i, word in enumerate(model.wv.vocab):
-        cosine_similarities[word] = scipy.spatial.distance.cosine(vecs[word], axis_vector)
-    print(cosine_similarities)
+    for i, word in enumerate(get_vocab(date)):
+        cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
     return cosine_similarities
 
 

@@ -127,15 +127,20 @@ def sub_variants():
         # get principal words and stored column names for simplicity
         for col in df.columns:
             columns.append(col)
-            base_words.append(col[4:])
+            base_words.append(col[4:].lower())
         print("finished fetching base words")
 
+        # initialize variants dictionary
+        variants = {}
+        for word in base_words:
+            variants[word] = []
+        print("variants initialized")
+
         # store regex's of each variant
-        variants = dict.fromkeys(base_words, [])
         for i in range(len(columns)):
             for variant in df[columns[i]]:
                 if type(variant) is str:
-                    variants[base_words[i]].append(re.compile(variant))
+                    variants[base_words[i]].append(re.compile("\\b"+variant+"\\b"))
         print("finished fetching spelling variants")
 
         # now replace each dictionary value in variants with its key

@@ -22,11 +22,11 @@ decade_date_buckets = ["1470-1479", "1480-1489", "1490-1499",
 
 
 def create_model(input):
-    df = pd.read_csv(input, encoding="ISO-8859-1")
+    df = pd.read_csv(input, encoding="utf-8")
     print("1. Read csv.")
     df['booktext'] = df['booktext'].str.split()
     print("2. Split csv.")
-    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=50)
+    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=300)
     print("3. Created model.")
     return model
 
@@ -43,8 +43,10 @@ def save_model(model):
     return temporary_filepath
 
 
-def load_saved_model(temporary_filepath):
-    new_model = gensim.models.Word2Vec.load(temporary_filepath)
+def load_saved_model(date):
+    model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/"
+                                        "models_blank_suffix_quarter_50/"+date)
+    return model
 
 
 def read_model(address):
@@ -114,14 +116,13 @@ def dict_to_csv(file_location, dict):
 
 def cosine_over_time(word1, word2):
     """
-    prints cosine similarity over time
+    prints cosine similarity over time and returns list of similarities
     """
     similarity_list = []
     similarity = "NA"
-    for date_bucket in decade_date_buckets:
+    for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load(
-                "C:/Users/albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_decade_300/" + date_bucket)
+            model = load_saved_model(date_bucket)
             similarity = model.wv.similarity(word1, word2)
             similarity_list.append(similarity)
             print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", similarity)
@@ -136,8 +137,7 @@ def distance_over_time(word1, word2):
     distance = "NA"
     for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load(
-                "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_decade/" + date_bucket)
+            model = load_saved_model(date_bucket)
             distance = model.wv.distance(word1, word2)
             distance_list.append(distance)
             print(date_bucket, "Distance between", word1, "and", word2, "=", distance)
@@ -156,7 +156,7 @@ def model_to_vec():
 
 
 def get_vocab(date):
-    model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    model = load_saved_model(date)
     vocab = model.wv.vocab
     return vocab
 
@@ -207,10 +207,6 @@ def z_test(word_dict):
     scores = scipy.stats.zscore(values)
     scores = scores.tolist()
 
-    for i in range(len(scores)):
-        if -1.96 <= scores[i] <= 1.96:
-            scores[i] = 0
-
     sig_dict = {}
     for j in range(len(keys)):
         if scores[j] != 0:
@@ -257,8 +253,8 @@ def gender_over_time():
                 cosines.append(cosine_dict[word])
                 z_scores.append(z_dict[word])
             except KeyError:
-                cosines.append(None)
-                z_scores.append(None)
+                cosines.append(0)
+                z_scores.append(0)
 
         df[date+" Similarities"] = pd.Series(cosines)
         df[date+" Z-Scores"] = pd.Series(z_scores)
@@ -286,8 +282,9 @@ def get_vector(word, vectors):
 def analogy_over_time(a1, a2, b1):
     for date in quarter_date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
-            print(date, "", a1, "is to", a2, "as", b1, "is to", model.wv.most_similar_cosmul(positive=[a2, b1], negative=[a1])[0])
+            model = load_model_vectors(date)
+            print(date, "", a1, "is to", a2, "as", b1, "is to",
+                  model.wv.most_similar_cosmul(positive=[a2, b1], negative=[a1])[0])
         except KeyError:
             print("can't find 1-3 vectors in", date)
 
@@ -300,8 +297,7 @@ def distance_vector(control_word, date, lexicon):
     """
     calculate average embedding bias between a specific signal word and a lexicon words
     """
-    model = gensim.models.Word2Vec.load(
-        "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    model = load_saved_model(date)
     distance = []
     for lexicon_word in lexicon:
         distance.append(model.wv.distance(control_word, lexicon_word))
@@ -313,7 +309,7 @@ def extract_lexicon_words(year):
     ret = []
     df = pd.read_csv(
         "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/word_variation/wordVariation" + year + ".csv",
-        encoding="ISO-8859-1")
+        encoding="utf-8")
     columns = list(df)
     for column in columns:
         [ret.append(x) for x in df[column].values.tolist()]

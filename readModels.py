@@ -180,6 +180,30 @@ def avg_vector(vector_list):
     return average_vector
 
 
+# generates the average vectors of each word (given its spelling variants) and returns a dictionary
+# of words and their average vectors
+def avg_spelling_vectors(date):
+    df = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
+    vectors = load_model_vectors(date)
+    base_words = []
+    columns = df.columns
+    word_vectors = {}
+
+    # get principal words
+    for col in columns:
+        base_words.append(col[4:].lower())
+
+    # for each word, average together the vectors of all of its spelling variations.
+    # this average is the new vector for that word
+    for i in range(len(columns)):
+        vecs = []
+        for variant in df[columns[i]]:
+            if type(variant) is str:
+                vecs.append(get_vector(variant, vectors))
+        word_vectors[base_words[i]] = avg_vector(vecs)
+    return word_vectors
+
+
 # for a given csv, calculates the cosine of every word relative to the gender dimension.
 # outputs this as a dictionary
 def gender_dimension(date):

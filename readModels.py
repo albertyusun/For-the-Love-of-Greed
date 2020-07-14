@@ -293,6 +293,42 @@ def gender_over_time():
     df.to_csv("GenderDimensionData.csv")
 
 
+# creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
+# also finds z-scores for each word. This one uses the avg vectors of our lexicon words
+def custom_gender_over_time():
+    # generate word list
+    words = []
+    for date in date_buckets:
+        vf = pd.read_csv("CSVs/spellingvariations/wordVariation"+date+".csv")
+        for col in vf.columns:
+            word = col[4:].lower()
+            if word not in words:
+                words.append(word)
+    df = pd.DataFrame()
+    df["Words"] = words
+
+    for date in date_buckets:
+        word_vectors = avg_spelling_vectors(date)
+        cosine_dict = gender_dimension(date, word_vectors)
+        z_dict = z_test(cosine_dict)
+
+        cosines = []
+        z_scores = []
+
+        for word in words:
+            try:
+                cosines.append(cosine_dict[word])
+                z_scores.append(z_dict[word])
+            except KeyError:
+                cosines.append(None)
+                z_scores.append(None)
+
+        df[date+" Similarities"] = pd.Series(cosines)
+        df[date+" Z-Scores"] = pd.Series(z_scores)
+
+    df.to_csv("NewGenderDimensionData.csv")
+
+
 def load_model_vectors(date_bucket):
     """
     Load model vectors for one vector date_bucket

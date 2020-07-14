@@ -20,6 +20,16 @@ decade_date_buckets = ["1470-1479", "1480-1489", "1490-1499",
                        "1620-1629", "1630-1639", "1640-1649", "1650-1659", "1660-1669", "1670-1679",
                        "1680-1689", "1690-1700"]
 
+masculine = ["man", "manne", "mannes", "men", "mennes", "he", "his", "him", "son",
+             "sons", "father", "fathers", "boy", "boys", "himself", "male", "males", "brother",
+             "brothers", "uncle", "uncles", "nephew", "nephews", "lord", "lords", "king", "kings",
+             "duke", "dukes", "prince", "princes"]
+
+feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
+            "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
+            "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
+            "queens", "duchess", "duchesses", "princess", "princesses"]
+
 
 def create_model(input):
     df = pd.read_csv(input, encoding="utf-8")
@@ -161,18 +171,18 @@ def get_vocab(date):
     return vocab
 
 
-# for a given csv, calculates the cosine of every word relative to the gender dimension.
-# outputs this as a list (ideally should output as a numpy vector?)
-def gender_dimension(date):
-    masculine = ["man", "manne", "mannes", "men", "mennes", "he", "his", "him", "son",
-                 "sons", "father", "fathers", "boy", "boys", "himself", "male", "males", "brother",
-                 "brothers", "uncle", "uncles", "nephew", "nephews", "lord", "lords", "king", "kings",
-                 "duke", "dukes", "prince", "princes"]
+# takes in a list of numpy vectors and returns their average as a numpy vector
+def avg_vector(vector_list):
+    average_vector = np.asarray(vector_list[0])  # how to initialize a numpy vector?
+    for vec in vector_list[1:]:
+        average_vector = np.add(average_vector, vec)
+    average_vector = average_vector / len(vector_list)
+    return average_vector
 
-    feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
-                "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
-                "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
-                "queens", "duchess", "duchesses", "princess", "princesses"]
+
+# for a given csv, calculates the cosine of every word relative to the gender dimension.
+# outputs this as a dictionary
+def gender_dimension(date):
     vecs = load_model_vectors(date)
 
     # need to create axis vector
@@ -186,10 +196,7 @@ def gender_dimension(date):
             print("Could not find", masculine[i], "or", feminine[i], "in", date)
 
     # now average all the difference vectors together
-    axis_vector = np.asarray(differences[0]) # how to initialize a numpy vector?
-    for vec in differences[1:]:
-        axis_vector = np.add(axis_vector, vec)
-    axis_vector = axis_vector / len(differences)
+    axis_vector = avg_vector(differences)
 
     # now, we need to produce the cosine similarities
     cosine_similarities = {}

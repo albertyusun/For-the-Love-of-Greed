@@ -33,18 +33,18 @@ masculine = ["man", "manne", "mannes", "men", "mennes", "he", "his", "him", "son
                  "brothers", "uncle", "uncles", "nephew", "nephews", "lord", "lords", "king", "kings",
                  "duke", "dukes", "prince", "princes"]
 
-    feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
+feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
                 "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
                 "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
                 "queens", "duchess", "duchesses", "princess", "princesses"]
 
 
 def create_model(input):
-    df = pd.read_csv(input, encoding="ISO-8859-1")
+    df = pd.read_csv(input, encoding="utf-8")
     print("1. Read csv.")
     df['booktext'] = df['booktext'].str.split()
     print("2. Split csv.")
-    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=50)
+    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=300)
     print("3. Created model.")
     return model
 
@@ -61,8 +61,10 @@ def save_model(model):
     return temporary_filepath
 
 
-def load_saved_model(temporary_filepath):
-    new_model = gensim.models.Word2Vec.load(temporary_filepath)
+def load_saved_model(date):
+    model = gensim.models.Word2Vec.load("C:/Users/djpep/Box Sync/For the Love of Greed Data Storage/"
+                                        "models_blank_suffix_quarter_50/"+date)
+    return model
 
 
 def read_model(address):
@@ -132,14 +134,13 @@ def dict_to_csv(file_location, dict):
 
 def cosine_over_time(word1, word2):
     """
-    prints cosine similarity over time
+    prints cosine similarity over time and returns list of similarities
     """
     similarity_list = []
     similarity = "NA"
-    for date_bucket in decade_date_buckets:
+    for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load(
-                "C:/Users/albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_decade_300/" + date_bucket)
+            model = load_saved_model(date_bucket)
             similarity = model.wv.similarity(word1, word2)
             similarity_list.append(similarity)
             print(date_bucket, "Cosine similarity between", word1, "and", word2, "=", similarity)
@@ -154,8 +155,7 @@ def distance_over_time(word1, word2):
     distance = "NA"
     for date_bucket in date_buckets:
         try:
-            model = gensim.models.Word2Vec.load(
-                "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_decade/" + date_bucket)
+            model = load_saved_model(date_bucket)
             distance = model.wv.distance(word1, word2)
             distance_list.append(distance)
             print(date_bucket, "Distance between", word1, "and", word2, "=", distance)
@@ -174,7 +174,7 @@ def model_to_vec():
 
 
 def get_vocab(date):
-    model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    model = load_saved_model(date)
     vocab = model.wv.vocab
     return vocab
 
@@ -184,6 +184,42 @@ def gender_dimension(date):
     for a given csv, calculates the cosine of every word relative to the gender dimension.
     outputs this as a list (ideally should output as a numpy vector?)
     """
+# takes in a list of numpy vectors and returns their average as a numpy vector
+def avg_vector(vector_list):
+    average_vector = np.asarray(vector_list[0])  # how to initialize a numpy vector?
+    for vec in vector_list[1:]:
+        average_vector = np.add(average_vector, vec)
+    average_vector = average_vector / len(vector_list)
+    return average_vector
+
+
+# generates the average vectors of each word (given its spelling variants) and returns a dictionary
+# of words and their average vectors
+def avg_spelling_vectors(date):
+    df = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
+    vectors = load_model_vectors(date)
+    base_words = []
+    columns = df.columns
+    word_vectors = {}
+
+    # get principal words
+    for col in columns:
+        base_words.append(col[4:].lower())
+
+    # for each word, average together the vectors of all of its spelling variations.
+    # this average is the new vector for that word
+    for i in range(len(columns)):
+        vecs = []
+        for variant in df[columns[i]]:
+            if type(variant) is str:
+                vecs.append(get_vector(variant, vectors))
+        word_vectors[base_words[i]] = avg_vector(vecs)
+    return word_vectors
+
+
+# for a given csv, calculates the cosine of every word relative to the gender dimension.
+# outputs this as a dictionary
+def gender_dimension(date):
     vecs = load_model_vectors(date)
 
     # need to create axis vector
@@ -197,10 +233,7 @@ def gender_dimension(date):
             print("Could not find", masculine[i], "or", feminine[i], "in", date)
 
     # now average all the difference vectors together
-    axis_vector = np.asarray(differences[0]) # how to initialize a numpy vector?
-    for vec in differences[1:]:
-        axis_vector = np.add(axis_vector, vec)
-    axis_vector = axis_vector / len(differences)
+    axis_vector = avg_vector(differences)
 
     # now, we need to produce the cosine similarities
     cosine_similarities = {}
@@ -208,18 +241,27 @@ def gender_dimension(date):
         cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
     return cosine_similarities
 
-
-def gender_ztest_assessment(word, date):
+# compare a word vector to masculine and feminine clusters to see individual relationships with those ve
+def gender_ztest_assessment(word):
     for date in date_buckets:
-        avg_man = avg_cosine_similarity(word, masculine, date)
-        avg_woman = avg_cosine_similarity(word, feminine, date)
+        vecs = load_model_vectors(date)
+        masculine_vectors = []
+        feminine_vectors = []
+        for i in range(len(masculine)):
+            try:
+                masculine_vectors.append(get_vector(masculine[i], vecs))
+            except KeyError:
+                print("Could not find", masculine[i], " in ", date)
+        for i in range(len(feminine)):
+            try:
+                feminine_vectors.append(get_vector(feminine[i], vecs))
+            except KeyError:
+                print("Could not find", feminine[i], " in ", date)
+        avg_man = 1 - scipy.spatial.distance.cosine(vecs[word], avg_vector(masculine_vectors))
+        avg_woman = 1 - scipy.spatial.distance.cosine(vecs[word], avg_vector(feminine_vectors))
         print(date, word, "average man cos sim:", avg_man, "average woman cos sim:", avg_woman)
+    return {masculine_vectors, feminine_vectors}
 
-
-def avg_cosine_similarity(word, group, date):
-    cosine_list = []
-    for woman1 in group:
-        -scipy()
 
 
 def z_test(word_dict):
@@ -232,10 +274,6 @@ def z_test(word_dict):
     values = np.array(list(word_dict.values()))
     scores = scipy.stats.zscore(values)
     scores = scores.tolist()
-
-    # for i in range(len(scores)):
-    #     if -1.96 <= scores[i] <= 1.96:
-    #         scores[i] = 0
 
     sig_dict = {}
     for j in range(len(keys)):
@@ -277,13 +315,49 @@ def gender_over_time():
                 cosines.append(cosine_dict[word])
                 z_scores.append(z_dict[word])
             except KeyError:
+                cosines.append(0)
+                z_scores.append(0)
+
+        df[date+" Similarities"] = pd.Series(cosines)
+        df[date+" Z-Scores"] = pd.Series(z_scores)
+
+    df.to_csv("GenderDimensionData.csv")
+
+
+# creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
+# also finds z-scores for each word. This one uses the avg vectors of our lexicon words
+def custom_gender_over_time():
+    # generate word list
+    words = []
+    for date in date_buckets:
+        vf = pd.read_csv("CSVs/spellingvariations/wordVariation"+date+".csv")
+        for col in vf.columns:
+            word = col[4:].lower()
+            if word not in words:
+                words.append(word)
+    df = pd.DataFrame()
+    df["Words"] = words
+
+    for date in date_buckets:
+        word_vectors = avg_spelling_vectors(date)
+        cosine_dict = gender_dimension(date, word_vectors)
+        z_dict = z_test(cosine_dict)
+
+        cosines = []
+        z_scores = []
+
+        for word in words:
+            try:
+                cosines.append(cosine_dict[word])
+                z_scores.append(z_dict[word])
+            except KeyError:
                 cosines.append(None)
                 z_scores.append(None)
 
         df[date+" Similarities"] = pd.Series(cosines)
         df[date+" Z-Scores"] = pd.Series(z_scores)
 
-    df.to_csv("GenderDimensionData1.csv")
+    df.to_csv("NewGenderDimensionData.csv")
 
 
 def load_model_vectors(date_bucket):
@@ -306,8 +380,9 @@ def get_vector(word, vectors):
 def analogy_over_time(a1, a2, b1):
     for date in quarter_date_buckets:
         try:
-            model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix/" + date)
-            print(date, "", a1, "is to", a2, "as", b1, "is to", model.wv.most_similar_cosmul(positive=[a2, b1], negative=[a1])[0])
+            model = load_model_vectors(date)
+            print(date, "", a1, "is to", a2, "as", b1, "is to",
+                  model.wv.most_similar_cosmul(positive=[a2, b1], negative=[a1])[0])
         except KeyError:
             print("can't find 1-3 vectors in", date)
 
@@ -320,8 +395,7 @@ def distance_vector(control_word, date, lexicon):
     """
     calculate average embedding bias between a specific signal word and a lexicon words
     """
-    model = gensim.models.Word2Vec.load(
-        "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date)
+    model = load_saved_model(date)
     distance = []
     for lexicon_word in lexicon:
         distance.append(model.wv.distance(control_word, lexicon_word))
@@ -333,7 +407,7 @@ def extract_lexicon_words(year):
     ret = []
     df = pd.read_csv(
         "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/word_variation/wordVariation" + year + ".csv",
-        encoding="ISO-8859-1")
+        encoding="utf-8")
     columns = list(df)
     for column in columns:
         [ret.append(x) for x in df[column].values.tolist()]
@@ -349,8 +423,7 @@ def ks_test(list1, list2):
     return scipy.stats.kstest(list1, list2)
 
 if __name__ == "__main__":
-
-    gender_over_time()
+    print(gender_ztest_assessment("consume"))
 
     # print gender dimension
     # year = "1470-1494"

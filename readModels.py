@@ -20,6 +20,24 @@ decade_date_buckets = ["1470-1479", "1480-1489", "1490-1499",
                        "1620-1629", "1630-1639", "1640-1649", "1650-1659", "1660-1669", "1670-1679",
                        "1680-1689", "1690-1700"]
 
+lexicon = ['consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
+           'greed', 'desire', 'appetite', 'lust', 'libido', 'covetousness', 'avarice',
+           'possess', 'possession', 'possessing', 'busy', 'businesse', 'need', 'necessity',
+           'necessary', 'needing', 'meed', 'bowgeor', 'bougeor', 'budge', 'wastour',
+           'waster', 'wasture', 'wastoure', 'speculation', 'debt', 'debitum', 'expense',
+           'gain', 'miser', 'fortune', 'fortuna', 'use', 'usury', 'interest',
+           'interesse', 'consumptioner']
+
+masculine = ["man", "manne", "mannes", "men", "mennes", "he", "his", "him", "son",
+                 "sons", "father", "fathers", "boy", "boys", "himself", "male", "males", "brother",
+                 "brothers", "uncle", "uncles", "nephew", "nephews", "lord", "lords", "king", "kings",
+                 "duke", "dukes", "prince", "princes"]
+
+    feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
+                "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
+                "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
+                "queens", "duchess", "duchesses", "princess", "princesses"]
+
 
 def create_model(input):
     df = pd.read_csv(input, encoding="ISO-8859-1")
@@ -53,9 +71,9 @@ def read_model(address):
 
 
 def print_random_n(model, topn):
-    '''
+    """
     Print 10 random words from the word embedding model
-    '''
+    """
     print("Ten random words:")
     for i, word in enumerate(model.wv.vocab):
         if i == topn:
@@ -64,11 +82,11 @@ def print_random_n(model, topn):
 
 
 def most_similar(model, lexicon_words, date_bucket):
-    '''
+    """
     Receive model and list of lexicon words in a quarter century
 
     Print and return top 20 most-similar words for a list of given words
-    '''
+    """
     words_dict = {}
     for lexicon_word in lexicon_words:
         try:
@@ -161,18 +179,11 @@ def get_vocab(date):
     return vocab
 
 
-# for a given csv, calculates the cosine of every word relative to the gender dimension.
-# outputs this as a list (ideally should output as a numpy vector?)
 def gender_dimension(date):
-    masculine = ["man", "manne", "mannes", "men", "mennes", "he", "his", "him", "son",
-                 "sons", "father", "fathers", "boy", "boys", "himself", "male", "males", "brother",
-                 "brothers", "uncle", "uncles", "nephew", "nephews", "lord", "lords", "king", "kings",
-                 "duke", "dukes", "prince", "princes"]
-
-    feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "her", "daughter",
-                "daughters", "mother", "mothers", "girl", "girls", "herself", "female", "females",
-                "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
-                "queens", "duchess", "duchesses", "princess", "princesses"]
+    """
+    for a given csv, calculates the cosine of every word relative to the gender dimension.
+    outputs this as a list (ideally should output as a numpy vector?)
+    """
     vecs = load_model_vectors(date)
 
     # need to create axis vector
@@ -193,23 +204,38 @@ def gender_dimension(date):
 
     # now, we need to produce the cosine similarities
     cosine_similarities = {}
-    for i, word in enumerate(get_vocab(date)):
+    for i, word in enumerate(get_vocab(date)): # change if just doing lexicon
         cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
     return cosine_similarities
 
 
-# input a dictionary of words as keys and cosine similarities as values.
-# get back a dictionary containing only the words with statistically significant similarities
-# this assumes a confidence level of .05
+def gender_ztest_assessment(word, date):
+    for date in date_buckets:
+        avg_man = avg_cosine_similarity(word, masculine, date)
+        avg_woman = avg_cosine_similarity(word, feminine, date)
+        print(date, word, "average man cos sim:", avg_man, "average woman cos sim:", avg_woman)
+
+
+def avg_cosine_similarity(word, group, date):
+    cosine_list = []
+    for woman1 in group:
+        -scipy()
+
+
 def z_test(word_dict):
+    """
+    input a dictionary of words as keys and cosine similarities as values.
+    get back a dictionary containing only the words with statistically significant similarities
+    this assumes a confidence level of .05
+    """
     keys = list(word_dict.keys())
     values = np.array(list(word_dict.values()))
     scores = scipy.stats.zscore(values)
     scores = scores.tolist()
 
-    for i in range(len(scores)):
-        if -1.96 <= scores[i] <= 1.96:
-            scores[i] = 0
+    # for i in range(len(scores)):
+    #     if -1.96 <= scores[i] <= 1.96:
+    #         scores[i] = 0
 
     sig_dict = {}
     for j in range(len(keys)):
@@ -217,11 +243,13 @@ def z_test(word_dict):
             sig_dict[keys[j]] = scores[j]
     return sig_dict
 
-
-# creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
-# also finds z-scores for each word
 def gender_over_time():
-    # create complete vocabulary before everything else
+    """
+    creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
+    also finds z-scores for each word
+    """
+
+    # code to go through all vocabulary:
     # print("starting words")
     # words = []
     # for date in date_buckets:
@@ -234,16 +262,8 @@ def gender_over_time():
     # df["Words"] = words
     # print("words finished")
 
-    words = ['consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
-           'greed', 'desire', 'appetite', 'lust', 'libido', 'covetousness', 'avarice',
-           'possess', 'possession', 'possessing', 'busy', 'businesse', 'need', 'necessity',
-           'necessary', 'needing', 'meed', 'bowgeor', 'bougeor', 'budge', 'wastour',
-           'waster', 'wasture', 'wastoure', 'speculation', 'debt', 'debitum', 'expense',
-           'gain', 'miser', 'fortune', 'fortuna', 'use', 'usury', 'interest',
-           'interesse', 'consumptioner']
-
     df = pd.DataFrame()
-    df["Words"] = words
+    df["Words"] = lexicon
 
     for date in date_buckets:
         cosine_dict = gender_dimension(date)
@@ -252,7 +272,7 @@ def gender_over_time():
         cosines = []
         z_scores = []
 
-        for word in words:
+        for word in lexicon:
             try:
                 cosines.append(cosine_dict[word])
                 z_scores.append(z_dict[word])
@@ -263,7 +283,7 @@ def gender_over_time():
         df[date+" Similarities"] = pd.Series(cosines)
         df[date+" Z-Scores"] = pd.Series(z_scores)
 
-    df.to_csv("GenderDimensionData.csv")
+    df.to_csv("GenderDimensionData1.csv")
 
 
 def load_model_vectors(date_bucket):
@@ -327,7 +347,6 @@ def ks_test(list1, list2):
     Compares 2 distributions given 2 lists
     """
     return scipy.stats.kstest(list1, list2)
-
 
 if __name__ == "__main__":
 

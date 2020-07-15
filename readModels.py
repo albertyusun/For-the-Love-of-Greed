@@ -260,7 +260,7 @@ def gender_ztest_assessment(word):
         avg_man = 1 - scipy.spatial.distance.cosine(vecs[word], avg_vector(masculine_vectors))
         avg_woman = 1 - scipy.spatial.distance.cosine(vecs[word], avg_vector(feminine_vectors))
         print(date, word, "average man cos sim:", avg_man, "average woman cos sim:", avg_woman)
-    return {masculine_vectors, feminine_vectors}
+    return (masculine_vectors, feminine_vectors)
 
 
 

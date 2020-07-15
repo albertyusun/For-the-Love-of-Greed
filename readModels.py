@@ -241,26 +241,85 @@ def gender_dimension(date):
         cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
     return cosine_similarities
 
-# compare a word vector to masculine and feminine clusters to see individual relationships with those ve
-def gender_ztest_assessment(word):
-    for date in date_buckets:
-        vecs = load_model_vectors(date)
-        masculine_vectors = []
-        feminine_vectors = []
-        for i in range(len(masculine)):
-            try:
-                masculine_vectors.append(get_vector(masculine[i], vecs))
-            except KeyError:
-                print("Could not find", masculine[i], " in ", date)
-        for i in range(len(feminine)):
-            try:
-                feminine_vectors.append(get_vector(feminine[i], vecs))
-            except KeyError:
-                print("Could not find", feminine[i], " in ", date)
-        avg_man = 1 - scipy.spatial.distance.cosine(vecs[word], avg_vector(masculine_vectors))
-        avg_woman = 1 - scipy.spatial.distance.cosine(vecs[word], avg_vector(feminine_vectors))
-        print(date, word, "average man cos sim:", avg_man, "average woman cos sim:", avg_woman)
-    return {masculine_vectors, feminine_vectors}
+
+# dimension should be the list of cultural words to be measured, like masculine or feminine
+# for a given csv, calculates the cosine of every word relative to one side of the dimension
+# outputs this as a dictionary
+def one_sided_assessment(dimension, date, vectors):
+    vecs = load_model_vectors(date)
+
+    # need to create cultural vector
+    culture_vectors = []
+    for i in range(len(dimension)):
+        try:
+            culture_temp = get_vector(dimension[i], vecs)
+            culture_vectors.append(culture_temp)
+        except KeyError:
+            print("Could not find", dimension[i], "in", date)
+    culture_vector = avg_vector(culture_vectors)
+
+    # now, we need to produce the cosine similarities
+    cosine_similarities = {}
+    for i, word in enumerate(get_vocab(date)):
+        if word not in vectors.keys():
+            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], culture_vector)
+        else:
+            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], culture_vector)
+    for word in vectors.keys():
+        if word not in cosine_similarities.keys():
+            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], culture_vector)
+    return cosine_similarities
+
+
+# creates a table like custom_gender_over_time, but is one-sided
+def onesided_gender_over_time():
+    # create complete vocabulary before everything else
+    print("starting words")
+    words = set()
+    # add custom words
+    custom = []
+    for date in date_buckets[0:2]:
+        vf = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
+        for col in vf.columns:
+            word = col[4:].lower()
+            if word not in words:
+                custom.append(word)
+    words = words.union(set(custom))
+    print("finished handling custom words")
+
+    # add the rest of the words
+    for date in date_buckets[0:2]:
+        vocab = get_vocab(date)
+        words = words.union(vocab)
+    print("uploading words")
+    df = pd.DataFrame()
+    df["Words"] = list(words)
+    print("words finished")
+
+    for date in date_buckets[0:2]:
+        word_vectors = avg_spelling_vectors(date)
+
+        for dim in [masculine, feminine]:
+            full_cosine_dict = one_sided_assessment(dim, date, word_vectors)
+            full_z_dict = z_test(full_cosine_dict)
+
+            cosines = []
+            z_scores = []
+
+            for word in words:
+                try:
+                    cosines.append(full_cosine_dict[word])
+                    z_scores.append(full_z_dict[word])
+                except KeyError:
+                    cosines.append(None)
+                    z_scores.append(None)
+            print(date, dim[0], "finished")
+
+            df[date + " " + dim[0] + " Similarities"] = pd.Series(cosines)
+            df[date + " " + dim[0] + " Z-Scores"] = pd.Series(z_scores)
+
+    print("writing csv")
+    df.to_csv("OneSidedGenderData.csv")
 
 
 # for a given csv, calculates the cosine of every word relative to the gender dimension.
@@ -356,29 +415,30 @@ def gender_over_time():
 
 
 # creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
+# creates a csv finding the cosine similarity of every word in each quarter-century to the gender axis.
 # also finds z-scores for each word. This one uses the avg vectors of our lexicon words
 def custom_gender_over_time():
     # create complete vocabulary before everything else
     print("starting words")
-    words = []
+    words = set()
     # add custom words
+    custom = []
     for date in date_buckets[0:2]:
         vf = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
         for col in vf.columns:
             word = col[4:].lower()
             if word not in words:
-                words.append(word)
+                custom.append(word)
+    words = words.union(set(custom))
     print("finished handling custom words")
 
     # add the rest of the words
     for date in date_buckets[0:2]:
         vocab = get_vocab(date)
-        for i, word in enumerate(vocab):
-            if word not in words:
-                words.append(word)
+        words = words.union(vocab)
     print("uploading words")
     df = pd.DataFrame()
-    df["Words"] = words
+    df["Words"] = list(words)
     print("words finished")
 
     for date in date_buckets[0:2]:

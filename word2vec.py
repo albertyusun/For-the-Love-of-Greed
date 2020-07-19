@@ -19,16 +19,16 @@ decade_date_buckets = ["1470-1479", "1480-1489", "1490-1499",
 
 j = 1
 
-for date in quarter_date_buckets:
+for date in quarter_date_buckets[:1]:
     before = time.time()
     df = pd.read_csv("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/CSV_quartercentury/" + date + ".csv",
                      encoding="ISO-8859-1")
     print(j, "/", len(quarter_date_buckets), date, ": read the document!")
     df['booktext'] = df['booktext'].str.split()
 
-    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=300)
+    model = gensim.models.word2vec.Word2Vec(sentences=df["booktext"], workers=4, min_count=1, size=50)
 
-    model.save('C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_300/' + date)
+    model.save(date)
 
     after = time.time() - before
     print("Time elapsed for ", date, "=", after)

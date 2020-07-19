@@ -1,5 +1,6 @@
 import time
 
+import gensim
 from sklearn.decomposition import IncrementalPCA  # inital reduction
 from sklearn.datasets import load_digits
 from sklearn.manifold import TSNE  # final reduction
@@ -69,6 +70,15 @@ def plot_with_matplotlib(x_vals, y_vals, labels):
     for i in selected_indices:
         plt.annotate(labels[i], (x_vals[i], y_vals[i]))
 
+def load_saved_model(date):
+    """
+    Load saved model.
+    :param date: Date of the quarter century file you want to load
+    :return: model
+    """
+    model = gensim.models.Word2Vec.load("C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/"
+                                        "models_blank_suffix_quarter_50/"+date)
+    return model
 
 def main():
 
@@ -81,7 +91,7 @@ def main():
     #reduce dimension code:
     before = time.time()
 
-    model = Word2Vec.load("../CSVs/1580w2v.model")
+    model = load_saved_model("1470-1494")
 
     mid = time.time() - before
     print("uploaded model, ", mid)

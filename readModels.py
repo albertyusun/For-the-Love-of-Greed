@@ -213,7 +213,10 @@ def avg_spelling_vectors(date):
         vecs = []
         for variant in df[columns[i]]:
             if type(variant) is str:
-                vecs.append(get_vector(variant, vectors))
+                try:
+                    vecs.append(get_vector(variant, vectors))
+                except KeyError:
+                    print(variant, "not found in", date)
         word_vectors[base_words[i]] = avg_vector(vecs)
     return word_vectors
 
@@ -510,8 +513,12 @@ def load_model_vectors(date_bucket):
     """
     Load model vectors for one vector date_bucket
     """
-    vectors = gensim.models.KeyedVectors.load(
-        "C:/Users/Albert/Box Sync/For the Love of Greed Data Storage/models_blank_suffix_quarter_50/" + date_bucket + ".kv")
+    try:
+        vectors = gensim.models.KeyedVectors.load("output/" + date_bucket + ".kv")
+    except FileNotFoundError:
+        model = load_saved_model(date_bucket)
+        vectors = model.wv
+        vectors.save("output/" + date_bucket + ".kv")
     return vectors
 
 

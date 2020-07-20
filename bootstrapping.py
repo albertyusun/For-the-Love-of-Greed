@@ -33,8 +33,8 @@ def get_sample_indices(index, sample_size):
     """
      :param index: pd.DataFrame().index intended input; takes in any range of integers
      :param sample_size: size of desired sample
-     :return: a numpy.ndarray object containing sample_size entries of randomly selected integers
-     from the range of index
+     :return: a numpy.ndarray object containing sample_size entries of randomly selected
+        integers from the range of index
      """
     sample = np.random.choice(index, size=sample_size)
     return sample
@@ -70,9 +70,9 @@ def bootstrap_model(label, tokenized_texts):
      :param tokenized_texts: list of lists of words; tokenized texts
      :return: saves word2vec model to disk.
      """
-    model = gensim.models.word2vec.Word2Vec(sentences=tokenized_texts, workers=4, min_count=1,
+    model = gensim.models.word2vec.Word2Vec(sentences=tokenized_texts, workers=4, min_count=5,
                                             size=300)
-    model.save('bootstrapping/' + label)
+    # model.save('bootstrapping/' + label)
     return model
 
 
@@ -95,7 +95,7 @@ def create_sample_text(file_path):
     :return: tokenized sample of texts
     """
     df = pd.read_csv(file_path)
-    keys = get_sample_indices(df.index, 10) # 10 is completely arbitrary and can be changed later
+    keys = get_sample_indices(df.index, len(df.index))
     sample = get_sample_texts(keys, df)
     tokenized_sample = tokenize(sample)
     return tokenized_sample
@@ -103,7 +103,8 @@ def create_sample_text(file_path):
 
 def semantic_similarity_data(label, tokenized_text, shared_word, word1, word2):
     """
-    generates data on cosine similarity for one sample (i.e. one word embedding, one time period)
+    generates data on cosine similarity for one sample (i.e. one word embedding, one time
+    period)
     :param label: identifiable label for word embedding model
     :param tokenized_text: output of tokenize(), or any list of lists of words
     :param shared_word: word to compare to two different words
@@ -120,9 +121,42 @@ def semantic_similarity_data(label, tokenized_text, shared_word, word1, word2):
         sim2 = model.wv.similarity(shared_word, word2)
     except KeyError:
         sim2 = None
-    purge_model(label)
     return sim1, sim2
 
 
-def simple_bootstrap():
+def simple_bootstrap(shared_word, word1, word2):
+    """
+    uses a monte carlo bootstrapping algorithm to produce resamples of our desired statistic,
+    in this case the cosine similarity between shared_word and word1, and the cosine similarity
+    between shared_word and word2.
+
+    :param shared_word: the word examined twice
+    :param word1: word compared to shared_word
+    :param word2: word compared to shared_word
+    :return: returns None, but writes to a csv all of the cosine similarities in each resample,
+        for each csv.
+    """
+    df = pd.DataFrame()
     for date in date_buckets:
+        # number of samples in each csv
+        print("starting", date)
+        sample_num = 1000
+        count = 0
+        sim1_list = []
+        sim2_list = []
+        for i in range(sample_num):
+            print("sample", count)
+            text = create_sample_text("CSVs/" + date + "clean.csv")
+            file_label = date + "_" + str(count)
+            temp1, temp2 = semantic_similarity_data(file_label, text, shared_word, word1,
+                                                    word2)
+            sim1_list.append(temp1)
+            sim2_list.append(temp2)
+            count += 1
+        df["Similarity in " + date + " between " + shared_word + " and " + word1] = sim1_list
+        df["Similarity in " + date + " between " + shared_word + " and " + word2] = sim2_list
+    df.to_csv("wordsOverTimeBootstrapped.csv")
+
+
+simple_bootstrap("consume", "luxury", "disease")
+

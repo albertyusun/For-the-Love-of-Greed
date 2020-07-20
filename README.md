@@ -13,6 +13,9 @@ We will track a set of related terms (such as consumer, greed, speculation, prof
 ## Poster References
 
 [1] Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018). Word embeddings quantify 100 years of gender and ethnic stereotypes. Proceedings of the National Academy of Sciences, 115(16), E3635–E3644. https://doi.org/10.1073/pnas.1720347115
+
 [2] Kozlowski, Austin C., et al. “The Geometry of Culture: Analyzing the Meanings of Class through Word Embeddings.” (2019). American Sociological Review 84(5):905–949. (Original DOI: 10.1177/0003122419877135)
+
 [3] Mikolov, Tomas, et al. “Efficient estimation of word representations in vector space.” (2013) ICLR Workshop.
+
 [4] Withington, P. (2020), Intoxicants and the invention of ‘consumption’ . The Economic History Review, 73: 384-408. doi:10.1111/ehr.12936

@@ -10,6 +10,14 @@ A team of students led by Dr. Astrid Giugni (Duke, English and ISS) and Dr. Jess
 
 We will track a set of related terms (such as consumer, greed, speculation, profit) in order to begin assessing how the ethical, political, and economic language of goods-consumption changed around the Protestant Reformation and the rise of the market economy. Using large databases-- EEBO (Proquest), ECCO (Gale), HathiTrust, and TEAMS (University of Rochester)—that contain scans and machine-readable Medieval and Early Modern texts, the group will track and analyze pamphlets, sermons, satires, and images to understand how the ethical discourse of consumerism changed over time.  
 
+## Repository Organization
+##### Folder organization:
+1. 1_scraping - For scraping and cleaning EEBO TCP. 
+2. 2_models - For creating and interpreting embedding models.
+3. 3_visualization - For visualization results.
+4. 4_archive - For files that we've created on our journey, but we no longer use. We might revisit them in the future. 
+
+
 ## Project References
 
 [1] Anderson, B. (1983). Imagined communities: Reflections on the origin and spread of nationalism. Verso. https://find.library.duke.edu/catalog/DUKE000614940

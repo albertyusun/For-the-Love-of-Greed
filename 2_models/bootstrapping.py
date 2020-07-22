@@ -6,14 +6,20 @@
 #       Retrieve texts corresponding to randomly selected indices. Convert to list of texts (done)
 #           For each index, grab the text at that row. Append to list. (done)
 #       Tokenize the list of texts (done)
+#
 # Create 300 dimensional word embedding of tokenized sample. (done)
-#       Create keyed vectors file also (automatic with load_models, so done)
 #       *** Extract desired statistics ***
 #           Get cosine similarity between 'consume' and 'luxury' and for 'consume' and 'disease'
 #               (done, thanks to cosine_over_time)
 #           Add cosine similarity to a list
 #           Add list to csv
 #       Delete word embedding. os.remove() (done)
+#   For Gender over time:
+#       *** Extract desired statistics ***
+#           Vocabulary is variable across resamples. Thus, we need to find the vocab new every
+#           time. And we need to regenerate the cultural axes, since the embedding is also
+#           variable. And I need to call avg_spelling_vectors anew every time.
+#
 #
 
 import readModels as rm
@@ -140,7 +146,7 @@ def simple_bootstrap(shared_word, word1, word2):
     for date in date_buckets:
         # number of samples in each csv
         print("starting", date)
-        sample_num = 1000
+        sample_num = 100
         count = 0
         sim1_list = []
         sim2_list = []
@@ -158,5 +164,131 @@ def simple_bootstrap(shared_word, word1, word2):
     df.to_csv("wordsOverTimeBootstrapped.csv")
 
 
-simple_bootstrap("consume", "luxury", "disease")
+def global_vocab():
+    """
+    :return: gets the complete vocabulary of the dataset.
+    """
+    words = set()
+    custom = []
+    for date in date_buckets:
+        vf = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
+        for col in vf.columns:
+            word = col[4:].lower()
+            if word not in words:
+                custom.append(word)
+    words = words.union(set(custom))
 
+    for date in date_buckets:
+        vocab = rm.get_vocab(date)
+        words = words.union(vocab)
+    return list(words)
+
+
+def avg_spelling_vectors(date, model):
+    """
+    just like the function of the same name in readModels.py, but takes in a word2vec model.
+
+    :param date: time period of concern; used mostly for finding desired range of spelling variants
+    :param model: model to draw vocabulary from.
+    :return: dictionary mapping lexicon words to the average vector of spelling variant vectors.
+    """
+    df = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
+    vectors = model.wv
+    base_words = []
+    columns = df.columns
+    word_vectors = {}
+
+    # get principal words
+    for col in columns:
+        base_words.append(col[4:].lower())
+
+    # for each word, average together the vectors of all of its spelling variations.
+    # this average is the new vector for that word
+    for i in range(len(columns)):
+        vecs = []
+        for variant in df[columns[i]]:
+            if type(variant) is str:
+                try:
+                    vecs.append(rm.get_vector(variant, vectors))
+                except KeyError:
+                    print(variant, "not found in", date)
+        if len(vecs) != 0:
+            word_vectors[base_words[i]] = rm.avg_vector(vecs)
+    return word_vectors
+
+
+def gender_dimension_bootstrap(model, vectors):
+    """
+    nearly just like gender_dimension(date, vectors) except this takes in a model instead of a date.
+    also, this considers the possibility that no spelling variants of a lexicon word appear.
+
+    :param model: word2vec model to draw vocab from.
+    :param vectors: extra vectors outside the model to be considered separately.
+    :return: dictionary of every vocab word in model's cosine similarity to the gender cultural axis.
+    """
+    vecs = model.wv
+
+    # need to create axis vector
+    differences = []
+    for i in range(len(rm.feminine)):
+        try:
+            male_temp = rm.get_vector(rm.masculine[i], vecs)
+            female_temp = rm.get_vector(rm.feminine[i], vecs)
+            differences.append(np.subtract(female_temp, male_temp))
+        except KeyError:
+            print("Could not find", rm.masculine[i], "or", rm.feminine[i], "in model")
+
+    # now average all the difference vectors together
+    axis_vector = rm.avg_vector(differences)
+
+    # now, we need to produce the cosine similarities
+    cosine_similarities = {}
+    for i, word in enumerate(vecs.vocab):
+        if word not in vectors.keys():
+            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
+        else:
+            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], axis_vector)
+    for word in vectors.keys():
+        if word not in cosine_similarities.keys():
+            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], axis_vector)
+    return cosine_similarities
+
+
+def two_sided_gender_bootstrap(date):
+    """
+    uses a monte carlo bootstrapping algorithm to produce resamples of our desired statistic,
+    in this case the cosine similarity between every vocabulary word and a cultural axis.
+
+    :param date: time range to resample
+    :return: creates csv of data.
+    """
+    df = pd.DataFrame()
+    df["Words"] = rm.get_vocab(date)
+    print("starting", date)
+    sample_num = 100
+    count = 0
+    while count < sample_num:
+        print("sample", count)
+        text = create_sample_text("CSVs/" + date + "clean.csv")
+
+        file_label = date + "_" + str(count)
+
+        model = bootstrap_model(file_label, text)
+        lexicon = avg_spelling_vectors(date, model)
+        if len(lexicon.keys()) == 0:
+            print("No lexicon words found. Cancelling this run.")
+            continue
+        cosine_dict = gender_dimension_bootstrap(model, lexicon)
+
+        cosines = []
+        for word in df["Words"].tolist():
+            try:
+                cosines.append(cosine_dict[word])
+            except KeyError:
+                cosines.append(None)
+        df["Sample " + str(count) + " Similarities"] = pd.Series(cosines)
+        count += 1
+    df.to_csv("CSVs/" + date + "TwoSidedGenderBootstrap.csv")
+
+
+simple_bootstrap("consume", "luxury", "disease")

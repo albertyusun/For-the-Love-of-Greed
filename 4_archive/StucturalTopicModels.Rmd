@@ -1,0 +1,193 @@
+---
+title: "MainCode"
+author: "Andrew, Albert, Daisy, Donald"
+date: "6/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r imports packages, message=FALSE, warning=FALSE}
+library(dplyr)
+library(tidytext)
+library(janeaustenr)
+library(stringr)
+library(ggplot2)
+library(data.table)
+library(reshape2)
+library(stm)
+library(quanteda)
+library(patchwork)
+```
+
+```{r time your code template}
+g <- rnorm(100000)
+h <- rep(NA, 100000)
+
+# start the clock
+ptm <- proc.time()
+
+# look thru the vector, adding one
+for(i in 1:100000){
+  h[i] <- g[i] + 1
+}
+
+# insert the code here
+
+# stop the clock
+proc.time() - ptm
+```
+
+
+```{r import csv}
+g <- rnorm(100000)
+h <- rep(NA, 100000)
+
+# start the clock
+ptm <- proc.time()
+
+# look thru the vector, adding one
+for(i in 1:100000){
+  h[i] <- g[i] + 1
+}
+
+
+#short <- read.csv("CSVs/metadata-shorter.csv", encoding="UTF-8")
+short <- fread("CSVs/1550-1559.csv")
+#encoding removes the weird A symbols
+#short <- read.csv("C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv")
+#short <- fread('C:\\Users\\andre\\Metadata\\MetaThird2\\metaThird2.csv')
+
+# stop the clock
+proc.time() - ptm
+```
+It takes 2.442 seconds for read.csv().
+It takes 0.039 seconds for fread().
+
+# TidyText Section:
+
+```{r create dataset that shows # occurences of words per book}
+#shorten titles to 20 char into a new variable called 'book'
+#short <- short %>%
+#  mutate(book = substr(title, 1, 20)) 
+#short
+
+#TCP_words: book, word, # of occurrences
+TCP_words <- short %>%
+  unnest_tokens(word, booktext) %>%
+  count(book, word, sort = TRUE)
+
+TCP_words
+
+#total_words: book, # total words in the book
+total_words <- TCP_words %>%
+  group_by(book) %>%
+  summarize(total = sum(n))
+
+#TCP_words: book, word, # of occurrences, total words 
+TCP_words <- left_join(TCP_words, total_words)
+
+TCP_words
+```
+
+```{r removes stop words}
+custom_stop <- tibble(word = c("[unnumbered]","ã","thou","thy","hense","\210â", 
+                               "doth", "1", "2", "â","3","page","unnumbered"))
+data(stop_words)
+
+tidy_TCP <- TCP_words %>%
+  anti_join(stop_words) %>%
+  anti_join((custom_stop))
+
+tidy_TCP
+```
+
+```{r plot}
+ggplot(TCP_words, aes(n/total, fill = book)) +
+  geom_histogram(show.legend = FALSE, bins = 10) +
+  facet_wrap(~book, ncol = 2, scales = "free_y") + 
+  labs(x = "# words/Total", y = "Count")
+```
+
+# Topic Modelling Section: 
+
+Topic Modeling Research:
+
+- tidytext with topicmodeling: 
+https://www.tidytextmining.com/topicmodeling.html
+
+- Documentation of topic models: 
+https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf
+
+- Create DTM: 
+https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25
+
+- Topic modeling with tidytext: 
+https://www.youtube.com/watch?v=evTuL-RcRpc
+
+- Chris Bail's research:
+https://www.youtube.com/watch?v=IUAHUEy1V0Q&feature=youtu.be
+
+```{r create document-feature matrix/documenttermmatrix}
+TCP_dfm <- tidy_TCP %>%
+  count(book, word, sort = TRUE, wt = n) %>%
+  cast_dfm(book, word, n)
+
+topic_model <- stm(TCP_dfm, K = 5, init.type = "Spectral")
+```
+
+```{r create summary of the topic model}
+summary(topic_model)
+```
+
+```{r create plot}
+stm_summary <- plot(topic_model, type = c("summary"), n = 3)
+stm_labels <- plot(topic_model, type = c("labels"))
+stm_hist <- plot(topic_model, type = c("hist"))
+```
+
+```{r}
+stm_summary <- plot(topic_model, type = c("summary"), n = 3)
+
+```
+
+```{r}
+#findingk <- searchK(TCP_dfm, K = c(3, 10))
+```
+
+```{r}
+#plot(findingk)
+```
+
+```{r visualize}
+td_beta <- tidy(topic_model)
+
+td_beta <- td_beta %>%
+  mutate(topic = factor(topic))
+
+topic.labs <- c("Nobility", "Commerce", "Church")
+names(topic.labs) <- c("1", "2", "3")
+
+top_ten_model <- td_beta %>%
+  group_by(topic) %>%
+  top_n(10) %>%
+  ungroup %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = topic)) + 
+  geom_col(show.legend = FALSE) + 
+  facet_wrap(~topic, scales = "free", , 
+             labeller = labeller(topic = topic.labs)) + 
+  coord_flip() + 
+  theme_gray(base_size = 23) + 
+  labs(title = "Top 10 Words in our 3 LDA-Generated Topics",
+       x = "Word",
+       y = "Word-to-Topic Percentage") +
+  scale_y_continuous(labels = scales::percent) + 
+  theme(axis.text.x = element_text(size = 15))
+
+top_ten_model
+```
+
+

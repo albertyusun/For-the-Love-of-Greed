@@ -1,0 +1,98 @@
+---
+title: "test"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r imports packages}
+library(dplyr)
+library(tidytext)
+library(janeaustenr)
+library(stringr)
+library(ggplot2)
+```
+
+```{r}
+short <- read.csv("CSVs/metadata-short.csv")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+text <- c("Because I could not stop for Death -",
+          "He kindly stopped for me -",
+          "The Carriage held but just Ourselves -",
+          "and Immortality")
+
+text_df <- tibble(1:4, text = text)
+
+text_df %>%
+  unnest_tokens(word, text)
+```
+
+```{r}
+
+austen_books
+
+book_words <- austen_books() %>%
+  unnest_tokens(word, text) %>%
+  count(book,word,sort=TRUE)
+
+#creates list of total amount of words in a func
+total_words <- book_words %>%
+  group_by(book) %>%
+  summarize(total = sum(n))
+
+book_words <- left_join(book_words, total_words)
+
+book_words
+
+ggplot(book_words, aes(n/total, fill = book)) +
+  geom_histogram(show.legend = FALSE) +
+  xlim(NA, 0.0009) +
+  facet_wrap(~book, ncol = 2, scales = "free_y")
+```
+
+```{r}
+#use the first 9 texts for now because the last one is super long
+TCP_words <- short %>%
+  slice(1:9) %>%
+  unnest_tokens(word, booktext) %>%
+  count(author,word,sort=TRUE)
+
+#creates list of total amount of words in a func
+total_words <- TCP_words %>%
+  group_by(author) %>%
+  summarize(total = sum(n))
+
+TCP_words <- left_join(TCP_words, total_words)
+
+TCP_words
+```
+
+
+```{r}
+custom_stop <- tibble(word = c("a","and","the","of","to"))
+#data(custom_stop)
+
+tidy_TCP <- TCP_words %>%
+  anti_join(custom_stop)
+
+tidy_TCP
+```
+
+```{r}
+tidy_TCP %>%
+  count(word, sort = TRUE) 
+
+```
+
+```{r}
+ggplot(TCP_words, aes(n/total, fill = title)) +
+  geom_histogram(show.legend = FALSE) +
+  xlim(NA, 0.0009) +
+  facet_wrap(~title, ncol = 2, scales = "free_y")
+```

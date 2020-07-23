@@ -217,7 +217,7 @@ def avg_spelling_vectors(date, model):
     return word_vectors
 
 
-def gender_dimension_bootstrap(model, vectors):
+def gender_dimension_bootstrap(model, vectors, extra_words):
     """
     nearly just like gender_dimension(date, vectors) except this takes in a model instead of a date.
     also, this considers the possibility that no spelling variants of a lexicon word appear.
@@ -243,18 +243,18 @@ def gender_dimension_bootstrap(model, vectors):
 
     # now, we need to produce the cosine similarities
     cosine_similarities = {}
-    for i, word in enumerate(vecs.vocab):
-        if word not in vectors.keys():
-            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
-        else:
-            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], axis_vector)
     for word in vectors.keys():
-        if word not in cosine_similarities.keys():
-            cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], axis_vector)
+        cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], axis_vector)
+    for word in extra_words:
+        if word not in vectors.keys():
+            try:
+                cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vecs[word], axis_vector)
+            except KeyError:
+                print("Could not find", word, "in model")
     return cosine_similarities
 
 
-def two_sided_gender_bootstrap(date):
+def two_sided_gender_bootstrap(date, word_list):
     """
     uses a monte carlo bootstrapping algorithm to produce resamples of our desired statistic,
     in this case the cosine similarity between every vocabulary word and a cultural axis.
@@ -263,7 +263,7 @@ def two_sided_gender_bootstrap(date):
     :return: creates csv of data.
     """
     df = pd.DataFrame()
-    df["Words"] = rm.get_vocab(date)
+    df["Words"] = word_list
     print("starting", date)
     sample_num = 100
     count = 0
@@ -278,10 +278,10 @@ def two_sided_gender_bootstrap(date):
         if len(lexicon.keys()) == 0:
             print("No lexicon words found. Cancelling this run.")
             continue
-        cosine_dict = gender_dimension_bootstrap(model, lexicon)
+        cosine_dict = gender_dimension_bootstrap(model, lexicon, word_list)
 
         cosines = []
-        for word in df["Words"].tolist():
+        for word in word_list:
             try:
                 cosines.append(cosine_dict[word])
             except KeyError:
@@ -290,5 +290,4 @@ def two_sided_gender_bootstrap(date):
         count += 1
     df.to_csv("CSVs/" + date + "TwoSidedGenderBootstrap.csv")
 
-
-simple_bootstrap("consume", "luxury", "disease")
+two_sided_gender_bootstrap()

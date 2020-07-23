@@ -38,6 +38,11 @@ feminine = ["woman", "womman", "wommans", "women", "wommens", "she", "hers", "he
                 "sister", "sisters", "aunt", "aunts", "niece", "nieces", "lady", "ladies", "queen",
                 "queens", "duchess", "duchesses", "princess", "princesses"]
 
+jewish = ["jew", "jews", "jewe", "jewes", "jewish", "jewishe", "jue", "jues", "iew", "iews", "iewe",
+          "iewes", "israelite", "israelites", "israelyte", "israelytes", "jewry", "jeueri", "jeuerie",
+          "jeuri", "jeurie", "juweri", "juwerie", "jouerie", "iwri", "giwrie", "giwerie", "judaism",
+          "judaisme", "juhede"]
+
 
 def load_saved_model(date):
     """
@@ -283,6 +288,54 @@ def one_sided_assessment(dimension, date, vectors):
         if word not in cosine_similarities.keys():
             cosine_similarities[word] = 1 - scipy.spatial.distance.cosine(vectors[word], culture_vector)
     return cosine_similarities
+
+
+def one_sided_jewish_over_time():
+    # create complete vocabulary before everything else
+    print("starting words")
+    words = set()
+    # add custom words
+    custom = []
+    for date in date_buckets:
+        vf = pd.read_csv("CSVs/spellingvariations/wordVariation" + date + ".csv")
+        for col in vf.columns:
+            word = col[4:].lower()
+            if word not in words:
+                custom.append(word)
+    words = words.union(set(custom))
+    print("finished handling custom words")
+
+    # add the rest of the words
+    for date in date_buckets:
+        vocab = get_vocab(date)
+        words = words.union(vocab)
+    print("uploading words")
+    df = pd.DataFrame()
+    df["Words"] = list(words)
+    print("words finished")
+
+    for date in date_buckets:
+        word_vectors = avg_spelling_vectors(date)
+
+        full_cosine_dict = one_sided_assessment(jewish, date, word_vectors)
+        full_z_dict = z_test(full_cosine_dict)
+
+        cosines = []
+        z_scores = []
+
+        for word in words:
+            try:
+                cosines.append(full_cosine_dict[word])
+                z_scores.append(full_z_dict[word])
+            except KeyError:
+                cosines.append(None)
+                z_scores.append(None)
+        print(date, jewish[0], "finished")
+
+        df[date + " Jewish Similarities"] = pd.Series(cosines)
+        df[date + " Jewish Z-Scores"] = pd.Series(z_scores)
+    print("writing csv")
+    df.to_csv("OneSidedJewishAxisSimilarities.csv")
 
 
 def onesided_gender_over_time():

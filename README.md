@@ -11,14 +11,23 @@ A team of students led by Dr. Astrid Giugni (Duke, English and ISS) and Dr. Jess
 We will track a set of related terms (such as consumer, greed, speculation, profit) in order to begin assessing how the ethical, political, and economic language of goods-consumption changed around the Protestant Reformation and the rise of the market economy. Using large databases-- EEBO (Proquest), ECCO (Gale), HathiTrust, and TEAMS (University of Rochester)—that contain scans and machine-readable Medieval and Early Modern texts, the group will track and analyze pamphlets, sermons, satires, and images to understand how the ethical discourse of consumerism changed over time.  
 
 ## Repository Organization
-##### Folder organization:
-1. 1_scraping - For scraping and cleaning EEBO TCP. 
-2. 2_models - For creating and interpreting embedding models.
-3. 3_visualization - For visualization results.
-4. 4_archive - For files that we've created on our journey, but we no longer use. We might revisit them in the future. 
+### Folder organization:
+- 1_scraping - For scraping and cleaning EEBO TCP. 
+- 2_models - For creating and interpreting embedding models.
+- 3_vis - For visualizing results.
+- 4_archive - For files that we've created on our journey, but we no longer use. We might revisit them in the future. 
 
+## Presentation References
 
-## Project References
+1. Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018). Word embeddings quantify 100 years of gender and ethnic stereotypes. Proceedings of the National Academy of Sciences, 115(16), E3635–E3644. https://doi.org/10.1073/pnas.1720347115
+
+2. Kozlowski, Austin C., et al. “The Geometry of Culture: Analyzing the Meanings of Class through Word Embeddings.” (2019). American Sociological Review 84(5):905–949. (Original DOI: 10.1177/0003122419877135)
+
+3. Mikolov, T., Sutskever, I., Chen, K., Corrado, G., & Dean, J. (2013). Distributed Representations of Words and Phrases and their Compositionality. http://arxiv.org/abs/1310.4546
+
+4. Withington, P. (2020), Intoxicants and the invention of ‘consumption’ . The Economic History Review, 73: 384-408. doi:10.1111/ehr.12936
+
+## Entire Project References
 
 [1] Anderson, B. (1983). Imagined communities: Reflections on the origin and spread of nationalism. Verso. https://find.library.duke.edu/catalog/DUKE000614940
 

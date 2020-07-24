@@ -1,0 +1,112 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r load packages}
+library(tidyverse)
+library(stringi)
+library(ggrepel)
+library(stringr)
+library(data.table)
+library(patchwork)
+```
+patchwork: https://gotellilab.github.io/GotelliLabMeetingHacks/NickGotelli/ggplotPatchwork.html
+
+create full_plot: https://cran.r-project.org/web/packages/egg/vignettes/Ecosystem.html
+
+# One sided
+
+```{r}
+one_sided <- fread("CSVs/OneSidedGenderAxisSimilarities.csv")
+```
+
+```{r convert wide to tidy data frame}
+
+
+one_sided_df <- one_sided %>% 
+  filter(Words %in% c('consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
+           'greed', 'desire', 'appetite', 'lust', 'libido', 'covetousness', 'avarice',
+           'possess', 'possession', 'possessing', 'busy', 'businesse', 'need', 'necessity',
+           'necessary', 'needing', 'meed', 'bowgeor', 'bougeor', 'budge', 'wastour',
+           'waster', 'wasture', 'wastoure', 'speculation', 'debt', 'debitum', 'expense',
+           'gain', 'miser', 'fortune', 'use', 'usury', 'interest',
+           'interesse', 'consumptioner')) %>%
+  select(Words | ends_with("Similarities")) %>%
+  gather(years, similarity, "1470-1494 man Similarities":"1620-1644 woman Similarities") %>%
+  mutate(gender = if_else(substr(years, 11, 13)=="man", "Man", "Woman")) %>%
+  mutate(years = substr(years, 1, 9)) %>%
+  mutate(wordgender = paste(Words, gender, sep="")) %>%
+  mutate(years = substr(years, 1, 4)) %>%
+  select("wordgender", "years", "Words", similarity, gender) %>%
+  filter(Words %in% c("consumption", "desire", "greed", "possession"))
+
+
+
+one_sided_df
+  
+```
+
+```{r plot one-sided cosine similarity}
+
+
+plot <- one_sided_df %>%
+  ggplot(aes(x = years, y = similarity, group = gender)) + 
+  geom_line(aes(color = gender), size = 2) + 
+  theme(text = element_text(size=30),
+        axis.text=element_text(size=15)) +
+  scale_y_continuous(name = "Similarity") + 
+  facet_wrap(~Words, nrow = 2) + 
+  labs(
+    title = "Cosine similarity to different genders over time",
+    x= "Years"
+    ) +
+  scale_color_manual(values=c('blue','red'))
+plot
+```
+
+```{r plot one-sided z-score}
+one_sided_df <- one_sided %>% 
+  filter(Words %in% c('consumption', 'consume', 'cupidity', 'cupiditas', 'curiosity', 'curiositas',
+           'greed', 'desire', 'appetite', 'lust', 'libido', 'covetousness', 'avarice',
+           'possess', 'possession', 'possessing', 'busy', 'businesse', 'need', 'necessity',
+           'necessary', 'needing', 'meed', 'bowgeor', 'bougeor', 'budge', 'wastour',
+           'waster', 'wasture', 'wastoure', 'speculation', 'debt', 'debitum', 'expense',
+           'gain', 'miser', 'fortune', 'use', 'usury', 'interest',
+           'interesse', 'consumptioner')) %>%
+  select(Words | ends_with("Z-Scores")) %>%
+  gather(years, ZScores, "1470-1494 man Z-Scores":"1670-1700 woman Z-Scores") %>%
+  mutate(gender = if_else(substr(years, 11, 13)=="man", "Man", "Woman")) %>%
+  mutate(years = substr(years, 1, 9)) %>%
+  mutate(wordgender = paste(Words, gender, sep="")) %>%
+  mutate(years = substr(years, 1, 4)) %>%
+  select("wordgender", "years", "Words", ZScores, gender) %>%
+  filter(Words %in% c("consumption", "desire", "greed", "possession"))
+
+
+plot_zscore <- one_sided_df %>%
+  ggplot(aes(x = years, y = ZScores, group = gender)) + 
+  geom_line(aes(color = gender), size = 2) + 
+  theme(
+    text = element_text(size = 30),
+    axis.text = element_text(size = 25),
+    strip.text.x = element_text(
+        size = 30
+        )
+    ) +
+  scale_x_discrete(name = "Years", breaks = c("1470", "1570", "1670")) +
+  facet_wrap(~Words, nrow = 2) + 
+  labs(
+    title = "Consumption-related words and \ntheir gender contexts (one-sided)",
+    x= "Years",
+    y = "Z-Scores"
+    ) +
+  scale_color_manual(values=c('blue','red'))
+
+plot_zscore
+```
+
+```{r save file}
+ggsave("plot2v4.png", plot_zscore, units = "in", width = 850/100, height = 600/100 )
+```
+

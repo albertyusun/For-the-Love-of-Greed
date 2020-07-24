@@ -1,0 +1,106 @@
+---
+title: "vis_intersectional"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(stringi)
+library(ggrepel)
+library(stringr)
+library(data.table)
+```
+
+
+```{r read}
+gender <- fread("../../CSVs/GenderAxisSimilarities.csv")
+jewish <- fread("../../CSVs/OneSidedJewishAxisSimilarities.csv")
+```
+
+```{r wrangle}
+
+wrangle <- function(tbl){
+  ret <- tbl %>%
+    filter(Words %in% c("consume", "greed", "usury", "christian" )) %>%
+    select(Words | ends_with("Similarities")) 
+  return(ret)
+}
+
+gender <- wrangle(gender) 
+jewish <- wrangle(jewish)
+
+gender
+jewish
+
+merged_df <- merge(jewish, gender) %>%
+  gather(years, similarity, "1470-1494 Jewish Similarities":"1670-1700 Similarities") %>%
+  mutate(variable = if_else(substr(years, 11, 13)=="Jew", "Jewish", "Gender")) %>%
+  mutate(wordyear = paste(Words, substr(years, 1, 4), sep="")) %>%
+  mutate(years = substr(years, 1, 4))
+
+merged_df <- merged_df %>%
+  filter(years %in% c(1645, 1670)) %>%
+  pivot_wider(names_from = variable, values_from = similarity) %>%
+  select(wordyear, Jewish, Gender)
+
+merged_df
+
+```
+```{r}
+require(gridExtra)
+
+getx <- function(word, year) {
+  ret <- merged_df %>% 
+    filter(wordyear == paste(word, year, sep = "")) %>%
+    pull(Gender)
+  return(ret)
+}
+
+gety <- function(word, year) {
+  ret <- merged_df %>% 
+    filter(wordyear == paste(word, year, sep = "")) %>%
+    pull(Jewish)
+  return(ret)
+}
+
+arrowFunc <- function(word, year1, year2) {
+  geom_segment(aes(
+    x = getx(word, year1),
+    y = gety(word, year1),
+    xend = getx(word, year2),
+    yend = gety(word, year2)
+    ), 
+    arrow = arrow(length = unit(0.1, "inches"), type = "closed"))
+}
+
+plot <- ggplot(data = merged_df, aes(x = Gender, y = Jewish)) +
+  geom_text_repel(aes(label = wordyear)) + 
+  geom_point() + 
+  scale_x_continuous(limits = c(-.4, .4)) + 
+  scale_y_continuous(limits = c(-.4, .4)) + 
+  geom_hline(yintercept = 0) + 
+  geom_vline(xintercept = 0) + 
+  arrowFunc("consume", "1645", "1670") +
+  arrowFunc("greed", "1645", "1670") + 
+  arrowFunc("usury", "1645", "1670") + 
+  arrowFunc("christian", "1645", "1670") + 
+  labs(
+    title = "Consumption in Gendered Jewish contexts, 1645 to 1670",
+    x = "Male <-- Gender --> Female", 
+    y = "Non-Jewish <-- Race --> Jewish"
+  ) + 
+  theme(
+    text = element_text(size = 17),
+    axis.text = element_text(size = 15),
+  )
+
+plot
+```
+
+```{r save file}
+ggsave("plot4.png", plot, units = "in", width = 850/100, height = 600/100 )
+```

@@ -1,0 +1,228 @@
+---
+title: "Visualizations"
+author: 'Team 19: For the Love of Greed'
+date: "7/2/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+```{r load packages}
+library(tidyverse)
+library(stringi)
+library(ggrepel)
+library(stringr)
+```
+
+```{r Wrangling Similarity}
+df_similarity <- tibble(years=c("1470-1494", "1495-1519","1520-1544","1545-1569",
+                "1570-1594","1595-1619","1620-1644","1645-1669",
+                "1670-1700"),
+                luxury=c(-0.17466319, -0.30258608, -0.37691566,
+                      -0.18834212, 0.26263857, 0.44608718, 0.42523912, 
+                      0.31434003, 0.40818825),
+                disease=c(0.8172742, 0.65451854, 0.6040485, 0.39209074, 
+                          0.33092698, 0.3218253, 0.21741053, 0.13698031, 
+                          0.18832971))
+
+df_similarity <- df_similarity %>%
+  select(years, luxury, disease) %>%
+  gather(key = "variable", value = "value", -years)
+
+df_similarity
+```
+
+```{r Without labels}
+plot_without_labels <- ggplot(data=df_similarity, aes(x=years, group = 1)) +
+  geom_line(aes(y = luxury), color = "darkred")+
+  geom_line(aes(y = disease), color="steelblue")+ 
+  scale_color_manual(values = c("darkred", "steelblue"))
+```
+
+```{r Cosine for quarter}
+
+cosine_plot <- df_similarity %>%
+  mutate(label = if_else(years == max(years), as.character(variable), NA_character_)) %>%
+  ggplot(aes(x = years, y = value, group = variable, colour=variable)) + 
+  geom_line(size = 1.5) +
+  scale_color_discrete(guide = FALSE) + 
+  geom_label_repel(aes(label = label),
+                  nudge_x = 1,
+                  na.rm = TRUE)+
+  labs(
+    title = "\"Consume\" develops economic connotations during early modern period",
+    subtitle = "The word \"Consume\" compared to the words \"Luxury\" and \"Disease\"",
+    x = "Time",
+    y = "Cosine Similarity",
+    color = "Consume \ncompared to:",
+    caption = "Team 19: Tracing the early history of consumer culture
+Method: Used SGNS Word Embedding Models (Word2Vec) and applied Cosine Similarity between word vector pairs"
+  ) +
+  theme(text = element_text(size=19, hjust=0.5),
+        axis.text=element_text(size=10),
+        plot.subtitle=element_text(size=14, hjust=0.5),
+        plot.caption=element_text(size=13, hjust=0),
+        plot.caption.position = "plot")
+
+cosine_plot
+```
+
+```{r Cosine line for decade}
+
+df_similarity <- tibble(years=c("1470-1479", "1480-1489", "1490-1499",
+                       "1500-1509", "1510-1519", "1520-1529", "1530-1539", "1540-1549", "1550-1559",
+                       "1560-1569", "1570-1579", "1580-1589", "1590-1599", "1600-1609", "1610-1619",
+                       "1620-1629", "1630-1639", "1640-1649", "1650-1659", "1660-1669", "1670-1679",
+                       "1680-1689", "1690-1700"),
+                luxury=c(-0.1310818, -0.15574585, 'NA', -0.43548056, 'NA', 'NA', -0.11576163, -0.08320668, -0.09670383, -0.061013784, 0.40230384, -0.0637718, 0.4530003, 0.5454841, 0.3523297, 0.5710402, 0.5063732, 0.34399527, 0.2905739, 0.26025137, 0.32196367, 0.3854744, 0.34630233),
+                disease=c(0.99158746, 0.70905703, 0.434341, 0.047836024, 0.024496956, 0.9127077, 0.66880333, 0.6665769, 0.63993585, 0.612736, 0.49985868, 0.29303122, 0.22535732, 0.26066816, 0.3847574, 0.17246786, 0.20800799, 0.1286284, 0.06284622, 0.14538, 0.12418573, 0.15912668, 0.13149749))
+
+df_similarity <- df_similarity %>%
+  mutate(years = str_sub(years, 1, 5)) %>%
+  select(years, luxury, disease) %>%
+  gather(key = "variable", value = "value", -years)
+
+cosine_plot <- df_similarity %>%
+  mutate(label = if_else(years == max(years), as.character(variable), NA_character_)) %>%
+  ggplot(aes(x = years, y = value, group = variable, colour=variable)) + 
+  geom_line(size = 1.5) +
+  scale_color_discrete(guide = FALSE) + 
+  geom_label_repel(aes(label = label),
+                  nudge_x = 1,
+                  na.rm = TRUE)+
+  labs(
+    title = "\"Consume\" develops economic connotations during early modern period",
+    subtitle = "The word \"Consume\" compared to the words \"Luxury\" and \"Disease\"",
+    x = "Time",
+    y = "Cosine Similarity",
+    color = "Consume \ncompared to:",
+    caption = "Team 19: Tracing the early history of consumer culture
+Method: Used SGNS Word Embedding Models (Word2Vec) and applied Cosine Similarity between word vector pairs"
+  ) +
+  theme(text = element_text(size=19, hjust=0.5),
+        axis.text=element_text(size=10),
+        plot.subtitle=element_text(size=14, hjust=0.5),
+        plot.caption=element_text(size=13, hjust=0),
+        plot.caption.position = "plot")
+
+cosine_plot
+```
+```{r Cosine scatter for decade}
+
+df_similarity <- tibble(years=c("1470-1479", "1480-1489", "1490-1499",
+                       "1500-1509", "1510-1519", "1520-1529", "1530-1539", "1540-1549", "1550-1559",
+                       "1560-1569", "1570-1579", "1580-1589", "1590-1599", "1600-1609", "1610-1619",
+                       "1620-1629", "1630-1639", "1640-1649", "1650-1659", "1660-1669", "1670-1679",
+                       "1680-1689", "1690-1700"),
+                luxury=c(-0.1310818, -0.15574585, NA, -0.43548056, NA, NA, -0.11576163, -0.08320668, -0.09670383, -0.061013784, 0.40230384, -0.0637718, 0.4530003, 0.5454841, 0.3523297, 0.5710402, 0.5063732, 0.34399527, 0.2905739, 0.26025137, 0.32196367, 0.3854744, 0.34630233),
+                disease=c(0.99158746, 0.70905703, 0.434341, 0.047836024, 0.024496956, 0.9127077, 0.66880333, 0.6665769, 0.63993585, 0.612736, 0.49985868, 0.29303122, 0.22535732, 0.26066816, 0.3847574, 0.17246786, 0.20800799, 0.1286284, 0.06284622, 0.14538, 0.12418573, 0.15912668, 0.13149749))
+
+df_similarity <- df_similarity %>%
+  mutate(years = str_sub(years, 1, 4)) %>%
+  select(years, luxury, disease) %>%
+  gather(key = "variable", value = "value", -years) 
+
+df_similarity$variable <- factor(df_similarity$variable, levels = c("luxury", "disease"))
+
+cosine_plot <- df_similarity %>%
+  drop_na() %>%
+  ggplot(aes(x = years, y = value, group = variable, colour=variable)) + 
+  geom_point(size = 1.5) +
+  geom_smooth(method='lm', size = 1.2)+
+  labs(
+    title = "\"Consume\" develops economic connotations during early modern period",
+    subtitle = "Lines of Best Fit: The word \"Consume\" compared to the words \"Luxury\" and \"Disease\"",
+    x = "Time",
+    y = "Cosine Similarity",
+    color = "Consume \ncompared to:",
+    caption = "Team 19: Tracing the early history of consumer culture
+Method: Used SGNS Word Embedding Models (Word2Vec) and applied Cosine Similarity between word vector pairs"
+  ) +
+  theme(text = element_text(size=19),
+        axis.text.x=element_text(size=10),
+        axis.text.y=element_text(size=10),
+        plot.title=element_text(hjust=0.5),
+        plot.subtitle=element_text(size=14, hjust=0.5),
+        plot.caption=element_text(size=13, hjust=0),
+        plot.caption.position = "plot")
+
+cosine_plot
+```
+
+
+
+```{r Euclidean}
+df_euclidean <- tibble(years=c("1470-1494", "1495-1519","1520-1544","1545-1569",
+                "1570-1594","1595-1619","1620-1644","1645-1669",
+                "1670-1700"),
+                luxury=c(1.1746631860733032, 1.3025860786437988, 1.3769156634807587, 1.188342124223709, 0.7373614311218262, 0.5539128184318542, 0.5747608840465546, 0.6856599748134613, 0.5918117463588715),
+                disease=c(0.18272578716278076, 0.3454814553260803, 0.395951509475708, 0.6079092621803284, 0.6690730154514313, 0.6781747043132782, 0.782589465379715, 0.8630196899175644, 0.8116702884435654))
+
+euclidean_plot <- df_euclidean %>%
+  select(years, luxury, disease) %>%
+  gather(key = "variable", value = "value", -years) %>%
+  ggplot(aes(x = years, y = value, group = variable)) + 
+  geom_line(aes(color = variable), size = 2) + 
+  scale_color_manual(values = c("darkred", "steelblue")) + 
+  labs(
+    title = "Consume becomes economic over the late middle ages",
+    subtitle = "Using Euclidean Distance",
+    x = "Time",
+    y = "Distance",
+    color = "Comsume \ncompared to:"
+  ) +
+  theme_classic() +
+  theme(text = element_text(size=20),
+        axis.text=element_text(size=10))
+
+euclidean_plot
+```
+
+
+
+```{r poster plot}
+
+df_similarity <- tibble(years=c("1470-1479", "1480-1489", "1490-1499",
+                       "1500-1509", "1510-1519", "1520-1529", "1530-1539", "1540-1549", "1550-1559",
+                       "1560-1569", "1570-1579", "1580-1589", "1590-1599", "1600-1609", "1610-1619",
+                       "1620-1629", "1630-1639", "1640-1649", "1650-1659", "1660-1669", "1670-1679",
+                       "1680-1689", "1690-1700"),
+                luxury=c(-0.1310818, -0.15574585, NA, -0.43548056, NA, NA, -0.11576163, -0.08320668, -0.09670383, -0.061013784, 0.40230384, -0.0637718, 0.4530003, 0.5454841, 0.3523297, 0.5710402, 0.5063732, 0.34399527, 0.2905739, 0.26025137, 0.32196367, 0.3854744, 0.34630233),
+                disease=c(0.99158746, 0.70905703, 0.434341, 0.047836024, 0.024496956, 0.9127077, 0.66880333, 0.6665769, 0.63993585, 0.612736, 0.49985868, 0.29303122, 0.22535732, 0.26066816, 0.3847574, 0.17246786, 0.20800799, 0.1286284, 0.06284622, 0.14538, 0.12418573, 0.15912668, 0.13149749))
+
+df_similarity <- df_similarity %>%
+  mutate(years = str_sub(years, 1, 4)) %>%
+  select(years, luxury, disease) %>%
+  gather(key = "variable", value = "value", -years) 
+
+df_similarity$variable <- factor(df_similarity$variable, levels = c("luxury", "disease"))
+
+cosine_plot <- df_similarity %>%
+  drop_na() %>%
+  ggplot(aes(x = years, y = value, group = variable, colour=variable)) + 
+  geom_point(size = 3) +
+  geom_smooth(method='lm', size = 3)+
+  labs(
+    title = "\"Consume\" develops economic \nconnotations",
+    x = "Time",
+    y = "Cosine Similarity",
+    color = "Consume \nversus:"
+  ) +
+  scale_x_discrete(breaks = c("1520", "1620"))+
+  theme(text = element_text(size = 30),
+    axis.text = element_text(size = 25),
+    plot.caption=element_text(size=13, hjust=0),
+    plot.caption.position = "plot",
+    legend.text=element_text(size=20),
+    legend.title=element_text(size=20)) + 
+  scale_color_manual(values=c('blue','red'))
+
+cosine_plot
+
+ggsave("plot1v1.png", cosine_plot, units = "in", width = 850/100, height = 800/100 )
+```
+

@@ -19,9 +19,12 @@ library(data.table)
 ```{r read}
 gender <- fread("../../CSVs/GenderAxisSimilarities.csv")
 jewish <- fread("../../CSVs/OneSidedJewishAxisSimilarities.csv")
+consumption <- fread("../../CSVs/OneSidedConsumerismAxisSimilarities.csv")
 ```
 
-```{r wrangle}
+# Plot 1
+
+```{r wrangle1}
 
 wrangle <- function(tbl){
   ret <- tbl %>%
@@ -30,13 +33,10 @@ wrangle <- function(tbl){
   return(ret)
 }
 
-gender <- wrangle(gender) 
-jewish <- wrangle(jewish)
+gender_1 <- wrangle(gender) 
+jewish_1 <- wrangle(jewish)
 
-gender
-jewish
-
-merged_df <- merge(jewish, gender) %>%
+merged_df <- merge(jewish_1, gender_1) %>%
   gather(years, similarity, "1470-1494 Jewish Similarities":"1670-1700 Similarities") %>%
   mutate(variable = if_else(substr(years, 11, 13)=="Jew", "Jewish", "Gender")) %>%
   mutate(wordyear = paste(Words, substr(years, 1, 4), sep="")) %>%
@@ -50,7 +50,8 @@ merged_df <- merged_df %>%
 merged_df
 
 ```
-```{r}
+
+```{r plot1}
 require(gridExtra)
 
 getx <- function(word, year) {
@@ -103,4 +104,121 @@ plot
 
 ```{r save file}
 ggsave("plot4.png", plot, units = "in", width = 850/100, height = 600/100 )
+```
+
+# Plot 2
+
+List of Jewish words to look at:
+
+jew(s)
+jewe(s)
+jewish(e)
+jue(s)
+iew(e(s))
+jewry, jeueri(e), jeuri(e), jueri(e),  juweri(e), jouerie, iwri, giw(e)rie
+
+
+```{r wrangle2}
+
+wrangle <- function(tbl){
+  ret <- tbl %>%
+    filter(Words %in% c("jew")) %>% #, "jewish")) %>%
+    select(Words | ends_with("Z-Scores")) 
+  return(ret)
+}
+
+consumption_2 <- wrangle(consumption)
+gender_2 <- wrangle(gender) 
+
+consumption_2
+gender_2
+
+merged_df <- merge(consumption_2, gender_2) %>%
+  gather(years, similarity, "1470-1494 Consumerism Z-Scores":"1670-1700 Z-Scores") %>%
+  mutate(variable = if_else(substr(years, 11, 13)=="Con", "Consumption", "Gender")) %>%
+  mutate(wordyear = paste(Words, substr(years, 1, 4), sep="")) %>%
+  mutate(years = substr(years, 1, 4))
+
+merged_df <- merged_df %>%
+  filter(years %in% c(1520, 1545, 1595, 1620, 1645, 1670)) %>%
+  pivot_wider(names_from = variable, values_from = similarity) %>%
+  select(wordyear, Consumption, Gender)
+
+merged_df
+
+```
+
+```{r plot2}
+require(gridExtra)
+
+getx <- function(word, year) {
+  ret <- merged_df %>% 
+    filter(wordyear == paste(word, year, sep = "")) %>%
+    pull(Gender)
+  return(ret)
+}
+
+gety <- function(word, year) {
+  ret <- merged_df %>% 
+    filter(wordyear == paste(word, year, sep = "")) %>%
+    pull(Consumption)
+  return(ret)
+}
+
+arrowFunc <- function(word, year1, year2) {
+  geom_segment(aes(
+    x = getx(word, year1),
+    y = gety(word, year1),
+    xend = getx(word, year2),
+    yend = gety(word, year2)
+    ), 
+    arrow = arrow(length = unit(0.1, "inches"), type = "closed"))
+}
+
+all_arrFunc <- function(word) {
+  arrowFunc(word, 1520, 1545) + 
+  arrowFunc(word, 1545, 1595) + 
+  arrowFunc(word, 1595, 1620) + 
+  arrowFunc(word, 1620, 1645) + 
+  arrowFunc(word, 1645, 1670)
+}
+
+plot2 <- ggplot(data = merged_df, aes(x = Gender, y = Consumption)) +
+  geom_text_repel(aes(label = wordyear)) + 
+  geom_point() + 
+#  scale_x_continuous(limits = c(-.4, .4)) + 
+#  scale_y_continuous(limits = c(-.4, .4)) + 
+  geom_hline(yintercept = 0) + 
+  geom_vline(xintercept = 0) + 
+#  arrowFunc("consume", "1645", "1670") +
+#  arrowFunc("greed", "1645", "1670") + 
+#  arrowFunc("usury", "1645", "1670") + 
+#  arrowFunc("christian", "1645", "1670") + 
+#  all_arrFunc("jew") + 
+#  all_arrFunc("jewish") + 
+  arrowFunc("jew", 1520, 1545) + 
+  arrowFunc("jew", 1545, 1595) + 
+  arrowFunc("jew", 1595, 1620) + 
+  arrowFunc("jew", 1620, 1645) + 
+  arrowFunc("jew", 1645, 1670) + 
+#  arrowFunc("jewish", 1520, 1545) + 
+#  arrowFunc("jewish", 1545, 1595) + 
+#  arrowFunc("jewish", 1595, 1620) + 
+#  arrowFunc("jewish", 1620, 1645) + 
+#  arrowFunc("jewish", 1645, 1670) + 
+  labs(
+    title = "Consumption in Gendered Jewish contexts, 1645 to 1670",
+    x = "Male <-- Gender --> Female", 
+    y = "Less <-- Consumption --> More"
+  ) + 
+  theme(
+    text = element_text(size = 17),
+    axis.text = element_text(size = 15),
+  )
+
+plot2
+```
+
+```{r save file}
+ggsave("plot5jewZ.png", plot2, units = "in", width = 850/100, height = 600/100 )
 ```

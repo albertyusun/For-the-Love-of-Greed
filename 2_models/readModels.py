@@ -194,6 +194,19 @@ def avg_vector(vector_list):
     return average_vector
 
 
+def avg_jewish_vector(date):
+    vectors = load_model_vectors(date)
+    vecs = []
+
+    for word in jewish:
+        try:
+            vecs.append(get_vector(word, vectors))
+        except KeyError:
+            print(word, "not found in", date)
+    avg = avg_vector(vecs)
+    return avg
+
+
 def avg_spelling_vectors(date):
     """
     Generates the average vectors of each word (given its spelling variants) and returns a dictionary of words and their
@@ -224,6 +237,24 @@ def avg_spelling_vectors(date):
                     print(variant, "not found in", date)
         word_vectors[base_words[i]] = avg_vector(vecs)
     return word_vectors
+
+
+def get_dim_vector(dimension1, dimension2, date):
+    vecs = load_model_vectors(date)
+
+    # need to create axis vector
+    differences = []
+    for i in range(len(feminine)):
+        try:
+            dim1_temp = get_vector(dimension1[i], vecs)
+            dim2_temp = get_vector(dimension2[i], vecs)
+            differences.append(np.subtract(dim1_temp, dim2_temp))
+        except KeyError:
+            print("Could not find", dimension1[i], "or", dimension2[i], "in", date)
+
+    # now average all the difference vectors together
+    axis_vector = avg_vector(differences)
+    return axis_vector
 
 
 def gender_dimension(date):
@@ -629,7 +660,15 @@ def ks_test(list1, list2):
     return scipy.stats.kstest(list1, list2)
 
 if __name__ == "__main__":
-    print(gender_ztest_assessment("consume"))
+    cosines = []
+    for date in date_buckets:
+        average = avg_jewish_vector(date)  # push
+        # axis = avg_vector(list(avg_spelling_vectors(date).values()))
+        axis = get_dim_vector(feminine, masculine, date)  # push
+        cosine = 1 - scipy.spatial.distance.cosine(average, axis)
+        cosines.append(cosine)
+    for i in cosines:
+        print(i)
 
     # print gender dimension
     # year = "1470-1494"

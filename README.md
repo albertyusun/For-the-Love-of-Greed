@@ -23,9 +23,11 @@ We will track a set of related terms (such as consumer, greed, speculation, prof
 
 [2] Kozlowski, Austin C., et al. “The Geometry of Culture: Analyzing the Meanings of Class through Word Embeddings.” (2019). American Sociological Review 84(5):905–949. (Original DOI: 10.1177/0003122419877135)
 
-[3] Mikolov, T., Sutskever, I., Chen, K., Corrado, G., & Dean, J. (2013). Distributed Representations of Words and Phrases and their Compositionality. http://arxiv.org/abs/1310.4546
+[3] Middle English Compendium. (n.d.). Retrieved July 15, 2020, from https://quod.lib.umich.edu/m/middle-english-dictionary/dictionary
 
-[4] Withington, P. (2020), Intoxicants and the invention of ‘consumption’ . The Economic History Review, 73: 384-408. doi:10.1111/ehr.12936
+[4] Mikolov, T., Sutskever, I., Chen, K., Corrado, G., & Dean, J. (2013). Distributed Representations of Words and Phrases and their Compositionality. http://arxiv.org/abs/1310.4546
+
+[5] Withington, P. (2020), Intoxicants and the invention of ‘consumption’ . The Economic History Review, 73: 384-408. doi:10.1111/ehr.12936
 
 ## Entire Project References
 
@@ -53,18 +55,20 @@ We will track a set of related terms (such as consumer, greed, speculation, prof
 
 [12] Meinecke, C., Wrisley, D. J., & Jänicke, S. (2020, March 20). Automated Alignment of Medieval Text Versions based on Word Embeddings. https://doi.org/10.31219/osf.io/tah3y
 
-[13] Mikolov, T., Sutskever, I., Chen, K., Corrado, G., & Dean, J. (2013). Distributed Representations of Words and Phrases and their Compositionality. http://arxiv.org/abs/1310.4546
+[13] Middle English Compendium. (n.d.). Retrieved July 15, 2020, from https://quod.lib.umich.edu/m/middle-english-dictionary/dictionary
 
-[14] Moretti, F. (2017). Patterns and Interpretation. Stanford Literary Lab. https://litlab.stanford.edu/LiteraryLabPamphlet15.pdf
+[14] Mikolov, T., Sutskever, I., Chen, K., Corrado, G., & Dean, J. (2013). Distributed Representations of Words and Phrases and their Compositionality. http://arxiv.org/abs/1310.4546
 
-[15] Shepard, A. (2015). Crediting Women in the Early Modern English Economy. History Workshop Journal, 79(1), 1–24. https://doi.org/10.1093/hwj/dbv002
+[15] Moretti, F. (2017). Patterns and Interpretation. Stanford Literary Lab. https://litlab.stanford.edu/LiteraryLabPamphlet15.pdf
 
-[16] Tsvetkov, Y., Faruqui, M., Ling, W., Lample, G., & Dyer, C. (2015). Evaluation of Word Vector Representations by Subspace Alignment. Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, 2049–2054. https://doi.org/10.18653/v1/D15-1243
+[16] Shepard, A. (2015). Crediting Women in the Early Modern English Economy. History Workshop Journal, 79(1), 1–24. https://doi.org/10.1093/hwj/dbv002
 
-[17] Vries, J. de. (2008). The Industrious Revolution: Consumer Behavior and the Household Economy, 1650 to the Present. Cambridge University Press. http://ebookcentral.proquest.com/lib/duke/detail.action?docID=347224
+[17] Tsvetkov, Y., Faruqui, M., Ling, W., Lample, G., & Dyer, C. (2015). Evaluation of Word Vector Representations by Subspace Alignment. Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing, 2049–2054. https://doi.org/10.18653/v1/D15-1243
 
-[18] Wang, B., Wang, A., Chen, F., Wang, Y., & Kuo, C.-C. J. (2019). Evaluating Word Embedding Models: Methods and Experimental Results. APSIPA Transactions on Signal and Information Processing, 8. https://doi.org/10.1017/ATSIP.2019.12
+[18] Vries, J. de. (2008). The Industrious Revolution: Consumer Behavior and the Household Economy, 1650 to the Present. Cambridge University Press. http://ebookcentral.proquest.com/lib/duke/detail.action?docID=347224
 
-[19] Williams, Raymond. (1985). Keywords: A vocabulary of culture and society. Oxford University Press. https://catalog.hathitrust.org/Record/003794825
+[19] Wang, B., Wang, A., Chen, F., Wang, Y., & Kuo, C.-C. J. (2019). Evaluating Word Embedding Models: Methods and Experimental Results. APSIPA Transactions on Signal and Information Processing, 8. https://doi.org/10.1017/ATSIP.2019.12
 
-[20] Withington, P. (2020), Intoxicants and the invention of ‘consumption’ . The Economic History Review, 73: 384-408. doi:10.1111/ehr.12936
+[20] Williams, Raymond. (1985). Keywords: A vocabulary of culture and society. Oxford University Press. https://catalog.hathitrust.org/Record/003794825
+
+[21] Withington, P. (2020), Intoxicants and the invention of ‘consumption’ . The Economic History Review, 73: 384-408. doi:10.1111/ehr.12936

@@ -17,6 +17,12 @@ We will track a set of related terms (such as consumer, greed, speculation, prof
 - 3_vis - For visualizing results.
 - 4_archive - For files that we've created on our journey, but we no longer use. We might revisit them in the future. 
 
+## Appendix
+
+![alt text](https://github.com/albertyusun/For-the-Love-of-Greed/blob/master/Appendix/plot1v2withpoints.png?raw=true)
+
+![alt text](https://github.com/albertyusun/For-the-Love-of-Greed/blob/master/Appendix/plot2tall.png?raw=true)
+
 ## Presentation References
 
 [1] Garg, N., Schiebinger, L., Jurafsky, D., & Zou, J. (2018). Word embeddings quantify 100 years of gender and ethnic stereotypes. Proceedings of the National Academy of Sciences, 115(16), E3635–E3644. https://doi.org/10.1073/pnas.1720347115

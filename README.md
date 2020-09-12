@@ -12,7 +12,7 @@ We will track a set of related terms (such as consumer, greed, speculation, prof
 
 ## Poster
 
-![alt text](https://bigdata.duke.edu/sites/bigdata.duke.edu/files/site-images/Team%2019_Data%20Plus%20Poster_Final_pdf.pdf)
+Check out our [https://bigdata.duke.edu/sites/bigdata.duke.edu/files/site-images/Team%2019_Data%20Plus%20Poster_Final_pdf.pdf](final poster)!
 
 ## Repository Organization
 ### Folder organization:

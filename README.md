@@ -10,6 +10,10 @@ A team of students led by Dr. Astrid Giugni (Duke, English and ISS) and Dr. Jess
 
 We will track a set of related terms (such as consumer, greed, speculation, profit) in order to begin assessing how the ethical, political, and economic language of goods-consumption changed around the Protestant Reformation and the rise of the market economy. Using large databases-- EEBO (Proquest), ECCO (Gale), HathiTrust, and TEAMS (University of Rochester)—that contain scans and machine-readable Medieval and Early Modern texts, the group will track and analyze pamphlets, sermons, satires, and images to understand how the ethical discourse of consumerism changed over time.  
 
+## Poster
+
+![alt text](https://bigdata.duke.edu/sites/bigdata.duke.edu/files/site-images/Team%2019_Data%20Plus%20Poster_Final_pdf.pdf)
+
 ## Repository Organization
 ### Folder organization:
 - 1_scraping - For scraping and cleaning EEBO TCP. 
